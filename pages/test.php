@@ -3,4 +3,5 @@
 
     require_once('../lib/header.php');
 
+    echo 'text';
 ?>
