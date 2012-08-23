@@ -22,12 +22,12 @@
 	<div id="header">
 	  <?php
 	    if(isset($_SESSION['username'])){
-		echo '<a class="abc" href="index.php">HOME</a>';
+		echo '<a class="abc" href="http://54.245.125.72">HOME</a>';
 		echo '<a class="linkright" href="logout.php">LogOut</a>';
 		echo '<a class="linkright" href="viewprofile.php">'.$_SESSION['username'].'</a>';
 		}
 	    else{
-		echo '<a class="abc" href="index.php">HOME</a>';
+		echo '<a class="abc" href="http://54.245.125.72">HOME</a>';
 		echo '<a class="linkright" href="signup.php">Sign Up</a>';
 		echo '<a class="linkright" href="login.php">Log In</a>';
 		}

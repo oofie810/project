@@ -19,7 +19,7 @@
   setcookie('username', '', time()-3600);
  // setcookie('user_id', '', time()-3600);
 
-    $home_url = 'http://192.168.1.103/index.php';
+    $home_url = 'http://54.245.125.72';
     header('Location: ' . $home_url);
 ?>
 
