@@ -1,28 +1,27 @@
 <?php
-  // session_destroy();
+   $x = 'index';
    require_once('../lib/header.php');
    require_once('../lib/functions.php');
    require_once('../lib/connectvars.php');
-
+   require_once('../lib/database.php');
+   require_once('../lib/class.php');
    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-   $passkey=mysqli_real_escape_string($dbc, trim($_GET['passkey']));
+   $passkey=$_GET['passkey'];
    
    //check if passkey is still in the db
    $query = "SELECT user_id FROM passkey WHERE passkey = '$passkey'";
    $data = mysqli_query($dbc, $query);
    
    if (mysqli_num_rows($data) == 1){
-      $query = "UPDATE user SET status = 1 WHERE user_id IN (SELECT t.user_id FROM passkey t WHERE t.passkey= '$passkey')";
-   
-      mysqli_query($dbc, $query) or die ('Error ln 10:'.mysqli_error($dbc));
-   
-      $query ="SELECT username FROM user INNER JOIN passkey ON (user.user_id = passkey.user_id)  WHERE passkey = '$passkey'";
-      $data = mysqli_query($dbc, $query) or die('error ln 19: '.mysqli_error($dbc));
+      User::confirmUser($passkey);
+      //TODO fix passkey logging
+      $sql = "SELECT username from user INNER JOIN passkey ON (user.user_id = passkey.user_id) WHERE passkey = '$passkey'";
+      $data = mysqli_query($dbc, $sql);
       $row = mysqli_fetch_array($data);
       $username = $row['username'];
          echo $username, $passkey;
-         logaction($username, 2);
+	 logaction($username, 2);
          echo $passkey;
          echo '<p>you are now confirmed. Click here to <a href="login.php">login</a></p>'; 
       $query = "DELETE FROM passkey WHERE passkey = '$passkey'";

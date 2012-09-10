@@ -1,43 +1,42 @@
 <?php
+//edited 9/3/12 using user object
 $x = 'index';
 session_start();
 require_once('../lib/connectvars.php');
 require_once('../lib/appvars.php');
 require_once('../lib/header.php');
+require_once('../lib/database.php');
+require_once('../lib/class.php');
 
 if(isset($_SESSION['username'])){ 
 
 $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die ('Error ln 7:'.mysqli_error($dbc));
 
-$query = "SELECT user_id, username, first_name, last_name, email, image, gender, birthdate FROM user WHERE username = '" .$_SESSION['username']. "'";
+$id = $_SESSION['username'];
 
-$data = mysqli_query($dbc, $query) or die('Error ln 11:'.mysqli_error($dbc));
 
-$row = mysqli_fetch_array($data);
+/*
+TODO
+$user = User::load($id);
+echo $user->getUsername();
 
+$foo = new user();
+$row = $foo -> load($id);
+*/
+$row = User::load($id);
+echo $row->getUserId();
+echo $row->getUsername();
+echo $row->getFirstName();
 echo '<table>';
-$user_id = $row['user_id'];
-if (!empty($row['username'])){
-echo '<tr><td class="label">Username:</td><td>' .$row['username']. '</td></tr>';
-}
-if (!empty($row['first_name'])){
-echo '<tr><td class="label">First Name:</td><td>' .$row['first_name']. '</td></tr>';
-}
-if (!empty($row['last_name'])){
-echo '<tr><td class="label">Last Name:</td><td>' .$row['last_name']. '</td></tr>';
-}
-if (!empty($row['email'])){
-echo '<tr><td class="label">Email:</td><td>' .$row['email']. '</td></tr>';
-}
-if (!empty($row['gender'])){
-echo '<tr><td class="label">Gender:</td><td>' .$row['gender'] .'</td></tr>';
-}
-if (!empty($row['birthdate'])){
-echo '<tr><td class="label">Birthdate:</td><td>' .$row['birthdate'].'</td></tr>';
-}  
-if (!empty($row['image'])){
-echo '<tr><td class="label">Image:</td><td><img src="' . UP_PATH . $row['image'] . '" alt="Profile Picture" /></td></tr>';
-}
+$user_id = $row->getUserId();
+echo '<tr><td class="label">Username:</td><td>' .$row->getUsername(). '</td></tr>';
+echo '<tr><td class="label">First Name:</td><td>' .$row->getFirstName(). '</td></tr>';
+echo '<tr><td class="label">Last Name:</td><td>' .$row->getLastName(). '</td></tr>';
+echo '<tr><td class="label">Email:</td><td>' .$row->getEmail(). '</td></tr>';
+echo '<tr><td class="label">Gender:</td><td>' .$row->getGender() .'</td></tr>';
+echo '<tr><td class="label">Birthdate:</td><td>' .$row->getBirthDate().'</td></tr>';
+//TODO check how to do user class with image
+#echo '<tr><td class="label">Image:</td><td><img src="' . UP_PATH . $row['image'] . '" alt="Profile Picture" /></td></tr>';
 echo '</table><br />';
 echo '<table>';
 

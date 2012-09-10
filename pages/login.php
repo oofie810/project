@@ -3,7 +3,9 @@
   session_start();
   require_once('../lib/header.php');
   require_once('../lib/connectvars.php');
-  require_once ('../lib/functions.php');
+  require_once('../lib/functions.php');
+  require_once('../lib/database.php');
+  require_once('../lib/class.php');
   $error_msg = "";
   
 // if(!isset($_SESSION['username'])){
@@ -11,23 +13,27 @@
 
    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die ('error ln 10:'.mysqli_error($dbc));
 
+//TODO use mysqli real escape
   $user_un = mysqli_real_escape_string($dbc, trim($_POST['username']));
   $user_pw = mysqli_real_escape_string($dbc, trim($_POST['password']));
 
   if (!empty($user_un) && !empty($user_pw)){
      $salt = "egg";
      $user_pw = md5($salt.$user_pw);
-     $query = "SELECT user_id, username, status FROM user WHERE username = '$user_un' AND password = '$user_pw'";
-     $data = mysqli_query($dbc, $query);
+     $user = User::loggedIn($user_un, $user_pw);
 
-     if (mysqli_num_rows($data) == 1){
+//TODO fix this ...mysqli num rows
+     /*if (mysqli_num_rows($data) == 1){
        $row = mysqli_fetch_array($data);
-       if ($row['active'] == '0'){
+       */
+       $username = $user->getUsername();
+       $status = $user->getStatus();
+       if ($status == '0'){
           echo '<p class="error">Please confirm your account first.</p>';
           }
        else{
-       $_SESSION['username'] = $row['username'];
-       setcookie('username', $row['username'], time() + (60* 60 * 24 * 30));
+       $_SESSION['username'] = $username;
+       setcookie('username', $username, time() + (60* 60 * 24 * 30));
          //log action if db connects and user is logged in
          logaction($_SESSION['username'], 3);
          }
@@ -41,7 +47,7 @@
   else{
       $error_msg = 'Sorry, you must enter your username and password to login.';
       }
-    }
+    
   if (empty($_SESSION['username'])){
      echo '<p class="error">' .$error_msg. '</p>';
      

@@ -1,10 +1,13 @@
 <?php
+//edited 9/3/12 using user object 
   $x = 'editprof';
   session_start();
   require_once('../lib/header.php');
   require_once('../lib/appvars.php');
   require_once('../lib/connectvars.php');
   require_once ('../lib/functions.php');
+  require_once('../lib/database.php');
+  require_once('../lib/class.php');
 
 if(isset($_SESSION['username'])){ 
   // Connect to the database
@@ -50,19 +53,15 @@ if(isset($_SESSION['username'])){
              }	
 }
 else{
-    $query="SELECT first_name, last_name, email, gender, birthdate FROM user WHERE username = '" .$_SESSION['username'] . "'";
-    $data = mysqli_query($dbc, $query) or die ('Error ln 54:'.mysqli_error($dbc));
-    $row = mysqli_fetch_array($data);
-
-    if ($row != NULL){
-      $first_name = $row['first_name'];
-      $last_name = $row['last_name'];
-      $email = $row['email'];
-      $gender = $row['gender'];  
-      $birthdate = $row['birthdate'];
-      } 
+    $id = $_SESSION['username'];
+    $user = User::load($id);
+   
+      $first_name = $user->getFirstName();;
+      $last_name = $user->getLastName();;
+      $email = $user->getEmail();
+      $gender = $user->getGender();  
+      $birthdate = $user->getBirthDate();
  
-    mysqli_close ($dbc);
 }
 ?>
 
