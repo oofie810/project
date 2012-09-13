@@ -1,10 +1,14 @@
 <?php
   session_start();
   require_once ('../lib/functions.php');
+  require_once('../lib/database.php');
+  require_once('../lib/class.php');
+
   //if user is logged in, delete the cookie and log them out
   if (isset($_SESSION['username'])){
      //log action before session is destroyed
-     logaction($_SESSION['username'], 4);
+     $id = get_user_id_from_username($_SESSION['username']);
+     User::insertLog($id, 4);   
      //DELETE THE SESSION VARS BY CLEARING THE SESSION ARRAY
      $_SESSION = array();
      

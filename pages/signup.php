@@ -1,7 +1,6 @@
 <?php
 $x = 'index';
 require_once('../lib/functions.php');
-require_once('../lib/connectvars.php');
 require_once('../lib/header.php');
 require_once('../lib/database.php');
 require_once('../lib/class.php');
@@ -24,9 +23,9 @@ require_once('../lib/class.php');
 		    $salt = "egg";
 		    $pass = md5($salt.$pass);
 
-		    $create = User::insertNewUser($username, $pass, $code, $email);
-		    logaction($username, 1);
-			if($create){
+		    $id = User::insertNewUser($username, $pass, $code, $email);
+		    User::insertLog($id, 1);
+			if($id){
 			    $sent= send_email($email, $code);
 
 			    if($sent){
@@ -68,3 +67,6 @@ require_once('../lib/class.php');
  <input type="submit" value="Sign Up" name="submit" />
 </form>
 </html>
+
+
+<?php require_once('../lib/footer.php'); ?>

@@ -8,49 +8,33 @@
   require_once('../lib/class.php');
   $error_msg = "";
   
-// if(!isset($_SESSION['username'])){
-  if(isset($_POST['submit'])){
+    if(isset($_POST['submit'])){
+	$user_un = $_POST['username'];
+	$user_pw = $_POST['password'];
 
-   $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die ('error ln 10:'.mysqli_error($dbc));
-
-//TODO use mysqli real escape
-  $user_un = mysqli_real_escape_string($dbc, trim($_POST['username']));
-  $user_pw = mysqli_real_escape_string($dbc, trim($_POST['password']));
-
-  if (!empty($user_un) && !empty($user_pw)){
-     $salt = "egg";
-     $user_pw = md5($salt.$user_pw);
-     $user = User::loggedIn($user_un, $user_pw);
-
-//TODO fix this ...mysqli num rows
-     /*if (mysqli_num_rows($data) == 1){
-       $row = mysqli_fetch_array($data);
-       */
-       $username = $user->getUsername();
-       $status = $user->getStatus();
-       if ($status == '0'){
-          echo '<p class="error">Please confirm your account first.</p>';
-          }
-       else{
-       $_SESSION['username'] = $username;
-       setcookie('username', $username, time() + (60* 60 * 24 * 30));
-         //log action if db connects and user is logged in
-         logaction($_SESSION['username'], 3);
-         }
-      mysqli_close($dbc);
+	if (!empty($user_un) && !empty($user_pw)){
+	    $salt = "egg";
+	    $user_pw = md5($salt.$user_pw);
+	    $user = User::loggedIn($user_un, $user_pw);
+	    $username = $user->getUsername();
+	    $status = $user->getStatus();
+	    $id = $user->getUserId();
+	    if ($status == '0'){
+		echo '<p class="error">Please confirm your account first.</p>';
+	    }
+	    else{
+		$_SESSION['username'] = $username;
+		setcookie('username', $username, time() + (60* 60 * 24 * 30));
+		//log action if db connects and user is logged in
+		User::insertLog($id, 3);
+	    }
         }
-      
-  else{
-      $error_msg = 'Sorry, you must enter a valid username and password.';
-      }
-     }
-  else{
-      $error_msg = 'Sorry, you must enter your username and password to login.';
-      }
-    
-  if (empty($_SESSION['username'])){
-     echo '<p class="error">' .$error_msg. '</p>';
-     
+	else{
+	    $error_msg = 'Sorry, you must enter your username and password to login.';
+	}
+    }
+    if (empty($_SESSION['username'])){
+     echo '<p class="error">' .$error_msg. '</p>'; 
 
 ?>
 

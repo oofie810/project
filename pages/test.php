@@ -34,6 +34,12 @@
     $foo = User::load_dynamic($data, $id);
     echo $foo->getUsername();
     echo $foo -> getLastName();
+    $db = new Database();
+    $sql = 'update user set status = 1 WHERE username = :id';
+    $params = array (':id' => 'ronald');
+    $db -> query($sql, $params);
+    $data = $db->getData();
+    var_dump($data);
   /* 
     $db = new Database();
 

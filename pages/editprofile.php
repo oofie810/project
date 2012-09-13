@@ -1,68 +1,61 @@
 <?php
 //edited 9/3/12 using user object 
-  $x = 'editprof';
-  session_start();
-  require_once('../lib/header.php');
-  require_once('../lib/appvars.php');
-  require_once('../lib/connectvars.php');
-  require_once ('../lib/functions.php');
-  require_once('../lib/database.php');
-  require_once('../lib/class.php');
+    $x = 'editprof';
+    session_start();
+    require_once('../lib/header.php');
+    require_once('../lib/appvars.php');
+    require_once('../lib/connectvars.php');
+    require_once ('../lib/functions.php');
+    require_once('../lib/database.php');
+    require_once('../lib/class.php');
 
-if(isset($_SESSION['username'])){ 
-  // Connect to the database
-  $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die ('Error ln 8:'.mysqli_error($dbc));
+    if(isset($_SESSION['username'])){ 
+	$username = $_SESSION['username'];
 
-  if (isset($_POST['submit'])) {
-    // Grab the profile data from the POST
-    $first_name = mysqli_real_escape_string($dbc, trim($_POST['firstname']));
-    $last_name = mysqli_real_escape_string($dbc, trim($_POST['lastname']));
-    $email = mysqli_real_escape_string($dbc, trim($_POST['email']));
-    $user_pic = mysqli_real_escape_string($dbc, trim($_FILES['picture']['name']));
-    $birthdate = mysqli_real_escape_string($dbc, trim($_POST['birthdate']));
-    $gender = mysqli_real_escape_string($dbc, trim($_POST['gender'])); 
+	if (isset($_POST['submit'])) {
+	    // Grab the profile data from the POST
+	    $first_name =$_POST['firstname'];
+	    $last_name =$_POST['lastname'];
+	    $email =$_POST['email'];
+	    $user_pic =$_FILES['picture']['name'];
+	    $birthdate =$_POST['birthdate'];
+	    $gender =$_POST['gender']; 
   
-    if(!empty($first_name) && !empty($last_name) && !empty($email)) {
-       if (check_email($email)){   
-	 if (!empty($user_pic)){
-            $target = UP_PATH . $user_pic;
-            if (move_uploaded_file($_FILES['picture']['tmp_name'], $target)){
-            $query = "UPDATE user SET first_name ='$first_name', last_name='$last_name', email='$email', image = '$user_pic', birthdate = '$birthdate', gender='$gender' WHERE username ='" .$_SESSION['username'] . "'";
-              }
-            }
-	else{
-	  $query ="UPDATE user SET first_name ='$first_name', last_name='$last_name', email='$email', birthdate = '$birthdate', gender='$gender' WHERE username = '" . $_SESSION['username'] ."'";
-            }
-	$connect = mysqli_query($dbc, $query) or die ('Error ln 32:'.mysqli_error($dbc));
-        
-       if($connect){
-        $ip = $_SERVER['REMOTE_ADDR'];
-        echo '<p>Your profile has been updated. Click <a href="viewprofile.php">here</a> to view your profile</p>';  
-         logaction($_SESSION['username'], 5, $ip);
-        
-      mysqli_close($dbc);
-      exit();
-	     }
-           }
-	else{
-	    echo '<p class="error">Please provide a valid email address.</p>';
+	    if(!empty($first_name) && !empty($last_name) && !empty($email)) {
+		if (check_email($email)){   
+		    //TODO figure out how to upload user pic. Dont know if class or PDO problem
+		    if (!empty($user_pic)){
+			$target = UP_PATH . $user_pic;
+			move_uploaded_file($_FILES['picture']['tmp_name'], $target);
+			    $update =User::updateProfPic($first_name, $last_name, $email, $user_pic, $birthdate, $gender, $username);
+			
+		    }
+		   /* else{
+			$update =User::updateProf($first_name, $last_name, $email, $birthdate, $gender, $username);
+		    }*/
+		    if($update){
+			echo '<p>Your profile has been updated. Click <a href="viewprofile.php">here</a> to view your profile</p>';  
+			$id = get_user_id_from_username($username);
+			User::insertLog($id, 5);
+			exit();
+		    }
+		}
+		else{
+		    echo '<p class="error">Please provide a valid email address.</p>';
+		}
 	    }
+	    else {
+		echo '<p class="error">Please provide the necessary information.</p>';
+            }	
 	}
-        else {
-	echo '<p class="error">Please provide the necessary information.</p>';
-             }	
-}
-else{
-    $id = $_SESSION['username'];
-    $user = User::load($id);
-   
-      $first_name = $user->getFirstName();;
-      $last_name = $user->getLastName();;
-      $email = $user->getEmail();
-      $gender = $user->getGender();  
-      $birthdate = $user->getBirthDate();
- 
-}
+	else{
+	    $user = User::load($username);
+	    $first_name = $user->getFirstName();;
+	    $last_name = $user->getLastName();;
+	    $email = $user->getEmail();
+	    $gender = $user->getGender();  
+	    $birthdate = $user->getBirthDate();
+	}
 ?>
 
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">

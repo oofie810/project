@@ -35,7 +35,8 @@
 		}
 		//execute the query
 		$this->stmt->execute();
-		
+	        $last = $this ->dbh->lastInsertId();
+		return $last;
 	    }
 	    catch (PDOException $exception_object){
 		var_dump ($exception_object);	
@@ -45,7 +46,23 @@
 	public function getData(){
 	    echo "fetch";
 	    return $this->stmt->fetch(PDO::FETCH_ASSOC);    
-	    
+	}
+
+	public function rowCount($sql, $param){
+	    $temp = array();
+	    $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	    $this->stmt = $this->dbh->prepare($sql);
+
+	    //bind parameters
+	    if(sizeof($param) > 0){
+		foreach ($param as $key=> $value){
+		    $temp[$key] = $value;
+		    $this->stmt->bindParam($key, $temp[$key], PDO::PARAM_STR);
+		}	
+	    }
+	    $this->stmt->execute();
+	    $rows = $this->stmt->rowCount();
+	    return $rows;
 	}
 
 	public function insert($sql, $param){
