@@ -4,8 +4,8 @@
   require_once('../lib/header.php');
   require_once('../lib/connectvars.php');
   require_once('../lib/functions.php');
-  require_once('../lib/database.php');
-  require_once('../lib/class.php');
+  require_once('../lib/Database.php');
+  require_once('../lib/User.php');
   $error_msg = "";
   
     if(isset($_POST['submit'])){
@@ -15,7 +15,7 @@
 	if (!empty($user_un) && !empty($user_pw)){
 	    $salt = "egg";
 	    $user_pw = md5($salt.$user_pw);
-	    $user = User::loggedIn($user_un, $user_pw);
+	    $user = User::login($user_un, $user_pw);
 	    $username = $user->getUsername();
 	    $status = $user->getStatus();
 	    $id = $user->getUserId();

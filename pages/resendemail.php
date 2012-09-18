@@ -1,8 +1,8 @@
 <?php
   $x = 'index'; 
   require_once('../lib/header.php');
-  require_once('../database.php');
-  require_once('../class.php');
+  require_once('../lib/Database.php');
+  require_once('../lib/User.php');
   require_once('../lib/functions.php');
   
   //get email from submit button

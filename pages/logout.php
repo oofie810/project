@@ -1,8 +1,8 @@
 <?php
   session_start();
   require_once ('../lib/functions.php');
-  require_once('../lib/database.php');
-  require_once('../lib/class.php');
+  require_once('../lib/Database.php');
+  require_once('../lib/User.php');
 
   //if user is logged in, delete the cookie and log them out
   if (isset($_SESSION['username'])){

@@ -3,8 +3,9 @@
     session_start();
     require_once ('../lib/connectvars.php');
     require_once ('../lib/header.php');
-    require_once ('../lib/database.php');
-    require_once ('../lib/class.php');
+    require_once ('../lib/Database.php');
+    require_once ('../lib/User.php');
+    require_once ('../lib/Recipe.php');
     
    // if(isset($_SESSION['username'])){
    /* try {
@@ -25,7 +26,6 @@
     } catch(PDOException $e){
 	echo 'ERROR: ' . $e->getMessage();
 	}
-*/
     echo "class";
     $id = $_SESSION['username'];
     echo $id;
@@ -40,6 +40,14 @@
     $db -> query($sql, $params);
     $data = $db->getData();
     var_dump($data);
+*/
+    $data = Recipe::loadAll();
+    $count = count($data);
+    foreach ($data as $row){
+	echo $row['rec_id'];
+	echo $row['rec_name'];
+	echo "\n\n";
+    }
   /* 
     $db = new Database();
 

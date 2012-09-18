@@ -3,8 +3,8 @@
    require_once('../lib/header.php');
    require_once('../lib/functions.php');
    require_once('../lib/connectvars.php');
-   require_once('../lib/database.php');
-   require_once('../lib/class.php');
+   require_once('../lib/Database.php');
+   require_once('../lib/User.php');
    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
    $passkey=$_GET['passkey'];

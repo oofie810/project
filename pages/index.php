@@ -3,7 +3,8 @@
   session_start(); 
   require_once('../lib/header.php');
   require_once('../lib/connectvars.php');
-
+  require_once('../lib/Database.php');
+  require_once('../lib/Recipe.php');
   $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
   if(isset($_SESSION['username'])){
@@ -14,9 +15,8 @@
     echo $_SERVER['REMOTE_ADDR'];
    }
 
-    
     //display recipes submitted
-    $query = "SELECT rec_name, rec_id, directions FROM recipe ORDER BY submission_date DESC";
+   /* $query = "SELECT rec_name, rec_id, directions FROM recipe ORDER BY submission_date DESC";
 
     $data =mysqli_query($dbc, $query) or die ('error ln 29: '.mysqli_error($dbc));
     
@@ -42,7 +42,16 @@
 	    echo '<p>' . substr($row['directions'], 0, 240) . '...</p><br />'; 
 	    }
        }
-
+*/
+    
+     $data = Recipe::loadAll();
+	foreach ($data as $row){
+	    echo '<ul>';
+	    echo '<li><a href="viewrecipe.php?rec_id='. $row['rec_id']. '">'.$row['rec_name'].'</a></li>';
+	    echo '</li>' .substr($row['directions'], 0, 230) . '...</li><br />';
+	    echo '</ul>';
+	 
+     }
 require_once('../lib/footer.php');
 ?>
 

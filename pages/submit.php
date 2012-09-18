@@ -1,4 +1,5 @@
 <?php
+    //$javascriptFiles = ["js/filename"] 
     $x = 'index';
     $y = 'js';
     session_start();

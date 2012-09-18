@@ -4,8 +4,8 @@
   require_once ('../lib/functions.php');
   require_once('../lib/connectvars.php');
   require_once('../lib/header.php');
-  require_once('../lib/database.php');
-  require_once('../lib/class.php');
+  require_once('../lib/Database.php');
+  require_once('../lib/User.php');
 
 if(isset($_SESSION['username'])){
     $user = $_SESSION['username'];
