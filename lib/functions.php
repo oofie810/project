@@ -2,8 +2,8 @@
 
   session_start();
   require_once ('connectvars.php');
-  require_once ('database.php');
-  require_once ('class.php');
+  require_once ('Database.php');
+  require_once ('User.php');
 
   function logaction($username, $action){
     $ip = $_SERVER['REMOTE_ADDR'];
