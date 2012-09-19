@@ -43,6 +43,14 @@
 	    var_dump($getAll);
 	    return $getAll;
 	}
-
+	public static function submitRecipe($recipeName, $directions, $user_id){
+	    $db = new Database();
+	    $sql = 'INSERT INTO recipe (rec_name, directions, submitted_by, submission_date) VALUES (:name, :directions, :user, NOW())';
+	    $params = array(':name'	   => $recipeName,
+			    ':directions'  => $directions,
+			    ':user'	   => $user_id);
+	    $rec_id = $db -> insert($sql, $params);
+	    return $rec_id;
+	}
     }
 ?>

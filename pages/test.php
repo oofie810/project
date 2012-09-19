@@ -25,29 +25,30 @@
 	    }
     } catch(PDOException $e){
 	echo 'ERROR: ' . $e->getMessage();
-	}
-    echo "class";
+*/    echo "class";
     $id = $_SESSION['username'];
-    echo $id;
     $data = 'username';
     echo $id;
+    $bar = User::load($id);
+    echo "username:";
+    echo $bar->getUsername();
     $foo = User::load_dynamic($data, $id);
+    echo "back to main";
     echo $foo->getUsername();
     echo $foo -> getLastName();
-    $db = new Database();
+ /*   $db = new Database();
     $sql = 'update user set status = 1 WHERE username = :id';
     $params = array (':id' => 'ronald');
     $db -> query($sql, $params);
     $data = $db->getData();
     var_dump($data);
 */
-    $data = Recipe::loadAll();
-    $count = count($data);
-    foreach ($data as $row){
-	echo $row['rec_id'];
-	echo $row['rec_name'];
-	echo "\n\n";
-    }
+ //   $data = Recipe::loadAll();
+   // $count = count($data);
+    //foreach ($data as $row){
+//	echo $row['rec_id'];
+//	echo $row['rec_name'];
+//	echo "\n\n";
   /* 
     $db = new Database();
 

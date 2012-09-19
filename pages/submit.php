@@ -6,6 +6,7 @@
     require_once('../lib/header.php');
     require_once('../lib/connectvars.php');
     require_once('../lib/functions.php');
+    require_once('../lib/Recipe.php');
 
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
@@ -26,20 +27,13 @@
         
 	//build query to insert recipe name, directions and ingredient count to recipe table
         $user_id = get_user_id_from_username($_SESSION['username']);
-	$query = "INSERT INTO recipe (rec_name, directions, submitted_by, submission_date) VALUES ('$recipe_name', '$directions','$user_id', NOW())";
-	$connect = mysqli_query($dbc, $query) or die('error ln 40: '.mysqli_error($dbc));
+	$rec_id = Recipe::submitRecipe($recipe_name, $directions, $user_id);
 	
 	//log the recipe submission - action 7 
-	if ($connect){
-	    $ip = $_SERVER['REMOTE_ADDR'];
-	    logaction($_SESSION['username'], 7, $ip);
-	    }
-	//get recipe id for insertion to rec_ing table with ingredients
-	$query = "SELECT rec_id FROM recipe WHERE rec_name = '$recipe_name'";
-	$data = mysqli_query($dbc, $query) or die('error ln 42: '.mysqli_error($dbc));
-	$row = mysqli_fetch_array ($data);
-	$rec_id = $row['rec_id'];
-	
+	#if ($connect){
+	 #   $ip = $_SERVER['REMOTE_ADDR'];
+	  #  logaction($_SESSION['username'], 7, $ip);
+	   # }
 	//insert ingredients to ingredients table
 	$length = count($ingredients);
 	for($i=0; $i < $length; $i++){
