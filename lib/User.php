@@ -16,62 +16,62 @@
 	    $this->setStatus($status);
 	    $this->setImage($pic);
 	}
-	public function setUserId($str){
-	    $this->user_id= $str;
+	public function setUserId($id){
+	    $this->user_id= $id;
 	}
 	public function getUserId(){
 	    return $this->user_id;    
 	}
-	public function setUsername($str) {
-	    $this->username = $str;
+	public function setUsername($username) {
+	    $this->username = $username;
 	}
 	public function getUsername(){
 	    return $this->username;    
 	}
-	public function setPassword($str){
-	    $this->password = $str;    
+	public function setPassword($pass){
+	    $this->password = $pass;    
 	}
 	public function getPassword(){
 	    return $this->password;    
 	}
-	public function setEmail($str){
-	    $this->email = $str;    
+	public function setEmail($email){
+	    $this->email = $email;    
 	}
 	public function getEmail(){
 	    return $this->email;    
 	}
-	public function setFirstName($str){
-	    $this->first_name = $str;    
+	public function setFirstName($fName){
+	    $this->first_name = $fName;    
 	}	
 	public function getFirstName(){
 	    return $this->first_name;    
 	}
-	public function setLastName($str){
-	    $this->last_name = $str;    
+	public function setLastName($lName){
+	    $this->last_name = $lName;    
 	}
 	public function getLastName(){
 	    return $this->last_name;    
 	}
-	public function setBirthDate($str){
-	    $this->birthdate = $str;    
+	public function setBirthDate($date){
+	    $this->birthdate = $date;    
 	}
 	public function getBirthDate(){
 	    return $this-> birthdate;    
 	}
-	public function setGender($str){
-	    $this->gender = $str;    
+	public function setGender($gender){
+	    $this->gender = $gender;    
 	}
 	public function getGender(){
 	    return $this->gender;    
 	}
-	public function setStatus($str){
-	    $this->status = $str;    
+	public function setStatus($status){
+	    $this->status = $status;    
 	}
 	public function getStatus(){
 	    return $this->status;    
 	}	
-	public function setImage($str){
-	    $this->image = $str;   
+	public function setImage($img){
+	    $this->image = $img;   
 	}
 	public function getImage(){
 	    return $this->image;    
@@ -87,24 +87,23 @@
 	    $db -> query ($sql, $params);
 
 	    $row = $db -> getData();
-	    #var_dump($row);
+	    var_dump($row);
 	    $user = new User($row['user_id'], $row['username'], $row['password'], $row['email'], $row['first_name'], $row['last_name'], $row['birthdate'], $row['gender'], $row['status'], $row['image']);
 	    return $user;
 	}
 
 	public static function load_dynamic($column, $data2){
 	    $db = new Database();
-	    $columnName = $column;
 	    // FUTURE: $row = DB::query($sql, $params);
-	    $sql = 'SELECT * FROM user WHERE ' .$columnName.' = :data';
+	    $sql = 'SELECT * FROM user WHERE '.$column.' = :data';
 
-	    $params = array (':data' => $data2);
+	    $params = array (':data' 	=> $data2);
 
 	    $db -> query ($sql, $params);
 
 	    $row = $db -> getData();
 	    $user = new User($row['user_id'], $row['username'], $row['password'], $row['email'], $row['first_name'], $row['last_name'], $row['birthdate'], $row['gender'], $row['status'], $row['image']);
-	    #var_dump($row);
+	    var_dump($row);
 	    return $user;
 	}
 
