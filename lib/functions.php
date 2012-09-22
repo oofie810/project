@@ -1,17 +1,17 @@
 <?php
 
-  session_start();
   require_once ('connectvars.php');
   require_once ('Database.php');
   require_once ('User.php');
+  require_once ('LogAction.php');
 
-  function logaction($username, $action){
+/*  function logaction($username, $action){
     $ip = $_SERVER['REMOTE_ADDR'];
     $user = User::load($username);
     $id = $user -> getUserId();
-    User::insertLog($id, $action, $ip); 
+    LogAction::insertLog($id, $action, $ip); 
   }
-
+*/
   function get_user_id_from_email($email){
       $dbc=mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die('error in funtion'.mysqli_error($dbc));     
  

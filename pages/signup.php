@@ -4,6 +4,7 @@ require_once('../lib/functions.php');
 require_once('../lib/header.php');
 require_once('../lib/Database.php');
 require_once('../lib/User.php');
+require_once('../lib/LogAction.php');
 
     if (isset($_POST['submit'])){
 	$username = $_POST['username'];
@@ -24,7 +25,7 @@ require_once('../lib/User.php');
 		    $pass = md5($salt.$pass);
 
 		    $id = User::insertNewUser($username, $pass, $code, $email);
-		    User::insertLog($id, 1);
+		    LogAction::insertLog($id, 1);
 			if($id){
 			    $sent= send_email($email, $code);
 

@@ -40,7 +40,6 @@
 	    $params = array();
 	    $db -> query($sql, $params);
 	    $getAll = $db->getAll();
-	    var_dump($getAll);
 	    return $getAll;
 	}
 	public static function submitRecipe($recipeName, $directions, $user_id){

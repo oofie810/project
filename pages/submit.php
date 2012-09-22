@@ -2,11 +2,12 @@
     //$javascriptFiles = ["js/filename"] 
     $x = 'index';
     $y = 'js';
-    session_start();
     require_once('../lib/header.php');
     require_once('../lib/connectvars.php');
     require_once('../lib/functions.php');
     require_once('../lib/Recipe.php');
+    require_once('../lib/LogAction.php');
+    require_once('../lib/Ingredient.php');
 
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
@@ -23,17 +24,15 @@
 	$id_array = array();
 	
 	if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
-//	$clean = preg_replace('/[\r\n | \r | \n | \n\r]/', ' ', $ingredients);
         
 	//build query to insert recipe name, directions and ingredient count to recipe table
         $user_id = get_user_id_from_username($_SESSION['username']);
 	$rec_id = Recipe::submitRecipe($recipe_name, $directions, $user_id);
 	
 	//log the recipe submission - action 7 
-	#if ($connect){
-	 #   $ip = $_SERVER['REMOTE_ADDR'];
-	  #  logaction($_SESSION['username'], 7, $ip);
-	   # }
+	$userId =get_user_id_from_username($_SESSION['username']);
+	LogAction::insertLog($userId, 7);
+	
 	//insert ingredients to ingredients table
 	$length = count($ingredients);
 	for($i=0; $i < $length; $i++){
@@ -43,20 +42,11 @@
 	    $unit = $unit_id[$i]; 
 
 	    //check to see if ingredient is in the ingredients table already
-	    $query = "SELECT ingr_id FROM ingredients WHERE ingredient = '$ingr'";
-	    $data = mysqli_query ($dbc, $query) or die ('error ln 51:'.mysqli_error($dbc));
+	    $ingrExists = Ingredient::ifExists($ingr);
 	    
 	    //if it doesnt exist in table, insert ingredient. 
-	    if (mysqli_num_rows($data) == 0){
-		$query = "INSERT INTO ingredients (ingredient) VALUES ('$ingr')";
-		mysqli_query ($dbc, $query) or die ('error ln 53:'.mysqli_error($dbc));
-    
-		//get ingredient id after inserting. 
-		$query = "SELECT ingr_id FROM ingredients WHERE ingredient = '$ingr'";
-		$data2 = mysqli_query ($dbc, $query) or die ('error ln 57: '.mysqli_error($dbc));
-		$row = mysqli_fetch_array ($data2);
-		$ingr_id = $row['ingr_id'];
-
+	    if (!$ingrExists){
+		$ingr_id = Ingredient::insertIngredient($ingr);
 		//insert into rec_ing table together with rec_id, ingr_id and amount
 		$query = "INSERT INTO rec_ing (rec_id, ingr_id, amount, units) VALUES ($rec_id, $ingr_id, '$amt', $unit)";
 		mysqli_query ($dbc, $query) or die ('error ln 63: '.mysqli_error($dbc));
@@ -64,11 +54,9 @@
 	    else{
 		//get ingr_id for ingredient and insert into rec_ing. no need to insert into ingredient
 		//table since ingredient exists already
-		$row = mysqli_fetch_array($data);
-		$ingr_id = $row['ingr_id'];
 
 		//since ingredient exists already, just add them to the rec_ing table
-		$query = "INSERT INTO rec_ing (rec_id, ingr_id, amount, units) VALUES ($rec_id, $ingr_id, '$amt', $unit)";
+		$query = "INSERT INTO rec_ing (rec_id, ingr_id, amount, units) VALUES ($rec_id, $ingrExists, '$amt', $unit)";
 		mysqli_query($dbc, $query) or die ('error ln 71: '.mysqli_error($dbc));
 
 	    }

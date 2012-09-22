@@ -16,21 +16,24 @@
 	<?php } 
 	  if ($y == 'js'){   ?>
 	<script language="javascript" src="scripts/scripts.js"></script>
-	<?php }		?>
+	<?php } 	?>
     </head>
     <body>
 	<div id="header">
 	  <?php
-	    if(isset($_SESSION['username'])){
-		echo '<a class="abc" href="http://54.245.125.72">HOME</a>';
-		echo '<a class="linkright" href="logout.php">LogOut</a>';
-		echo '<a class="linkright" href="viewprofile.php">'.$_SESSION['username'].'</a>';
+	    if(session_id() == ''){
+		session_start();
+		if(isset($_SESSION['username'])){
+		    echo '<a class="abc" href="http://192.168.1.103">HOME</a>';
+		    echo '<a class="linkright" href="logout.php">LogOut</a>';
+		    echo '<a class="linkright" href="viewprofile.php">'.$_SESSION['username'].'</a>';
 		}
-	    else{
-		echo '<a class="abc" href="http://54.245.125.72">HOME</a>';
-		echo '<a class="linkright" href="signup.php">Sign Up</a>';
-		echo '<a class="linkright" href="login.php">Log In</a>';
+		else{
+		    echo '<a class="abc" href="http://192.168.1.103">HOME</a>';
+		    echo '<a class="linkright" href="signup.php">Sign Up</a>';
+		    echo '<a class="linkright" href="login.php">Log In</a>';
 		}
-	    ?>
+	    }
+	?>
 	 </div>
     

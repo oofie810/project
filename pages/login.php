@@ -1,11 +1,12 @@
 <?php
   $x = 'index';
-  session_start();
   require_once('../lib/header.php');
   require_once('../lib/connectvars.php');
   require_once('../lib/functions.php');
   require_once('../lib/Database.php');
   require_once('../lib/User.php');
+  require_once('../lib/LogAction.php');
+
   $error_msg = "";
   
     if(isset($_POST['submit'])){
@@ -26,7 +27,7 @@
 		$_SESSION['username'] = $username;
 		setcookie('username', $username, time() + (60* 60 * 24 * 30));
 		//log action if db connects and user is logged in
-		User::insertLog($id, 3);
+		LogAction::insertLog($id, 3);
 	    }
         }
 	else{

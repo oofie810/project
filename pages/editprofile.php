@@ -1,13 +1,13 @@
 <?php
 //edited 9/3/12 using user object 
     $x = 'editprof';
-    session_start();
     require_once('../lib/header.php');
     require_once('../lib/appvars.php');
     require_once('../lib/connectvars.php');
-    require_once ('../lib/functions.php');
+    require_once('../lib/functions.php');
     require_once('../lib/Database.php');
     require_once('../lib/User.php');
+    require_once('../lib/LogAction.php');
 
     if(isset($_SESSION['username'])){ 
 	$username = $_SESSION['username'];
@@ -36,7 +36,7 @@
 		    if($update){
 			echo '<p>Your profile has been updated. Click <a href="viewprofile.php">here</a> to view your profile</p>';  
 			$id = get_user_id_from_username($username);
-			User::insertLog($id, 5);
+			LogAction::insertLog($id, 5);
 			exit();
 		    }
 		}

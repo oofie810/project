@@ -1,12 +1,11 @@
 <?php
     $x = 'index';
-    session_start();
     require_once ('../lib/connectvars.php');
     require_once ('../lib/header.php');
     require_once ('../lib/Database.php');
     require_once ('../lib/User.php');
     require_once ('../lib/Recipe.php');
-    
+    require_once ('../lib/Ingredient.php');
    // if(isset($_SESSION['username'])){
    /* try {
 
@@ -25,17 +24,26 @@
 	    }
     } catch(PDOException $e){
 	echo 'ERROR: ' . $e->getMessage();
-*/    echo "class";
-    $id = $_SESSION['username'];
-    $data = 'username';
-    echo $id;
-    $bar = User::load($id);
-    echo "username:";
-    echo $bar->getUsername();
-    $foo = User::load_dynamic($data, $id);
-    echo "back to main";
-    echo $foo->getUsername();
-    echo $foo -> getLastName();
+*/   # echo "class";
+    #$id = $_SESSION['username'];
+   # $data = 'username';
+   # echo $id;
+   # $bar = User::load($id);
+   # echo "username:";
+   # echo $bar->getUsername();
+   # $foo = User::load_dynamic($data, $id);
+    #echo "back to main";
+    #echo $foo->getUsername();
+    #echo $foo -> getLastName();
+    $ip = $_SERVER['PHP_SELF'];
+    echo $ip;
+    $rec = '101';
+    $array = Ingredient::loadAllIngr($rec);
+    #var_dump($array);
+    foreach($array as $key=>$array){
+	echo "<br />";
+	echo $array -> getIngredient();	
+    }
  /*   $db = new Database();
     $sql = 'update user set status = 1 WHERE username = :id';
     $params = array (':id' => 'ronald');

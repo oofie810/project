@@ -1,6 +1,5 @@
 <?php
   $x = 'index';
-  session_start(); 
   require_once('../lib/header.php');
   require_once('../lib/connectvars.php');
   require_once('../lib/Database.php');
