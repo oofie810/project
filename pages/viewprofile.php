@@ -1,6 +1,6 @@
 <?php
     //edited 9/3/12 using user object
-    $x = 'index';
+    $css_files=array('index.css');
     require_once('../lib/connectvars.php');
     require_once('../lib/appvars.php');
     require_once('../lib/header.php');

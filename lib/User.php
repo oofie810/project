@@ -14,7 +14,7 @@
 	    $this->setBirthDate($birthdate);
 	    $this->setGender($gender);
 	    $this->setStatus($status);
-	    $this->setImage($pic);
+	    $this->setImage($image);
 	}
 	public function setUserId($id){
 	    $this->user_id= $id;
@@ -78,72 +78,55 @@
 	}
 	
 	public static function load($username){
-	    $db = new Database();
-	    // FUTURE: $row = DB::query($sql, $params);
 	    $sql = 'SELECT * FROM user WHERE username = :username';
 
 	    $params = array (':username' => $username);
 
-	    $db -> query ($sql, $params);
-
-	    $row = $db -> getData();
-	    var_dump($row);
-	    $user = new User($row['user_id'], $row['username'], $row['password'], $row['email'], $row['first_name'], $row['last_name'], $row['birthdate'], $row['gender'], $row['status'], $row['image']);
+	    $data = Database::getData($sql, $params);
+	    $user = new User($data['user_id'], $data['username'], $data['password'], $data['email'], $data['first_name'], $data['last_name'], $data['birthdate'], $data['gender'], $data['status'], $data['image']);
 	    return $user;
 	}
 
 	public static function load_dynamic($column, $data2){
-	    $db = new Database();
-	    // FUTURE: $row = DB::query($sql, $params);
 	    $sql = 'SELECT * FROM user WHERE '.$column.' = :data';
 
 	    $params = array (':data' 	=> $data2);
 
-	    $db -> query ($sql, $params);
-
-	    $row = $db -> getData();
-	    $user = new User($row['user_id'], $row['username'], $row['password'], $row['email'], $row['first_name'], $row['last_name'], $row['birthdate'], $row['gender'], $row['status'], $row['image']);
-	    var_dump($row);
+	    $data = Database::getData($sql, $params);
+	    $user = new User($data['user_id'], $data['username'], $data['password'], $data['email'], $data['first_name'], $data['last_name'], $data['birthdate'], $data['gender'], $data['status'], $data['image']);
 	    return $user;
 	}
 
 	public static function insertNewUser($username, $pass, $code, $email){
-	    $db = new Database();
 	    $sql = 'INSERT INTO user (username, password, email) VALUES (:user, :pass, :email)';
 	    $params = array(':user'  => $username,
 			    ':pass'  => $pass,
 			    ':email' => $email);
-	    $id = $db -> insert($sql, $params);
+	    $id = Database::insert($sql, $params);
 	    
 	    writePasskey($code, $id);
 	    return true;
 	}
 
 	public static function ifExists($username, $email){
-	    $db = new Database();
 	    $sql = 'SELECT * FROM user WHERE username = :user OR email = :email';
 	    $params = array (':user'   => $username,
 			     ':email'  => $email);
 
-	    $db -> query ($sql, $params);
-
-	    $result = $db -> getData();
+	    $result = Database::getData($sql, $params);
 	    return $result;
 	}	
 
+	//TODO fix this function. incomplete
 	public static function confirmUser($pass){
-	    $db = new Database();
 	    $sql = 'SELECT user_id FROM passkey WHERE passkey = :pass';
 	    $params = array(':pass'	=> $pass);
-	    $db -> query($sql, $params);
-	    $data = $db->getData();
-	    $count = $db -> rowCount($sql, $params);
-	    if ($count == 1){
+	    $data = Database::getData($sql, $params);
+	    if ($data){
 		$sql = 'UPDATE user SET status = 1 WHERE user_id IN (SELECT t.user_id FROM passkey t WHERE t.passkey = :pass)';
 		$params = array (':pass' => $pass);
-		$db -> query ($sql, $params);
-
-		//get user
+		Database::update($sql, $params);
+		//delete passkey after status is updated
 	    }
 	    else{
 		return false;	
@@ -151,15 +134,13 @@
 	}
 
 	public static function login($username, $password){
-	    $db = new Database();
 	    $sql = 'SELECT * FROM user WHERE username = :user AND password = :pass';
 	    $params = array(':user'  => $username,
 			    ':pass'  => $password);
 
-	    $count = $db -> rowCount ($sql, $params);
-	    if($count == 1){
-		$row = $db -> getData();
-		$user = new User($row['user_id'], $row['username'], $row['password'], $row['email'], $row['first_name'], $row['last_name'], $row['birthdate'], $row['gender'], $row['status']);
+	    $data = Database::getData($sql, $params);
+	    if($data){
+		$user = new User($data['user_id'], $data['username'], $data['password'], $data['email'], $data['first_name'], $data['last_name'], $data['birthdate'], $data['gender'], $data['status'], $data['image']);
 		return $user;
 	    }
 	    else{
@@ -171,19 +152,18 @@
 	    $salt = "egg";
 	    $oldPass = md5($salt.$oldPass);
 	    $newPass = md5($salt.$newPass);
-	    $db = new Database();
 	    
 	    //check if old password is valid and is used by the user
 	    $sql = 'SELECT user_id FROM user WHERE username = :user AND password = :oldPass';
 	    $params = array(':user'	=> $user,
 			    ':oldPass'	=> $oldPass);
-	    $count = $db->rowCount($sql, $params);
-	    if ($count == 1){
+	    $data = Database::getData($sql, $params);
+	    if ($data){
 		$sql = 'UPDATE user SET password = :newPass WHERE password = :oldPass AND username = :user';
 		$params = array(':newPass' => $newPass,
 			    ':oldPass' => $oldPass,
 			    ':user'    => $user);
-		$db -> query($sql, $params);
+		Database::query($sql, $params);
 		return true;
 	    }
 	    else{
@@ -192,7 +172,6 @@
 	}
 
 	public static function updateProfPic($first, $last, $email, $pic, $bday, $gender, $username){
-	    $db = new Database();
 	    $sql = 'UPDATE user SET first_name = :first, last_name = :last, email = :email, image = :pic, birthdate = :bday, gender = :gender WHERE username = :user';
 	    $params = array(':first'	=> $first,
 			    ':last' 	=> $last,
@@ -201,12 +180,11 @@
 			    ':bday'	=> $bday,
 			    ':gender'	=> $gender,
 			    ':user'	=> $username);
-	    $db -> query($sql, $params);
+	    Database::update($sql, $params);
 	    return true;
 	}
 
 	public static function updateProf($first, $last, $email, $bday, $gender, $username){
-	    $db = new Database();
 	    $sql = 'UPDATE user SET first_name = :first, last_name = :last, email = :email, birthdate = :bday, gender = :gender WHERE username = :user';
 
 	    $params = array(':first'	=> $first,
@@ -215,7 +193,7 @@
 			    ':bday'	=> $bday,
 			    ':gender'	=> $gender,
 			    ':user'	=> $username);
-	    $db -> query($sql, $params);
+	    Database::update($sql, $params);
 	    return true;
 	}
 
@@ -224,7 +202,7 @@
 	    $sql = 'INSERT INTO passkey(passkey, user_id, date_created) VALUES (:pass, :user, NOW())';
 	    $params = array(':pass'	=> $passkey,
 			    ':user'	=> $user);
-	    $db -> query($sql, $params);
+	    Database::insert($sql, $params);
 	    return true;
 	}
 }

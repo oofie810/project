@@ -35,25 +35,19 @@
 	}
 	
 	public static function loadIngredient($recipeId){
-	    $db = new Database();
-
 	    $sql = 'SELECT ingredients.ingredient, rec_ing.amount, rec_ing.units, units.units FROM rec_ing INNER JOIN ingredients ON (rec_ing.ingr_id = ingredients.ingr_id) INNER JOIN units ON (rec_ing.units = units.id) WHERE rec_ing.rec_id = :recipeId';
 
 	    $params = array(':recipeId' =>  $recipeId);
 
-	    $db -> query ($sql, $params);
-	    $data = $db -> getData();
+	    $data = Database::getData($sql, $params);
 	    $ingr = new Ingredient($data['ingr_id'], $data['ingredient'], $data['amount'], $data['units']);
 	    var_dump($data);
 	    return $ingr;
 	}
 	public static function loadAllIngr($recipeId){
-	    $db = new Database();
-		    
 	    $sql = 'SELECT ingredients.ingredient, rec_ing.amount, rec_ing.units, units.units FROM rec_ing INNER JOIN ingredients ON (rec_ing.ingr_id = ingredients.ingr_id) INNER JOIN units ON (rec_ing.units = units.id) WHERE rec_ing.rec_id = :recipeId';
 	    $params = array (':recipeId' => $recipeId);
-	    $db -> query($sql, $params);
-	    $data = $db->getAll();
+	    $data = Database::getAll($sql, $params);
 	    foreach($data as $key=>$data){
 		$ingr = new Ingredient($data['ingr_id'], $data['ingredient'], $data['amount'], $data['units']);
 		$array[] = $ingr;
@@ -62,20 +56,17 @@
 	}
 
 	public static function ifExists($ingr){
-	    $db = new Database();
 	    $sql = 'SELECT ingr_id FROM ingredients WHERE ingredient = :ingr';
 	    $params = array(':ingr' => $ingr);
-	    $db -> query($sql, $params);
-	    $result = $db->getData();
+	    $result = Database::getData($sql, $params);
 	    $ingr_id = $result['ingr_id'];
 	    return $ingr_id;
 	}
 	
 	public static function insertIngredient($ingr){
-	    $db = new Database();
 	    $sql = 'INSERT INTO ingredients (ingredient) VALUES (:ingr)';
 	    $params = array (':ingr' => $ingr);
-	    $id = $db -> insert($sql, $params);
+	    $id = Database::insert($sql, $params);
 
 	    return $id;
 	}

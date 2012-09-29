@@ -1,4 +1,5 @@
 <?php
+  $x = 'index';
   require_once('../lib/header.php');
   require_once ('../lib/functions.php');
   require_once('../lib/Database.php');

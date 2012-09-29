@@ -5,18 +5,16 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<title>Recipes</title>
 	<?php
-	  if ($x == 'index'){ ?>
-	<link rel="stylesheet" type="text/css" href="css/index.css" />
-	
-	<?php }
-	  if ($x == 'editprof'){  ?>
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-	<link rel="stylesheet" type="text/css" href="css/editprof.css" />
-	
-	<?php } 
-	  if ($y == 'js'){   ?>
-	<script language="javascript" src="scripts/scripts.js"></script>
-	<?php } 	?>
+	  if (!empty($css_files)){
+	    foreach($css_files as $css_file){
+		echo '<link rel="stylesheet" type="text/css" href="css/'.$css_file.'" />';
+	    }
+	  }
+	  if(!empty($js_files)){
+	    foreach($js_files as $js_file){
+		echo '<script language="javascript" src="scripts/'.$js_file.'"></script>';
+	    }    
+	  }?>
     </head>
     <body>
 	<div id="header">

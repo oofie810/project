@@ -44,6 +44,11 @@
 	echo "<br />";
 	echo $array -> getIngredient();	
     }
+    $id = $_SESSION['username'];
+    $sql = 'select * from user where username = :id';
+    $params = array (':id' => $id);
+    $count = Database::rowCount($sql, $params);
+    echo $count;
  /*   $db = new Database();
     $sql = 'update user set status = 1 WHERE username = :id';
     $params = array (':id' => 'ronald');
