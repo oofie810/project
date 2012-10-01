@@ -1,7 +1,7 @@
 <?php
     //$javascriptFiles = ["js/filename"] 
-    $x = 'index';
-    $y = 'js';
+    $css_files = array('index.css');
+    $js_files = array('scripts.js');
     require_once('../lib/header.php');
     require_once('../lib/connectvars.php');
     require_once('../lib/functions.php');
@@ -23,16 +23,18 @@
 	$unit_array = array();
 	$id_array = array();
 	
+	$salt = new Ingredient('1', 'salt', '3', '3');
+	$pepper = new Ingredient('2', 'pepper', '3', '3');
 	if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
         
 	//build query to insert recipe name, directions and ingredient count to recipe table
         $user_id = get_user_id_from_username($_SESSION['username']);
-	$rec_id = Recipe::submitRecipe($recipe_name, $directions, $user_id);
+	Recipe::submitRecipe($recipe_name, $directions, $user_id, array($salt, $pepper));
 	
 	//log the recipe submission - action 7 
 	$userId =get_user_id_from_username($_SESSION['username']);
 	LogAction::insertLog($userId, 7);
-	
+/*	
 	//insert ingredients to ingredients table
 	$length = count($ingredients);
 	for($i=0; $i < $length; $i++){
@@ -62,7 +64,8 @@
 	    }
 	  }
 	mysqli_close($dbc);
-	$url = 'http://192.168.1.103/index.php';
+	*/
+	$url = '/';
 	header('Location: ' . $url);
 	}
      else {

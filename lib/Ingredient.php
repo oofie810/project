@@ -44,6 +44,7 @@
 	    var_dump($data);
 	    return $ingr;
 	}
+
 	public static function loadAllIngr($recipeId){
 	    $sql = 'SELECT ingredients.ingredient, rec_ing.amount, rec_ing.units, units.units FROM rec_ing INNER JOIN ingredients ON (rec_ing.ingr_id = ingredients.ingr_id) INNER JOIN units ON (rec_ing.units = units.id) WHERE rec_ing.rec_id = :recipeId';
 	    $params = array (':recipeId' => $recipeId);
@@ -55,6 +56,23 @@
 	    return $array;
 	}
 
+	public static function loadIngredientsByName($ingredient_names){
+	    $questionMarkArray = implode(',', array_fill(0, count($ingredient_names), '?'));
+
+	    $sql = 'SELECT * FROM ingredients WHERE ingredient IN (' . $questionMarkArray . ')';
+	    $ingredient_found = Database::getData($sql, $ingredient_names, 'query_array');
+	    if(empty($ingredient_found)){
+		return array();
+	    } else{
+		$ingredients_array = array();
+		foreach($ingredient_found as $ingredient){
+		      $ingredients_array[] = new Ingredient($ingredient['ingr_id'], $ingredient['ingredient'], $ingredient['amount'], $ingredient['units']);
+		}
+		return $ingredients_array;
+	    }
+	
+	}
+
 	public static function ifExists($ingr){
 	    $sql = 'SELECT ingr_id FROM ingredients WHERE ingredient = :ingr';
 	    $params = array(':ingr' => $ingr);
@@ -62,14 +80,18 @@
 	    $ingr_id = $result['ingr_id'];
 	    return $ingr_id;
 	}
-	
-	public static function insertIngredient($ingr){
-	    $sql = 'INSERT INTO ingredients (ingredient) VALUES (:ingr)';
-	    $params = array (':ingr' => $ingr);
-	    $id = Database::insert($sql, $params);
 
-	    return $id;
+	public static function insertMultipleIngredients($ingredients){
+	    $names = array();
+	    foreach($ingredients as $ingredient){
+		$names[] = $ingredient->getIngredient();
+	    }
+	    $questionMarkArray = implode(',', array_fill(0, count($ingredients), '(?)'));
+	    $sql = 'INSERT INTO ingredients (ingredient) VALUES ' . $questionMarkArray; 
+	    
+	    Database::bulkInsert($sql, $names);
 	}
+
 
     }
 

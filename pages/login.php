@@ -1,5 +1,5 @@
 <?php
-  $x = 'index';
+  $css_files = array('index.css');
   require_once('../lib/header.php');
   require_once('../lib/connectvars.php');
   require_once('../lib/functions.php');

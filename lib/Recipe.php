@@ -21,7 +21,7 @@
 	    return $this->directions;    
 	}
 	
-	public function setIngredients($ingrdients){
+	public function setIngredients($ingredients){
 	    $this->ingredients = $ingredients;    
 	}
 	public function getIngredients(){
@@ -46,13 +46,43 @@
 	    $getAll = Database::getAll($sql, $params);
 	    return $getAll;
 	}
-	public static function submitRecipe($recipeName, $directions, $user_id){
+	//TODO complete this function to write into the table if ingredient is found or not
+	public static function submitRecipe($recipeName, $directions, $user_id, $ingredients){
+	    $ing = array();
+	    foreach($ingredients as $ingredient){
+		$ing[] = $ingredient->getIngredient();
+	    }
+	    $ingredient_found = Ingredient::loadIngredientsByName($ing);
+	    if (empty($ingredient_found)){
+		Ingredient::insertMultipleIngredients($ingredients);	
+		$ingredient_found = Ingredient::loadIngredientsByName($ing);
+	    } 
 	    $sql = 'INSERT INTO recipe (rec_name, directions, submitted_by, submission_date) VALUES (:name, :directions, :user, NOW())';
 	    $params = array(':name'	   => $recipeName,
 			    ':directions'  => $directions,
 			    ':user'	   => $user_id);
 	    $rec_id = Database::insert($sql, $params);
+	    self::updateMergeTable($rec_id, $ingredients);
 	    return $rec_id;
 	}
+	
+	private static function updateMergeTable($recipeId, $ingredients){
+	    $questionMarkArray = '';
+	    $i = array();
+	    foreach($ingredients as $ingredient){
+		$i[] = $recipeId;
+		$i[] = $ingredient->getIngrId();
+		$i[] = $ingredient->getAmount();
+		$i[] = $ingredient->getUnit();
+		$questionMarkArray .= '(?, ?, ?, ?),';
+	    }
+	    $questionMarkArray = trim($questionMarkArray, ',');
+
+	    $sql = "INSERT INTO rec_ing (rec_id, ingr_id, amount, units) VALUES " . $questionMarkArray;    
+	    
+	    Database::bulkInsert($sql, $i);
+	
+	}
     }
+
 ?>

@@ -41,19 +41,48 @@
 		$this->stmt->execute();
 	    }
 	    catch (PDOException $exception_object){
-		var_dump ($exception_object);	
+		error_log(var_export($exception_object, true));	
 	    }
 	}
 
-	public static function getData($sql, $params){
+	private function query_array($sql, $params){
+	    try{
+		$this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+		$this->stmt = $this->dbh->prepare($sql);
+
+		//bind parameters
+		if (sizeof($params) > 0){
+		    // bindvalue is 1-indexed, so $k+1
+		    foreach ($params as $k => $value){
+			$this->stmt->bindValue(($k+1), $value);
+		    }
+		}
+		//execute the query
+		$this->stmt->execute();
+	    }
+	    catch (PDOException $exception_object){
+		error_log(var_export($exception_object, true));	
+	    }
+	}
+
+	public static function getData($sql, $params, $query_type='query'){
 	    $db = Database::getInstance();
-	    $db-> query($sql, $params);
+	    if($query_type == 'query'){
+		$db-> query($sql, $params);
+	    } else if($query_type=='query_array'){
+		$db->query_array($sql, $params);	
+	    }
 	    return $db->stmt->fetch(PDO::FETCH_ASSOC);    
 	}
 
-	public static function getAll($sql, $params){
+	public static function getAll($sql, $params, $query_type='query'){
 	    $db = Database::getInstance();
-	    $db-> query ($sql, $params);
+	    if($query_type== 'query'){
+		$db-> query ($sql, $params);
+	    } else if($query_type == 'query_array'){
+		$db->query_array($sql, $params);	
+	    }
 	    return $db->stmt->fetchAll(PDO::FETCH_ASSOC);    
 	}
 
@@ -72,6 +101,12 @@
 	    $db = Database::getInstance();
 	    $db -> query($sql, $params);
 	    return $db->dbh->lastInsertId();
+	}	
+
+	public static function bulkInsert($sql, $params){
+	    $db = Database::getInstance();
+
+	    $db -> query_array($sql, $params);
 	}	
 }
 
