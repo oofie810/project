@@ -10,11 +10,10 @@
 	$recipeId = $_GET['rec_id'];
 
 	$recipe = Recipe::loadRecipe($recipeId);
-	error_log(print_r($recipe, true));
 	echo '<table>';
 	echo '<tr><td>Recipe:</td><td>' . $recipe->getRecipeName() . '</td></tr>';
 	echo '<tr><td>Ingredients:</td><td>'; 
-	foreach($recipe as $ingr){
+	foreach($recipe->getIngredients() as $ingr){
 	    echo $ingr->getAmount() . ' ' . $ingr->getUnit() . ' ' . $ingr->getIngredient() . '<br />';    
 	}
 	echo '<tr><td>Directions:</td><td> ' . $recipe->getDirections() .'</td></tr>';
