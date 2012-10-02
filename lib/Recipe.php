@@ -34,6 +34,7 @@
 	    $params = array (':id' => $recipeId);
 
 	    $data = Database::getAll($sql, $params);
+	    error_log(print_r($data, true));
 	    $recipe = new Recipe($data['rec_name'], $data['directions']);
 	
 	    return $recipe;
@@ -46,8 +47,8 @@
 	    $getAll = Database::getAll($sql, $params);
 	    return $getAll;
 	}
-	//TODO complete this function to write into the table if ingredient is found or not
-	public static function submitRecipe($recipeName, $directions, $user_id, $ingredients){
+
+	public static function submitRecipe($recipeName, $directions, $userId, $ingredients){
 	    $ing = array();
 	    foreach($ingredients as $ingredient){
 		$ing[] = $ingredient->getIngredient();
@@ -60,9 +61,10 @@
 	    $sql = 'INSERT INTO recipe (rec_name, directions, submitted_by, submission_date) VALUES (:name, :directions, :user, NOW())';
 	    $params = array(':name'	   => $recipeName,
 			    ':directions'  => $directions,
-			    ':user'	   => $user_id);
+			    ':user'	   => $userId);
 	    $rec_id = Database::insert($sql, $params);
 	    self::updateMergeTable($rec_id, $ingredients);
+	    LogAction::insertLog($userId, 7);
 	    return $rec_id;
 	}
 	

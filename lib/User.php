@@ -1,11 +1,13 @@
 <?php
+    require_once('LogAction.php');
+    require_once('Database.php');
     class User{
     
-    private $user_id, $username, $password, $email;
+    private $userId, $username, $password, $email;
     private $first_name, $last_name, $birthdate, $gender, $status, $image;
-    public function __construct($user_id, $username, $password, $email,
+    public function __construct($userId, $username, $password, $email,
 				$first_name, $last_name, $birthdate, $gender, $status, $image){
-	    $this->setUserId($user_id);
+	    $this->setUserId($userId);
 	    $this->setUsername($username);
 	    $this->setPassword($password);
 	    $this->setEmail($email);
@@ -17,10 +19,10 @@
 	    $this->setImage($image);
 	}
 	public function setUserId($id){
-	    $this->user_id= $id;
+	    $this->userId= $id;
 	}
 	public function getUserId(){
-	    return $this->user_id;    
+	    return $this->userId;    
 	}
 	public function setUsername($username) {
 	    $this->username = $username;
@@ -77,7 +79,7 @@
 	    return $this->image;    
 	}
 	
-	public static function load($username){
+	public static function loadUserFromUsername($username){
 	    $sql = 'SELECT * FROM user WHERE username = :username';
 
 	    $params = array (':username' => $username);
@@ -87,10 +89,10 @@
 	    return $user;
 	}
 
-	public static function load_dynamic($column, $data2){
-	    $sql = 'SELECT * FROM user WHERE '.$column.' = :data';
+	public static function loadUserFromEmail($email){
+	    $sql = 'SELECT * FROM user WHERE email = :email';
 
-	    $params = array (':data' 	=> $data2);
+	    $params = array (':email' 	=> $email);
 
 	    $data = Database::getData($sql, $params);
 	    $user = new User($data['user_id'], $data['username'], $data['password'], $data['email'], $data['first_name'], $data['last_name'], $data['birthdate'], $data['gender'], $data['status'], $data['image']);
@@ -102,9 +104,10 @@
 	    $params = array(':user'  => $username,
 			    ':pass'  => $pass,
 			    ':email' => $email);
-	    $id = Database::insert($sql, $params);
+	    $userId = Database::insert($sql, $params);
 	    
-	    writePasskey($code, $id);
+	    self::writePasskey($code, $userId);
+	    LogAction::insertLog($userId, 1);
 	    return true;
 	}
 
@@ -117,16 +120,17 @@
 	    return $result;
 	}	
 
-	//TODO fix this function. incomplete
 	public static function confirmUser($pass){
 	    $sql = 'SELECT user_id FROM passkey WHERE passkey = :pass';
 	    $params = array(':pass'	=> $pass);
 	    $data = Database::getData($sql, $params);
-	    if ($data){
+	    if (!empty($data)){
 		$sql = 'UPDATE user SET status = 1 WHERE user_id IN (SELECT t.user_id FROM passkey t WHERE t.passkey = :pass)';
 		$params = array (':pass' => $pass);
 		Database::update($sql, $params);
-		//delete passkey after status is updated
+		$sql = 'DELETE FROM passkey WHERE passkey = :pass';
+		$params = array (':pass' => $pass);
+		Database::update($sql, $params);
 	    }
 	    else{
 		return false;	
@@ -141,6 +145,8 @@
 	    $data = Database::getData($sql, $params);
 	    if($data){
 		$user = new User($data['user_id'], $data['username'], $data['password'], $data['email'], $data['first_name'], $data['last_name'], $data['birthdate'], $data['gender'], $data['status'], $data['image']);
+		$id = $user->getUserId();
+		LogAction::insertLog($id, 3);
 		return $user;
 	    }
 	    else{
@@ -158,12 +164,15 @@
 	    $params = array(':user'	=> $user,
 			    ':oldPass'	=> $oldPass);
 	    $data = Database::getData($sql, $params);
-	    if ($data){
+	    if (!empty($data)){
 		$sql = 'UPDATE user SET password = :newPass WHERE password = :oldPass AND username = :user';
 		$params = array(':newPass' => $newPass,
-			    ':oldPass' => $oldPass,
-			    ':user'    => $user);
+				':oldPass' => $oldPass,
+				':user'    => $user);
 		Database::query($sql, $params);
+		$user = self::loadUserFromUsername($user);
+		$id = $user->getUserId();
+		LogAction::insertLog($id, 6);
 		return true;
 	    }
 	    else{
@@ -181,24 +190,13 @@
 			    ':gender'	=> $gender,
 			    ':user'	=> $username);
 	    Database::update($sql, $params);
-	    return true;
-	}
-
-	public static function updateProf($first, $last, $email, $bday, $gender, $username){
-	    $sql = 'UPDATE user SET first_name = :first, last_name = :last, email = :email, birthdate = :bday, gender = :gender WHERE username = :user';
-
-	    $params = array(':first'	=> $first,
-			    ':last' 	=> $last,
-			    ':email'	=> $email,
-			    ':bday'	=> $bday,
-			    ':gender'	=> $gender,
-			    ':user'	=> $username);
-	    Database::update($sql, $params);
+	    $user = self::loadUserFromUsername($username);
+	    $id = $user->getUserId();
+	    LogAction::insertLog($id, 5);
 	    return true;
 	}
 
 	public static function writePasskey($passkey, $user){
-	    $db = new Database();
 	    $sql = 'INSERT INTO passkey(passkey, user_id, date_created) VALUES (:pass, :user, NOW())';
 	    $params = array(':pass'	=> $passkey,
 			    ':user'	=> $user);

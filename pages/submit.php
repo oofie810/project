@@ -26,7 +26,7 @@
 	if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
         
 	//build query to insert recipe name, directions and ingredient count to recipe table
-	$user = loadUserFromUsername($_SESSION['username']);
+	$user = User::loadUserFromUsername($_SESSION['username']);
         $userId = $user->getUserId();
 	Recipe::submitRecipe($recipe_name, $directions, $userId, array($salt, $pepper));
 

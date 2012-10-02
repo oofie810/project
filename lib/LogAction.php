@@ -1,17 +1,14 @@
 <?php
     class LogAction{
-    
-	public static function insertLog($user_id, $action){
+	public static function insertLog($userId, $action){
 	
 	    $ip = $_SERVER['REMOTE_ADDR'];
 	    $sql = 'INSERT INTO log (user_id, action, date, ip_addr) VALUES (:id, :action, NOW(), :ip)';
-	    $params = array (':id'	=> $user_id,
+	    $params = array (':id'	=> $userId,
 			     ':action'	=> $action,
 			     ':ip'	=> $ip);
 	    Database::insert ($sql, $params);
 	}
     }
-
-
 ?>
 

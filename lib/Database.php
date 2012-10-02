@@ -78,7 +78,7 @@
 
 	public static function getAll($sql, $params, $query_type='query'){
 	    $db = Database::getInstance();
-	    if($query_type== 'query'){
+	    if($query_type == 'query'){
 		$db-> query ($sql, $params);
 	    } else if($query_type == 'query_array'){
 		$db->query_array($sql, $params);	
