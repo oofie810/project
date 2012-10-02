@@ -34,9 +34,13 @@
 	    $params = array (':id' => $recipeId);
 
 	    $data = Database::getAll($sql, $params);
-	    error_log(print_r($data, true));
-	    $recipe = new Recipe($data['rec_name'], $data['directions']);
-	
+	    $ingredients_array = array();
+	    foreach($data as $ingr){
+		$ingredients_array[] = $ingr['ingredient'];
+		$ingredients_array[] = $ingr['amount'];
+		$ingredients_array[] = $ingr['units'];
+	    }
+	    $recipe = new Recipe($data[0]['rec_name'], $data[0]['directions'], $ingredients_array);
 	    return $recipe;
 	}
 	
