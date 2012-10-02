@@ -60,6 +60,22 @@
 	    if (empty($ingredient_found)){
 		Ingredient::insertMultipleIngredients($ingredients);	
 		$ingredient_found = Ingredient::loadIngredientsByName($ing);
+	    } else if(count($ingredients) > count($ingredient_found)){
+		$s = array();
+		$f = array();
+		foreach($ingredients as $ingre){
+		    $s[] = $ingre->getIngredient();
+		} 
+		foreach($ingredient_found as $ingre){
+		    $f[] = $ingre->getIngredient();    
+		} 
+		$n = array_diff($s, $f);
+		$p = array();
+		foreach($n as $i){
+		    $p[] = new Ingredient(0, $i, null, null); 
+		}
+		Ingredient::insertMultipleIngredients($p);
+		$ingredient_found = Ingredient::loadIngredientsByName($ing);
 	    } 
 	    $sql = 'INSERT INTO recipe (rec_name, directions, submitted_by, submission_date) VALUES (:name, :directions, :user, NOW())';
 	    $params = array(':name'	   => $recipeName,

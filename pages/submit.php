@@ -21,14 +21,15 @@
 	$unit_array = array();
 	$id_array = array();
 	
-	$salt = new Ingredient('1', 'salt', '3', '3');
-	$pepper = new Ingredient('2', 'pepper', '3', '3');
+	$salt = new Ingredient(1, 'salt', 3, 3);
+	$pepper = new Ingredient(2, 'pepper', 3, 3);
+	$bla = new Ingredient(10, 'vfweh', 4, 4);
 	if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
         
 	//build query to insert recipe name, directions and ingredient count to recipe table
 	$user = User::loadUserFromUsername($_SESSION['username']);
         $userId = $user->getUserId();
-	Recipe::submitRecipe($recipe_name, $directions, $userId, array($salt, $pepper));
+	Recipe::submitRecipe($recipe_name, $directions, $userId, array($salt, $pepper, $bla));
 
 	$url = '/';
 	header('Location: ' . $url);

@@ -58,15 +58,15 @@
 
 	public static function loadIngredientsByName($ingredient_names){
 	    $questionMarkArray = implode(',', array_fill(0, count($ingredient_names), '?'));
-
+	    
 	    $sql = 'SELECT * FROM ingredients WHERE ingredient IN (' . $questionMarkArray . ')';
-	    $ingredient_found = Database::getData($sql, $ingredient_names, 'query_array');
+	    $ingredient_found = Database::getAll($sql, $ingredient_names, 'query_array');
 	    if(empty($ingredient_found)){
 		return array();
 	    } else{
 		$ingredients_array = array();
 		foreach($ingredient_found as $ingredient){
-		      $ingredients_array[] = new Ingredient($ingredient['ingr_id'], $ingredient['ingredient'], $ingredient['amount'], $ingredient['units']);
+		      $ingredients_array[] = new Ingredient($ingredient['ingr_id'], $ingredient['ingredient'], null, null);
 		}
 		return $ingredients_array;
 	    }
