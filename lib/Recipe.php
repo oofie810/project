@@ -29,16 +29,15 @@
 	}
 
 	public static function loadRecipe($recipeId){
-	    $sql = 'SELECT recipe.rec_name, recipe.rec_id, ingredients.ingredient, rec_ing.amount, rec_ing.units, recipe.directions, units.units FROM recipe INNER JOIN rec_ing ON (rec_ing.rec_id = recipe.rec_id) INNER JOIN ingredients ON (ingredients.ingr_id = rec_ing.ingr_id) INNER JOIN units ON (rec_ing.units = units.id) WHERE recipe.rec_id = :id';
+	    $sql = 'SELECT recipe.rec_name, recipe.rec_id, ingredients.ingredient, ingredients.ingr_id, rec_ing.amount, rec_ing.units, recipe.directions, units.units FROM recipe INNER JOIN rec_ing ON (rec_ing.rec_id = recipe.rec_id) INNER JOIN ingredients ON (ingredients.ingr_id = rec_ing.ingr_id) INNER JOIN units ON (rec_ing.units = units.id) WHERE recipe.rec_id = :id';
 
 	    $params = array (':id' => $recipeId);
 
 	    $data = Database::getAll($sql, $params);
 	    $ingredients_array = array();
 	    foreach($data as $ingr){
-		$ingredients_array[] = $ingr['ingredient'];
-		$ingredients_array[] = $ingr['amount'];
-		$ingredients_array[] = $ingr['units'];
+		$i = new Ingredient($ingr['ingr_id'], $ingr['ingredient'], $ingr['amount'], $ingr['units']);
+		$ingredients_array[] = $i;
 	    }
 	    $recipe = new Recipe($data[0]['rec_name'], $data[0]['directions'], $ingredients_array);
 	    return $recipe;
