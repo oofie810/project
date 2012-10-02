@@ -11,19 +11,19 @@
 
 	$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die ('Error ln 7:'.mysqli_error($dbc));
 
-	$id = $_SESSION['username'];
+	$username = $_SESSION['username'];
 
-	$row = User::load($id);
+	$user = User::loadUserFromUsername($username);
 	echo '<table>';
-	$user_id = $row->getUserId();
-	echo '<tr><td class="label">Username:</td><td>' .$row->getUsername(). '</td></tr>';
-	echo '<tr><td class="label">First Name:</td><td>' .$row->getFirstName(). '</td></tr>';
-	echo '<tr><td class="label">Last Name:</td><td>' .$row->getLastName(). '</td></tr>';
-	echo '<tr><td class="label">Email:</td><td>' .$row->getEmail(). '</td></tr>';
-	echo '<tr><td class="label">Gender:</td><td>' .$row->getGender() .'</td></tr>';
-	echo '<tr><td class="label">Birthdate:</td><td>' .$row->getBirthDate().'</td></tr>';
+	$user_id = $user->getUserId();
+	echo '<tr><td class="label">Username:</td><td>' .$user->getUsername(). '</td></tr>';
+	echo '<tr><td class="label">First Name:</td><td>' .$user->getFirstName(). '</td></tr>';
+	echo '<tr><td class="label">Last Name:</td><td>' .$user->getLastName(). '</td></tr>';
+	echo '<tr><td class="label">Email:</td><td>' .$user->getEmail(). '</td></tr>';
+	echo '<tr><td class="label">Gender:</td><td>' .$user->getGender() .'</td></tr>';
+	echo '<tr><td class="label">Birthdate:</td><td>' .$user->getBirthDate().'</td></tr>';
 	//TODO check how to do user class with image
-	echo '<tr><td class="label">Image:</td><td>img src="' .UP_PATH . $row->getImage() . '" alt="Profile Picture" /></td></tr>';
+	echo '<tr><td class="label">Image:</td><td>img src="' .UP_PATH . $user->getImage() . '" alt="Profile Picture" /></td></tr>';
 	#echo '<tr><td class="label">Image:</td><td><img src="' . UP_PATH . $row['image'] . '" alt="Profile Picture" /></td></tr>';
 	echo '</table><br />';
 	echo '<table>';

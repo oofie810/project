@@ -3,7 +3,6 @@
   require_once('../lib/header.php');
   require_once('../lib/Database.php');
   require_once('../lib/User.php');
-  require_once('../lib/functions.php');
   
   //get email from submit button
   if (isset($_POST['submit'])){
@@ -11,7 +10,7 @@
   
   //check if email/user is active already 
   $column = 'email';
-  $user = User::load_dynamic($column, $email);
+  $user = User::loadUserFromEmail($column, $email);
   $status = $user->getStatus();
 
   //if status is 0, send another confirmation email

@@ -1,10 +1,9 @@
 <?php
 $css_files = array('index.css');
-require_once('../lib/functions.php');
+require_once('../lib/SendEmail.php');
 require_once('../lib/header.php');
 require_once('../lib/Database.php');
 require_once('../lib/User.php');
-require_once('../lib/LogAction.php');
 
     if (isset($_POST['submit'])){
 	$username = $_POST['username'];
@@ -24,29 +23,21 @@ require_once('../lib/LogAction.php');
 		    $salt = "egg";
 		    $pass = md5($salt.$pass);
 
-		    $id = User::insertNewUser($username, $pass, $code, $email);
-		    LogAction::insertLog($id, 1);
-			if($id){
-			    $sent= send_email($email, $code);
-
-			    if($sent){
-				echo '<p>Please wait for email for confirmation.</p>';
-				exit();
-			    }
+		    User::insertNewUser($username, $pass, $code, $email);
+		    $sent= SendEmail::send($email, $code);
+			if($sent){
+			    echo '<p>Please wait for email for confirmation.</p>';
+			    exit();
 			}
-		}
-		else{
+		} else {
 		    echo '<p class="error">The password must be at least 8 characters.</p>';
 		}
-
-	    }
-	    else{
+	    } else{
 		//an account already exists for the username
 		echo '<p class="error">An account already exists for this username / email. Please use a different one.</p>';
 		$user = "";
 	    }
-	}
-	else {
+	} else {
 	    echo '<p class="error">You must enter all of the data needed.</p>';
 	}
     }

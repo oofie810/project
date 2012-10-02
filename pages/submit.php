@@ -1,12 +1,10 @@
 <?php
-    //$javascriptFiles = ["js/filename"] 
     $css_files = array('index.css');
     $js_files = array('scripts.js');
     require_once('../lib/header.php');
     require_once('../lib/connectvars.php');
-    require_once('../lib/functions.php');
+    require_once('../lib/User.php');
     require_once('../lib/Recipe.php');
-    require_once('../lib/LogAction.php');
     require_once('../lib/Ingredient.php');
 
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -28,43 +26,10 @@
 	if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
         
 	//build query to insert recipe name, directions and ingredient count to recipe table
-        $user_id = get_user_id_from_username($_SESSION['username']);
-	Recipe::submitRecipe($recipe_name, $directions, $user_id, array($salt, $pepper));
-	
-	//log the recipe submission - action 7 
-	$userId =get_user_id_from_username($_SESSION['username']);
-	LogAction::insertLog($userId, 7);
-/*	
-	//insert ingredients to ingredients table
-	$length = count($ingredients);
-	for($i=0; $i < $length; $i++){
-	    $ingr = $ingredients[$i];
-	    $ingr = trim($ingr);
-	    $amt = $amount[$i];
-	    $unit = $unit_id[$i]; 
+	$user = loadUserFromUsername($_SESSION['username']);
+        $userId = $user->getUserId();
+	Recipe::submitRecipe($recipe_name, $directions, $userId, array($salt, $pepper));
 
-	    //check to see if ingredient is in the ingredients table already
-	    $ingrExists = Ingredient::ifExists($ingr);
-	    
-	    //if it doesnt exist in table, insert ingredient. 
-	    if (!$ingrExists){
-		$ingr_id = Ingredient::insertIngredient($ingr);
-		//insert into rec_ing table together with rec_id, ingr_id and amount
-		$query = "INSERT INTO rec_ing (rec_id, ingr_id, amount, units) VALUES ($rec_id, $ingr_id, '$amt', $unit)";
-		mysqli_query ($dbc, $query) or die ('error ln 63: '.mysqli_error($dbc));
-		}
-	    else{
-		//get ingr_id for ingredient and insert into rec_ing. no need to insert into ingredient
-		//table since ingredient exists already
-
-		//since ingredient exists already, just add them to the rec_ing table
-		$query = "INSERT INTO rec_ing (rec_id, ingr_id, amount, units) VALUES ($rec_id, $ingrExists, '$amt', $unit)";
-		mysqli_query($dbc, $query) or die ('error ln 71: '.mysqli_error($dbc));
-
-	    }
-	  }
-	mysqli_close($dbc);
-	*/
 	$url = '/';
 	header('Location: ' . $url);
 	}

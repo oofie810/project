@@ -1,11 +1,9 @@
 <?php
   $css_files =array('index.css');
-  require_once ('../lib/functions.php');
   require_once('../lib/connectvars.php');
   require_once('../lib/header.php');
   require_once('../lib/Database.php');
   require_once('../lib/User.php');
-  require_once('../lib/LogAction.php');
 
 if(isset($_SESSION['username'])){
     $user = $_SESSION['username'];
@@ -18,9 +16,6 @@ if(isset($_SESSION['username'])){
 	if (!empty($pass1) && !empty($pass2) && !empty($oldpass) && ($pass1 == $pass2)){
 	    $update = User::updatePass($pass1, $oldpass, $user);
 	    if ($update){
-		//log action if user changes passwords
-		$id = get_user_id_from_username($user);
-		LogAction::insertLog($id, 6);
 		echo '<p>Your password has been changed.</p>';	
 	    }
 	    else{

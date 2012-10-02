@@ -1,7 +1,6 @@
 <?php
    $css_files = array('index.css');
    require_once('../lib/header.php');
-   require_once('../lib/functions.php');
    require_once('../lib/connectvars.php');
    require_once('../lib/Database.php');
    require_once('../lib/User.php');

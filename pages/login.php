@@ -2,10 +2,8 @@
   $css_files = array('index.css');
   require_once('../lib/header.php');
   require_once('../lib/connectvars.php');
-  require_once('../lib/functions.php');
   require_once('../lib/Database.php');
   require_once('../lib/User.php');
-  require_once('../lib/LogAction.php');
 
   $error_msg = "";
   
@@ -16,18 +14,16 @@
 	if (!empty($user_un) && !empty($user_pw)){
 	    $salt = "egg";
 	    $user_pw = md5($salt.$user_pw);
-	    $user = User::login($user_un, $user_pw);
-	    $username = $user->getUsername();
+	    $user = User::loadUserFromUsername($user_un);
 	    $status = $user->getStatus();
-	    $id = $user->getUserId();
 	    if ($status == '0'){
 		echo '<p class="error">Please confirm your account first.</p>';
 	    }
 	    else{
+		$user = User::login($user_un, $user_pw);
+		$username = $user->getUsername();
 		$_SESSION['username'] = $username;
 		setcookie('username', $username, time() + (60* 60 * 24 * 30));
-		//log action if db connects and user is logged in
-		LogAction::insertLog($id, 3);
 	    }
         }
 	else{

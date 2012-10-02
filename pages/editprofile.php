@@ -1,13 +1,10 @@
 <?php
-//edited 9/3/12 using user object 
     $css_files=array('index.css','editprof.css');
     require_once('../lib/header.php');
     require_once('../lib/appvars.php');
     require_once('../lib/connectvars.php');
-    require_once('../lib/functions.php');
     require_once('../lib/Database.php');
     require_once('../lib/User.php');
-    require_once('../lib/LogAction.php');
 
     if(isset($_SESSION['username'])){ 
 	$username = $_SESSION['username'];
@@ -24,19 +21,14 @@
 	    if(!empty($first_name) && !empty($last_name) && !empty($email)) {
 		if (check_email($email)){   
 		    //TODO figure out how to upload user pic. Dont know if class or PDO problem
-		    if (!empty($user_pic)){
+		    if (empty($user_pic)){
 			$target = UP_PATH . $user_pic;
 			move_uploaded_file($_FILES['picture']['tmp_name'], $target);
 			    $update =User::updateProfPic($first_name, $last_name, $email, $user_pic, $birthdate, $gender, $username);
 			
 		    }
-		   /* else{
-			$update =User::updateProf($first_name, $last_name, $email, $birthdate, $gender, $username);
-		    }*/
 		    if($update){
 			echo '<p>Your profile has been updated. Click <a href="viewprofile.php">here</a> to view your profile</p>';  
-			$id = get_user_id_from_username($username);
-			LogAction::insertLog($id, 5);
 			exit();
 		    }
 		}
@@ -49,7 +41,7 @@
             }	
 	}
 	else{
-	    $user = User::load($username);
+	    $user = User::loadUserFromUsername($username);
 	    $first_name = $user->getFirstName();;
 	    $last_name = $user->getLastName();;
 	    $email = $user->getEmail();
