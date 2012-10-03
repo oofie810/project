@@ -21,6 +21,9 @@
 	$unit_array = array();
 	$id_array = array();
 	
+	//TODO figure out how to create array of ingredient objects to be sent to
+	//submitRecipe. Or should the three arrays be passed and objects will be 
+	//created there???
 	$salt = new Ingredient(1, 'salt', 3, 3);
 	$pepper = new Ingredient(2, 'pepper', 3, 3);
 	$bla = new Ingredient(10, 'vfweh', 4, 4);

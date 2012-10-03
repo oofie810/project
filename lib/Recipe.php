@@ -75,6 +75,8 @@
 		    $p[] = new Ingredient(0, $i, null, null); 
 		}
 		Ingredient::insertMultipleIngredients($p);
+		//TODO can be total_ingredients? Should be passed to updateMergetable? 
+		//or should this be called again? purpose?
 		$ingredient_found = Ingredient::loadIngredientsByName($ing);
 	    } 
 	    $sql = 'INSERT INTO recipe (rec_name, directions, submitted_by, submission_date) VALUES (:name, :directions, :user, NOW())';

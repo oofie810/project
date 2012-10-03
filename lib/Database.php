@@ -4,7 +4,7 @@
 	private $DB_HOST = 'localhost';
 	private $DB_USER = 'ronald';
 	private $DB_PASS = 'oofie810';
-	private $DB_NAME ='project';
+	private $DB_NAME = 'Recipes';
 	private $dbh;
 	private $stmt;
 	private static $instance;
