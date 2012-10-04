@@ -26,9 +26,15 @@
 	//created there???
 	$salt = new Ingredient(1, 'salt', 3, 3);
 	$pepper = new Ingredient(2, 'pepper', 3, 3);
-	$bla = new Ingredient(10, 'vfweh', 4, 4);
+	$bla = new Ingredient(3, 'vfweh', 4, 4);
 	if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
-        
+      /* 
+	$i = array();
+	for($x = 0; $x >= count($ingredients); $x++) {
+	    $i[] = new Ingredient('', $ingredients[$x], ...)
+	}
+*/
+
 	//build query to insert recipe name, directions and ingredient count to recipe table
 	$user = User::loadUserFromUsername($_SESSION['username']);
         $userId = $user->getUserId();

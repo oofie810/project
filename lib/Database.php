@@ -4,10 +4,11 @@
 	private $DB_HOST = 'localhost';
 	private $DB_USER = 'ronald';
 	private $DB_PASS = 'oofie810';
-	private $DB_NAME = 'Recipes';
+	private $DB_NAME = 'recipe';
 	private $dbh;
 	private $stmt;
 	private static $instance;
+	private static $log_queries = true;
 
 	private function __construct(){
 	    $this->connect();
@@ -23,39 +24,34 @@
 		self::$instance = new Database();
 	    return self::$instance;
 	}
-	private function query($sql, $param){
+
+	private function query($sql, $params){
+	    if (self::$log_queries){
+		error_log('**************');
+		error_log($sql);
+		error_log(var_export($params, true));
+		error_log('**************');
+	    }
+
 	    try{
 		$temp = array();
 		$this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-		$this->stmt = $this->dbh->prepare($sql);
-
-		//bind parameters
-		if (sizeof($param) > 0){
-		    foreach ($param as $key=> $value){
-			$temp[$key] = $value;
-			$this->stmt->bindParam($key, $temp[$key], PDO::PARAM_STR);
-		    }
-		}
-		//execute the query
-		$this->stmt->execute();
-	    }
-	    catch (PDOException $exception_object){
-		error_log(var_export($exception_object, true));	
-	    }
-	}
-
-	private function query_array($sql, $params){
-	    try{
-		$this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
 		$this->stmt = $this->dbh->prepare($sql);
 
 		//bind parameters
 		if (sizeof($params) > 0){
-		    // bindvalue is 1-indexed, so $k+1
-		    foreach ($params as $k => $value){
-			$this->stmt->bindValue(($k+1), $value);
+		    //assumption is any name parameters do not have 
+		    //the named parameter 0
+		    if (array_key_exists(0, $params)){
+			// bindvalue is 1-indexed, so $k+1
+			foreach ($params as $k => $value){
+			    $this->stmt->bindValue(($k+1), $value);
+			}
+		    } else{
+			foreach ($params as $key=> $value){
+			    $temp[$key] = $value;
+			    $this->stmt->bindParam($key, $temp[$key], PDO::PARAM_STR);
+			}
 		    }
 		}
 		//execute the query
@@ -66,30 +62,16 @@
 	    }
 	}
 
-	public static function getData($sql, $params, $query_type='query'){
+	public static function getRow($sql, $params){
 	    $db = Database::getInstance();
-	    if($query_type == 'query'){
-		$db-> query($sql, $params);
-	    } else if($query_type=='query_array'){
-		$db->query_array($sql, $params);	
-	    }
+	    $db-> query($sql, $params);
 	    return $db->stmt->fetch(PDO::FETCH_ASSOC);    
 	}
 
-	public static function getAll($sql, $params, $query_type='query'){
+	public static function getMultipleRows($sql, $params){
 	    $db = Database::getInstance();
-	    if($query_type == 'query'){
-		$db-> query ($sql, $params);
-	    } else if($query_type == 'query_array'){
-		$db->query_array($sql, $params);	
-	    }
+	    $db-> query ($sql, $params);
 	    return $db->stmt->fetchAll(PDO::FETCH_ASSOC);    
-	}
-
-	public static function rowCount($sql, $params){
-	    $db = Database::getInstance();
-	    $db-> query($sql, $params);
-	    return $db->stmt->rowCount();
 	}
 
 	public static function update($sql, $params){
@@ -105,8 +87,7 @@
 
 	public static function bulkInsert($sql, $params){
 	    $db = Database::getInstance();
-
-	    $db -> query_array($sql, $params);
+	    $db -> query($sql, $params);
 	}	
 }
 

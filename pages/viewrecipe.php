@@ -5,9 +5,9 @@
     require_once('../lib/Recipe.php');
     require_once('../lib/Ingredient.php');
 
-    if(isset($_GET['rec_id'])){
+    if(isset($_GET['recipe_id'])){
 
-	$recipeId = $_GET['rec_id'];
+	$recipeId = $_GET['recipe_id'];
 
 	$recipe = Recipe::loadRecipe($recipeId);
 	echo '<table>';

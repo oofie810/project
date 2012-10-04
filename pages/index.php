@@ -4,7 +4,6 @@
   require_once('../lib/connectvars.php');
   require_once('../lib/Database.php');
   require_once('../lib/Recipe.php');
-  $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
   if(isset($_SESSION['username'])){
     echo '<p>You are logged in as ' .$_SESSION['username']. '</p>';
@@ -43,11 +42,11 @@
        }
 */
     
-     $data = Recipe::loadAll();
-	foreach ($data as $row){
+     $data = Recipe::lazyLoadRecipes();
+	foreach ($data as $recipe){
 	    echo '<ul>';
-	    echo '<li><a href="viewrecipe.php?rec_id='. $row['rec_id']. '">'.$row['rec_name'].'</a></li>';
-	    echo '</li>' .substr($row['directions'], 0, 230) . '...</li><br />';
+	    echo '<li><a href="viewrecipe.php?recipe_id='. $recipe['id']. '">'.$recipe['name'].'</a></li>';
+	    echo '</li>' .substr($recipe['directions'], 0, 230) . '...</li><br />';
 	    echo '</ul>';
 	 
      }
