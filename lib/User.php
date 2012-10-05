@@ -2,7 +2,7 @@
     require_once('LogAction.php');
     require_once('Database.php');
     class User{
-    
+
     private $userId, $username, $password, $email;
     private $first_name, $last_name, $date_of_birth, $gender, $status, $profile_pic;
     public function __construct($userId, $username, $password, $email,
@@ -107,7 +107,7 @@
 	    $userId = Database::insert($sql, $params);
 	    
 	    self::writePasskey($code, $userId);
-	    #LogAction::insertLog($userId, 1);
+	    LogAction::insertLog($userId, 1);
 	    return true;
 	}
 
@@ -147,12 +147,30 @@
 	    if($data){
 		$user = new User($data['id'], $data['username'], $data['password_hash'], $data['email'], $data['first_name'], $data['last_name'], $data['date_of_birth'], $data['gender'], $data['status'], $data['profile_image']);
 		$id = $user->getUserId();
-		#LogAction::insertLog($id, 3);
+		LogAction::insertLog($id, 3);
 		return $user;
 	    }
 	    else{
 		echo 'You have entered an invalid username of password. Please try again';	
 	    }
+	}
+
+	public static function logout($username){
+	    $user = self::loadUserFromUsername($username);
+	    $id = $user->getUserId();
+	    LogAction::insertLog($id, 4);
+	    
+	    //delete the session vars by clearing the session array
+	    $_SESSION = array();
+
+	    //delete the user_id and username cookies by setting their
+	    //expirations to an hour ago (3600)
+	    if(isset($_COOKIE[session_name()])){
+		setcookie('session_name', '', time() - 3600);
+		setcookie('username', '', time() - 3600);
+	    }
+	    //destroy the session
+	    session_destroy();
 	}
 
 	public static function updatePass($newPass, $oldPass, $user){
@@ -173,7 +191,7 @@
 		Database::query($sql, $params);
 		$user = self::loadUserFromUsername($user);
 		$id = $user->getUserId();
-		#LogAction::insertLog($id, 6);
+		LogAction::insertLog($id, 6);
 		return true;
 	    }
 	    else{
@@ -193,7 +211,7 @@
 	    Database::update($sql, $params);
 	    $user = self::loadUserFromUsername($username);
 	    $id = $user->getUserId();
-	    #LogAction::insertLog($id, 5);
+	    LogAction::insertLog($id, 5);
 	    return true;
 	}
 
