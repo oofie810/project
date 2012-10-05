@@ -5,7 +5,7 @@
 	  public function __construct($id, $name, $amount, $unit_name){
       $this->id = $id;
 	    $this->unit_name = $unit_name;
-	    $this->setIngredient($name);
+	    $this->setName($name);
 	    $this->setAmount($amount);
 	  }
 	
@@ -32,6 +32,7 @@
 	    $sql = "
 		    SELECT
 		      i.name AS ingredient_name,
+          i.id,
 		      rti.amount,
 		      u.name AS unit_name
 		    FROM recipe_to_ingredient rti
@@ -71,6 +72,26 @@
 	    
 	    Database::bulkInsert($sql, $ingredient_names);
 	  } 
+
+    public static function associateIngredientsToRecipe($recipeId, $ingredient_names, $ingredient_amounts, $ingredient_units){
+      $questionMarkArray = implode(',', array_fill(0, count($ingredient_names), '?'));
+	    
+	    $sql = 'SELECT * FROM ingredient WHERE name IN (' . $questionMarkArray . ')';
+	    $ingredients = Database::getMultipleRows($sql, $ingredient_names);
+      $questionMarkStr = "";
+      $params = array();
+      for ($x = 0; $x < count($ingredient_names); $x++){
+        $params[] = $recipeId;
+        $params[] = $ingredients[$x]['id'];
+        $params[] = $ingredient_amounts[$x];
+        $params[] = $ingredient_units[$x];
+        $questionMarkStr .= '(?, ?, ?, ?),';
+      }
+      $questionMarkStr = trim($questionMarkStr, ',');
+     
+      $sql = "INSERT INTO recipe_to_ingredient (recipe_id, ingredient_id, amount, unit_id) VALUES " . $questionMarkStr;
+      Database::bulkInsert($sql, $params); 
+    }
 
   }
 

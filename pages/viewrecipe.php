@@ -14,7 +14,7 @@
 	echo '<tr><td>Recipe:</td><td>' . $recipe->getRecipeName() . '</td></tr>';
 	echo '<tr><td>Ingredients:</td><td>'; 
 	foreach($recipe->getIngredients() as $ingr){
-	    echo $ingr->getAmount() . ' ' . $ingr->getUnit() . ' ' . $ingr->getIngredient() . '<br />';    
+	    echo $ingr->getAmount() . ' ' . $ingr->getUnitName() . ' ' . $ingr->getName() . '<br />';    
 	}
 	echo '<tr><td>Directions:</td><td> ' . $recipe->getDirections() .'</td></tr>';
 	echo '</table>';
