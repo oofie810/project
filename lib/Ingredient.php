@@ -1,98 +1,77 @@
 <?php
-    class Ingredient{
-	private $ingr_id, $ingredient, $amount, $unit;
+  class Ingredient{
+	  private $id, $name, $amount, $unit_name;
 
-	public function __construct($ingr_id, $ingredient, $amount, $unit){
-	    $this->setIngrId($ingr_id);
-	    $this->setIngredient($ingredient);
+	  public function __construct($id, $name, $amount, $unit_name){
+      $this->id = $id;
+	    $this->unit_name = $unit_name;
+	    $this->setIngredient($name);
 	    $this->setAmount($amount);
-	    $this->setUnit($unit);
-	}
+	  }
 	
-	public function setIngrId($str){
-	    $this->ingr_id = $str;    
-	}
-	public function getIngrId(){
-	    return $this->ingr_id;    
-	}
-	public function setIngredient($str){
-	    $this->ingredient = $str;
-	}
-	public function getIngredient(){
-	    return $this->ingredient;    
-	}
-	public function setAmount($str){
-	    $this->amount = $str;    
-	}
-	public function getAmount(){
+	  public function getId(){
+	    return $this->id;    
+	  }
+	  public function setName($name){
+	    $this->name = $name;
+	  }
+	  public function getName(){
+	    return $this->name;    
+	  }
+	  public function setAmount($amount){
+	    $this->amount = $amount;    
+	  }
+	  public function getAmount(){
 	    return $this->amount;
-	}
-	public function setUnit($str){
-	    $this->unit = $str;    
-	}
-	public function getUnit(){
-	    return $this-> unit;
-	}
+	  }
+	  public function getUnitName(){
+	    return $this->unit_name;
+	  }
 	
-	public static function loadIngredient($recipeId){
-	    $sql = 'SELECT ingredient.name, recipe_to_ingredient.amount, recipe_to_ingredient.unit_id, unit.name FROM recipe_to_ingredient INNER JOIN ingredient ON (recipe_to_ingredient.ingredient_id = ingredient.id) INNER JOIN unit ON (recipe_to_ingredient.unit_id = unit.id) WHERE recipe_to_ingredient.recipe_id = :recipeId';
-
-	    $params = array(':recipeId' =>  $recipeId);
-
-	    $data = Database::getRow($sql, $params);
-	    $ingr = new Ingredient($data['id'], $data['name'], $data['amount'], $data['unit_id']);
-	    var_dump($data);
-	    return $ingr;
-	}
-
-	public static function loadAllIngr($recipeId){
-	    $sql = 'SELECT ingredient.name, recipe_to_ingredient.amount, recipe_to_ingredient.unit_id, unit.name FROM recipe_to_ingredient INNER JOIN ingredient ON (recipe_to_ingredient.ingredient_id = ingredient.id) INNER JOIN unit ON (recipe_to_ingredient.unit_id = unit.id) WHERE recipe_to_ingredient.recipe_id = :recipeId';
+	  public static function loadRecipeIngredients($recipeId){
+	    $sql = "
+		    SELECT
+		      i.name AS ingredient_name,
+		      rti.amount,
+		      u.name AS unit_name
+		    FROM recipe_to_ingredient rti
+		    JOIN ingredient i ON rti.ingredient_id = i.id
+		    JOIN unit u ON rti.unit_id = u.id
+		    WHERE
+		      rti.recipe_id = :recipeId";
+		    
 	    $params = array (':recipeId' => $recipeId);
 	    $data = Database::getMultipleRows($sql, $params);
+      $ingredients_array = array();
 	    foreach($data as $key=>$data){
-		$ingr = new Ingredient($data['id'], $data['name'], $data['amount'], $data['unit_id']);
-		$array[] = $ingr;
+		    $ingredients_array [] = new Ingredient($data['id'], $data['ingredient_name'], $data['amount'], $data['unit_name']);
 	    }
-	    return $array;
-	}
+	    return $ingredients_array;
+	  }
 
-	public static function loadIngredientsByName($ingredient_names){
+	  public static function loadMultipleIngredientNames($ingredient_names){
 	    $questionMarkArray = implode(',', array_fill(0, count($ingredient_names), '?'));
 	    
-	    $sql = 'SELECT * FROM ingredient WHERE name IN (' . $questionMarkArray . ')';
-	    $ingredient_found = Database::getMultipleRows($sql, $ingredient_names, 'query_array');
-	    if(empty($ingredient_found)){
-		return array();
+	    $sql = 'SELECT name FROM ingredient WHERE name IN (' . $questionMarkArray . ')';
+	    $names_found = Database::getMultipleRows($sql, $ingredient_names);
+	    if(empty($names_found)){
+		    return array();
 	    } else{
-		$ingredients_array = array();
-		foreach($ingredient_found as $ingredient){
-		      $ingredients_array[] = new Ingredient($ingredient['id'], $ingredient['name'], null, null);
-		}
-		return $ingredients_array;
+		    $ingredient_names_found = array();
+		    foreach($names_found as $name){
+		      $ingredient_names_found[] = $name;
+		    }
+		  return $ingredient_names_found;
 	    }
-	
-	}
+	  }
 
-	public static function ifExists($ingr){
-	    $sql = 'SELECT id FROM ingredient WHERE name = :ingr';
-	    $params = array(':ingr' => $ingr);
-	    $result = Database::getRow($sql, $params);
-	    $ingr_id = $result['id'];
-	    return $ingr_id;
-	}
-
-	public static function insertMultipleIngredients($ingredients){
-	    $names = array();
-	    foreach($ingredients as $ingredient){
-		$names[] = $ingredient->getIngredient();
-	    }
-	    $questionMarkArray = implode(',', array_fill(0, count($ingredients), '(?)'));
+	  public static function insertMultipleIngredients($ingredient_names){
+	    $questionMarkArray = implode(',', array_fill(0, count($ingredient_names), '(?)'));
 	    $sql = 'INSERT INTO ingredient (name) VALUES ' . $questionMarkArray; 
 	    
-	    Database::bulkInsert($sql, $names);
-	}
+	    Database::bulkInsert($sql, $ingredient_names);
+	  } 
 
-
-    }
+  }
 
 ?>
