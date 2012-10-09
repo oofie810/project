@@ -1,2 +1,0 @@
-#run del_pass every 12 pm to delete passkeys that are older than 24 hours
-00 12 * * * /usr/bin/php /home/ec2-user/publicsite/project/lib/del_pass.php

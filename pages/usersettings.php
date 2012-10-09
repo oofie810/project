@@ -1,30 +1,26 @@
 <?php
   $css_files =array('index.css');
-  require_once('../lib/connectvars.php');
-  require_once('../lib/header.php');
+  require_once('header.php');
   require_once('../lib/Database.php');
-  require_once('../lib/User.php');
 
-if(isset($_SESSION['username'])){
+  if(User::isLoggedIn($_SESSION['username'])){
     $user = $_SESSION['username'];
 
     if (isset($_POST['submit'])){
-	$pass1 = $_POST['password1'];
-	$pass2 = $_POST['password2'];
-	$oldpass = $_POST['oldpass'];
+      $pass1 = $_POST['password1'];
+      $pass2 = $_POST['password2'];
+      $oldpass = $_POST['oldpass'];
 
-	if (!empty($pass1) && !empty($pass2) && !empty($oldpass) && ($pass1 == $pass2)){
-	    $update = User::updatePass($pass1, $oldpass, $user);
-	    if ($update){
-		echo '<p>Your password has been changed.</p>';	
-	    }
-	    else{
-		echo 'Please make sure you entered the right password';
-	    }
-	}
-	else{
-	    echo '<p class="error">You must provide the old password and the new password or double check that the new passwords are the same.</p>';
-	}
+      if (!empty($pass1) && !empty($pass2) && !empty($oldpass) && ($pass1 == $pass2)){
+        $update = User::updatePass($pass1, $oldpass, $user);
+        if ($update){
+            echo '<p>Your password has been changed.</p>';	
+        } else{
+            echo 'Please make sure you entered the right password';
+        } 
+      } else{
+          echo '<p class="error">You must provide the old password and the new password or double check that the new passwords are the same.</p>';
+      }   
     }
 ?>
 
@@ -42,11 +38,10 @@ if(isset($_SESSION['username'])){
 </form>
 
 <?php
-}
- else{
- echo '<p class="error">You must be logged in. Log in <a href="login.php">here</a></p>';
- }
+  } else{
+      echo '<p class="error">You must be logged in. Log in <a href="login.php">here</a></p>';
+  }
 
-require_once('../lib/footer.php');
+  require_once('footer.php');
 
 ?>

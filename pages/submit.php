@@ -1,31 +1,31 @@
 <?php
   $css_files = array('index.css');
-  $js_files = array('scripts.js');
-  require_once('../lib/header.php');
-  require_once('../lib/connectvars.php');
-  require_once('../lib/User.php');
+  $js_files  = array('scripts.js');
+  require_once('header.php');
   require_once('../lib/Recipe.php');
   require_once('../lib/Ingredient.php');
 
-  if(isset($_SESSION['username'])){
+  if(User::isLoggedIn($_SESSION['username'])){
 
-    if (isset($_POST['submit'])){
-	    //grab the recipe and ingredients from the submit button
-	    $recipe_name = $_POST['rec_name'];
-	    $ingredients = $_POST['ingredients'];
-	    $directions  = $_POST['directions'];
+    if (!empty($_POST['submit'])){
+      //grab the recipe and ingredients from the submit button
+      $recipe_name = $_POST['rec_name'];
+      $ingredients = $_POST['ingredients'];
+      $directions  = $_POST['directions'];
       $units       = $_POST['unit'];
-	    $amounts	   = $_POST['amount'];
-	
-	    $user = User::loadUserFromUsername($_SESSION['username']);
-      $userId = $user->getUserId();
-	    Recipe::submitRecipe($recipe_name, $directions, $userId, $ingredients, $amounts, $units);
+      $amounts	   = $_POST['amount'];
+      
+      if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
+	$user = User::loadUserFromUsername($_SESSION['username']);
+        $userId = $user->getUserId();
+	Recipe::submitRecipe($recipe_name, $directions, $userId, $ingredients, $amounts, $units);
 
-	    $url = '/';
-      header('Location: ' . $url);
-    } else {
-        echo '<p class="error">Please provide all the needed information.</p>';
-    } 
+	$url = '/';
+        header('Location: ' . $url);
+      } else {
+          echo '<p class="error">Please provide all the needed information.</p>';
+      }
+    }
       
 ?>
 
@@ -80,10 +80,10 @@
 
   <?php
       } else {
-        echo '<p>You need to be logged in to submit recipes. You can login<a href="login.php"> here '.
-             '</a> or sign up<a href="signup.php"> here</a>';
+          echo '<p>You need to be logged in to submit recipes. You can login<a href="login.php"> here '.
+               '</a> or sign up<a href="signup.php"> here</a>';
       }
 
-    require_once('../lib/footer.php');
+    require_once('footer.php');
   ?>
 

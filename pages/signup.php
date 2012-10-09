@@ -1,46 +1,45 @@
 <?php
-$css_files = array('index.css');
-require_once('../lib/SendEmail.php');
-require_once('../lib/header.php');
-require_once('../lib/Database.php');
-require_once('../lib/User.php');
+  $css_files = array('index.css');
+  require_once('../lib/SendEmail.php');
+  require_once('header.php');
+  require_once('../lib/Database.php');
 
-    if (isset($_POST['submit'])){
-	$username = $_POST['username'];
-	$pass = $_POST['password'];
-	$pass2 = $_POST['password2'];
-	$email = $_POST['email'];
+  if (isset($_POST['submit'])){
+    $username = $_POST['username'];
+    $pass = $_POST['password'];
+    $pass2 = $_POST['password2'];
+    $email = $_POST['email'];
 
-	//check if user and password are not empty. check if both passwords are teh same
-	if (!empty($username) && !empty($pass) && !empty($pass2) && ($pass == $pass2) && !empty($email)){
+    //check if user and password are not empty. check if both passwords are teh same
+    if (!empty($username) && !empty($pass) && !empty($pass2) && ($pass == $pass2) && !empty($email)){
 
-	    //check if there is a user already by that name in the db
-	    $result = User::ifExists($username, $email);
-	      if ($result == 0){
-		//then user is unique. add to database. encrypt password with salt value. use md5
-		if (strlen($pass) >= 8){
-		    $code = md5(uniqid(rand()));
-		    $salt = "egg";
-		    $pass = md5($salt.$pass);
+      //check if there is a user already by that name in the db
+      $result = User::ifExists($username, $email);
+      if ($result == 0){
+        //then user is unique. add to database. encrypt password with salt value. use md5
+        if (strlen($pass) >= 8){
+          $code = md5(uniqid(rand()));
+          $salt = "egg";
+          $pass = md5($salt.$pass);
 
-		    User::insertNewUser($username, $pass, $code, $email);
-		    $sent= SendEmail::send($email, $code);
-			if($sent){
-			    echo '<p>Please wait for email for confirmation.</p>';
-			    exit();
-			}
-		} else {
-		    echo '<p class="error">The password must be at least 8 characters.</p>';
-		}
-	    } else{
-		//an account already exists for the username
-		echo '<p class="error">An account already exists for this username / email. Please use a different one.</p>';
-		$user = "";
-	    }
-	} else {
-	    echo '<p class="error">You must enter all of the data needed.</p>';
-	}
+          User::insertNewUser($username, $pass, $code, $email);
+          $sent= SendEmail::send($email, $code);
+          if($sent){
+            echo '<p>Please wait for email for confirmation.</p>';
+            exit();
+          }
+        } else {
+            echo '<p class="error">The password must be at least 8 characters.</p>';
+        }
+      } else{
+          //an account already exists for the username
+          echo '<p class="error">An account already exists for this username / email. Please use a different one.</p>';
+          $user = "";
+      }
+    } else {
+        echo '<p class="error">You must enter all of the data needed.</p>';
     }
+  }
 ?>
 
 <p>Please enter your desired username and password.</p>
@@ -61,4 +60,4 @@ require_once('../lib/User.php');
 </html>
 
 
-<?php require_once('../lib/footer.php'); ?>
+<?php require_once('footer.php'); ?>

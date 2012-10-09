@@ -155,7 +155,15 @@
 	    }
 	}
 
-	public static function logout($username){
+  public static function isLoggedIn(){
+    if(isset($_SESSION['username']) && !empty($_SESSION['username'])){
+      return true;
+    } else{
+      return false;  
+    }
+  }
+	
+  public static function logout($username){
 	    $user = self::loadUserFromUsername($username);
 	    $id = $user->getUserId();
 	    LogAction::insertLog($id, 4);
