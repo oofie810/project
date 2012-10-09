@@ -16,11 +16,11 @@
       $amounts	   = $_POST['amount'];
       
       if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
-	$user = User::loadUserFromUsername($_SESSION['username']);
+	      $user = User::loadUserFromUsername($_SESSION['username']);
         $userId = $user->getUserId();
-	Recipe::submitRecipe($recipe_name, $directions, $userId, $ingredients, $amounts, $units);
+	      Recipe::submitRecipe($recipe_name, $directions, $userId, $ingredients, $amounts, $units);
 
-	$url = '/';
+	      $url = '/';
         header('Location: ' . $url);
       } else {
           echo '<p class="error">Please provide all the needed information.</p>';

@@ -17,10 +17,10 @@
       if ($status == '0'){
         echo '<p class="error">Please confirm your account first.</p>';
       } else{
-	  $user = User::login($user_un, $user_pw);
-	  $username = $user->getUsername();
-	  $_SESSION['username'] = $username;
-	  setcookie('username', $username, time() + (60* 60 * 24 * 30));
+          $user = User::login($user_un, $user_pw);
+          $username = $user->getUsername();
+          $_SESSION['username'] = $username;
+          setcookie('username', $username, time() + (60* 60 * 24 * 30));
       }
     }else{
       $error_msg = 'Sorry, you must enter your username and password to login.';
@@ -33,21 +33,21 @@
 
 <form method="post" action="login.php">
   <fieldset>
-     <legend>Log In</legend>
-     <label for="username">Username:</label>
-     <input type="text" id="username" name="username" 
-         value="<?php if (!empty($user_un)) echo $user_un; ?>" /><br />
-     <label for="password">Password:</label>
-     <input type="password" id="password" name="password" />
-   </fieldset>
- <input type="submit" value="Log In" name="submit" />
+    <legend>Log In</legend>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" 
+       value="<?php if (!empty($user_un)) echo $user_un; ?>" /><br />
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" />
+  </fieldset>
+  <input type="submit" value="Log In" name="submit" />
 </form>
 
 <?php
-   } 
-   else{
-     echo('<p class="login">You are logged in as '.$_SESSION['username']. '.</p>');
-     echo '<a href="index.php">Index</a>';
+   } else{
+       echo('<p class="login">You are logged in as '.$_SESSION['username']. '.</p>');
+       echo '<a href="index.php">Index</a>';
    }
+
   require_once('footer.php');
 ?>

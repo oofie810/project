@@ -30,16 +30,16 @@
 	
 	  public static function loadRecipeIngredients($recipeId){
 	    $sql = "
-		    SELECT
-		      i.name AS ingredient_name,
-          i.id,
-		      rti.amount,
-		      u.name AS unit_name
-		    FROM recipe_to_ingredient rti
-		    JOIN ingredient i ON rti.ingredient_id = i.id
-		    JOIN unit u ON rti.unit_id = u.id
-		    WHERE
-		      rti.recipe_id = :recipeId";
+		        SELECT
+		          i.name AS ingredient_name,
+              i.id,
+              rti.amount,
+              u.name AS unit_name
+            FROM recipe_to_ingredient rti
+            JOIN ingredient i ON rti.ingredient_id = i.id
+            JOIN unit u ON rti.unit_id = u.id
+            WHERE
+              rti.recipe_id = :recipeId";
 		    
 	    $params = array (':recipeId' => $recipeId);
 	    $data = Database::getMultipleRows($sql, $params);
@@ -58,9 +58,9 @@
 	    if(empty($names_found)){
 		    return array();
 	    } else{
-		    $ingredient_names_found = array();
-		    foreach($names_found as $name){
-		      $ingredient_names_found[] = $name;
+          $ingredient_names_found = array();
+          foreach($names_found as $name){
+            $ingredient_names_found[] = $name;
 		    }
 		  return $ingredient_names_found;
 	    }

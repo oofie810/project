@@ -1,6 +1,7 @@
 <?php
-    class SendEmail{
-	public static function send($email, $code){
+  class SendEmail{
+
+	  public static function send($email, $code){
 	    $to = $email;
   
 	    $subject = "Registration";
@@ -10,7 +11,7 @@
 	    mail($to,$subject,$message);
        
 	    return true;
-	}
-    }
+	  }
+  }
 
 ?>

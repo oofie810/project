@@ -11,6 +11,7 @@
     echo '<p>You can edit your user settings <a href="usersettings.php">here</a></p>';
     echo $_SERVER['REMOTE_ADDR'];
   }
+
   $data = Recipe::lazyLoadRecipes();
   foreach ($data as $recipe){
     echo '<ul>';

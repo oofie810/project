@@ -35,44 +35,44 @@
           echo '<p class="error">Please provide the necessary information.</p>';
       }	
     } else{
-      $user = User::loadUserFromUsername($username);
-      $first_name = $user->getFirstName();;
-      $last_name = $user->getLastName();;
-      $email = $user->getEmail();
-      $gender = $user->getGender();  
-      $birthdate = $user->getBirthDate();
+        $user = User::loadUserFromUsername($username);
+        $first_name = $user->getFirstName();;
+        $last_name = $user->getLastName();;
+        $email = $user->getEmail();
+        $gender = $user->getGender();  
+        $birthdate = $user->getBirthDate();
     }
 ?>
 
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-   <table>
+  <table>
       <caption>Personal Information</caption>
       <tr>
-          <th>First Name:</th>
-          <td><input type="text" id="firstname" name="firstname" value="<?php if(isset($first_name)) echo $first_name; ?>" /></td>
+        <th>First Name:</th>
+        <td><input type="text" id="firstname" name="firstname" value="<?php if(isset($first_name)) echo $first_name; ?>" /></td>
       </tr>
       <tr>
-          <th><label for="lastname">Last Name:</label></th>
-          <td><input type="text" id="lastname" name="lastname" value="<?php if(!empty($last_name)) print $last_name; ?>" /></td>
+        <th><label for="lastname">Last Name:</label></th>
+        <td><input type="text" id="lastname" name="lastname" value="<?php if(!empty($last_name)) print $last_name; ?>" /></td>
       </tr>
       <tr>
-          <th>Email:</th>
-          <td><input size="35" type="text" id="email" name="email" value="<?php if(!empty($email)) echo $email; ?>" /></td>
+        <th>Email:</th>
+        <td><input size="35" type="text" id="email" name="email" value="<?php if(!empty($email)) echo $email; ?>" /></td>
       </tr>
       <tr>
-          <th><label for="birthdate">Birthdate (YYYY/MM/DD):</label></th>
-          <td><input type="text" id="birthdate" name="birthdate" value="<?php if(!empty($birthdate)) echo $birthdate; ?>" /></td>
+        <th><label for="birthdate">Birthdate (YYYY/MM/DD):</label></th>
+        <td><input type="text" id="birthdate" name="birthdate" value="<?php if(!empty($birthdate)) echo $birthdate; ?>" /></td>
       </tr>
       <tr>
-          <th><label for="gender">Gender:</label></th>
-          <td><select if="gender" name="gender">
-          <option value="M" <?php if(!empty($gender) && $gender == 'M') echo 'selected = "selected"';?>>Male</option>
-          <option value="F" <?php if(!empty($gender) && $gender == 'F') echo 'selected = "selected"';?>>Female</option>
-          </select></td>
+        <th><label for="gender">Gender:</label></th>
+        <td><select if="gender" name="gender">
+        <option value="M" <?php if(!empty($gender) && $gender == 'M') echo 'selected = "selected"';?>>Male</option>
+        <option value="F" <?php if(!empty($gender) && $gender == 'F') echo 'selected = "selected"';?>>Female</option>
+        </select></td>
       </tr>
       <tr>
-          <th><label for="picture">Picture:</label></th>
-          <td><input type="file" id="picture" name="picture" /></td>
+        <th><label for="picture">Picture:</label></th>
+        <td><input type="file" id="picture" name="picture" /></td>
       </tr>
       <tr>
       <th></th>
@@ -80,16 +80,14 @@
       <input id="button" type ="submit" value="Save" name="submit" />
       </td>
       </tr>
- </table>
+  </table>
 </form>
 </body>
 </html>
 <?php
-}
-
-  else{
-    echo '<p>You need to be logged in to access this page. You can login<a href='.
-         '"login.php"> here</a> or sign up <a href="signup.php">here.</a></p>'; 
+  } else{
+      echo '<p>You need to be logged in to access this page. You can login<a href='.
+           '"login.php"> here</a> or sign up <a href="signup.php">here.</a></p>'; 
   }
 
 function check_email ($email){

@@ -3,7 +3,7 @@
   require_once('header.php');
   require_once('../lib/Database.php');
 
-  $passkey=$_GET['passkey'];
+  $passkey = $_GET['passkey'];
    
   $confirmed =  User::confirmUser($passkey);
   if ($confirmed){
@@ -13,5 +13,7 @@
       echo '<p>Click <a href="../lib/resendemail.php">here </a>to ask for another confirmation email. Or click <a href="signup.php">here</a> to Register.</p>';
 
   } 
+
   require_once('footer.php');
 ?>
+

@@ -14,7 +14,7 @@
       if (!empty($pass1) && !empty($pass2) && !empty($oldpass) && ($pass1 == $pass2)){
         $update = User::updatePass($pass1, $oldpass, $user);
         if ($update){
-            echo '<p>Your password has been changed.</p>';	
+          echo '<p>Your password has been changed.</p>';	
         } else{
             echo 'Please make sure you entered the right password';
         } 

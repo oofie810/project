@@ -27,10 +27,10 @@
 ?>
 
 <p>Please enter your email address.</p>
-   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-   <label for="email">Email:</label>
-   <input type="text" id="email" name="email"/><br />
-   <input type="submit" value="Submit" name="submit" />
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email"/><br />
+    <input type="submit" value="Submit" name="submit" />
   </form>
 
 <?php require_once('footer.php'); ?>
