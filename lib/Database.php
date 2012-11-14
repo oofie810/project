@@ -1,9 +1,7 @@
 <?php
+  require_once('Config.php');
+  
   class Database{
-    private $DB_HOST = 'localhost';
-    private $DB_USER = 'ronald';
-    private $DB_PASS = 'oofie810';
-    private $DB_NAME = 'recipe';
     private $dbh;
     private $stmt;
     private static $instance;
@@ -14,7 +12,8 @@
     }
  
     private function connect(){
-      $this->dbh = new PDO("mysql:host=$this->DB_HOST; dbname=$this->DB_NAME", $this->DB_USER, $this->DB_PASS);
+      $config = Config::getInstance();
+      $this->dbh = new PDO("mysql:host=$config->dbHost; dbname=$config->dbName", $config->dbUser, $config->dbPass);
       $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
   

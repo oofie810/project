@@ -6,8 +6,7 @@
   require_once('../lib/Recipe.php');
   require_once('../lib/Ingredient.php');
 
-  if(User::isLoggedIn($_SESSION['username'])){ 
-
+  if(User::isLoggedIn()){ 
     $username = $_SESSION['username'];
     $user = User::loadUserFromUsername($username);
     $user_id = $user->getUserId();
@@ -18,8 +17,7 @@
     echo '<tr><td class="label">Email:</td><td>' .$user->getEmail(). '</td></tr>';
     echo '<tr><td class="label">Gender:</td><td>' .$user->getGender() .'</td></tr>';
     echo '<tr><td class="label">Birthdate:</td><td>' .$user->getBirthDate().'</td></tr>';
-    //TODO check how to do user class with image
-    echo '<tr><td class="label">Image:</td><td>img src="' .UP_PATH . $user->getImage() . '" alt="Profile Picture" /></td></tr>';
+    echo '<tr><td class="label">Image:</td><td><img src= "'. UP_PATH . $user->getImage() .'" alt="Profile Picture" /></td></tr>';
     echo '</table><br />';
     echo '<table>';
       

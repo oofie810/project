@@ -4,7 +4,7 @@
   require_once('../lib/appvars.php');
   require_once('../lib/Database.php');
 
-  if(User::isLoggedIn($_SESSION['username'])){ 
+  if(User::isLoggedIn()){ 
     $username = $_SESSION['username'];
 
     if (isset($_POST['submit'])) {
@@ -19,16 +19,16 @@
       if(!empty($first_name) && !empty($last_name) && !empty($email)) {
         if (check_email($email)){   
           //TODO figure out how to upload user pic. Dont know if class or PDO problem
-          if (empty($user_pic)){
+          if (!empty($user_pic)){
             $target = UP_PATH . $user_pic;
             move_uploaded_file($_FILES['picture']['tmp_name'], $target);
-            $update =User::updateProfPic($first_name, $last_name, $email, $user_pic, $birthdate, $gender, $username);
+            $update =User::updateProfile($first_name, $last_name, $email, $user_pic, $birthdate, $gender, $username);
           }
-            if($update){
-              echo '<p>Your profile has been updated. Click <a href="viewprofile.php">here</a> to view your profile</p>';  
-              exit();
+          if($update){
+            echo '<p>Your profile has been updated. Click <a href="viewprofile.php">here</a> to view your profile</p>';  
+            exit();
             }
-        } else{
+        }else{
             echo '<p class="error">Please provide a valid email address.</p>';
         }
       } else {
@@ -44,7 +44,7 @@
     }
 ?>
 
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
   <table>
       <caption>Personal Information</caption>
       <tr>

@@ -1,7 +1,7 @@
 <?php
-    require_once('LogAction.php');
-    require_once('Database.php');
-    class User{
+  require_once('LogAction.php');
+  require_once('Database.php');
+  class User{
 
     private $userId, $username, $password, $email;
     private $first_name, $last_name, $date_of_birth, $gender, $status, $profile_pic;
