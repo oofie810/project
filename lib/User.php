@@ -3,10 +3,10 @@
   require_once('Database.php');
   class User{
 
-    private $userId, $username, $password, $email;
+    private $userId, $username, $password, $email, $privileges;
     private $first_name, $last_name, $date_of_birth, $gender, $status, $profile_pic;
     public function __construct($userId, $username, $password, $email,
-				$first_name, $last_name, $dob, $gender, $status, $profile_pic){
+				$first_name, $last_name, $dob, $gender, $status, $profile_pic, $privileges){
 	    $this->setUserId($userId);
 	    $this->setUsername($username);
 	    $this->setPassword($password);
@@ -17,6 +17,7 @@
 	    $this->setGender($gender);
 	    $this->setStatus($status);
 	    $this->setImage($profile_pic);
+      $this->setPrivileges($privileges);
     }
     public function setUserId($id){
         $this->userId= $id;
@@ -78,14 +79,20 @@
     public function getImage(){
         return $this->profile_pic;    
     }
-    
+    public function setPrivileges($privileges){
+      $this->privileges = $privileges;  
+    }
+    public function getPrivileges(){
+      return $this->privileges;  
+    }
+
     public static function loadUserFromUsername($username){
         $sql = 'SELECT * FROM user WHERE username = :username';
 
         $params = array (':username' => $username);
 
         $data = Database::getRow($sql, $params);
-        $user = new User($data['id'], $data['username'], $data['password_hash'], $data['email'], $data['first_name'], $data['last_name'], $data['date_of_birth'], $data['gender'], $data['status'], $data['profile_image']);
+        $user = new User($data['id'], $data['username'], $data['password_hash'], $data['email'], $data['first_name'], $data['last_name'], $data['date_of_birth'], $data['gender'], $data['status'], $data['profile_image'], $data['privileges']);
         return $user;
     }
 
@@ -95,7 +102,7 @@
         $params = array (':email' 	=> $email);
 
         $data = Database::getRow($sql, $params);
-        $user = new User($data['id'], $data['username'], $data['password_hash'], $data['email'], $data['first_name'], $data['last_name'], $data['date_of_birth'], $data['gender'], $data['status'], $data['profile_image']);
+        $user = new User($data['id'], $data['username'], $data['password_hash'], $data['email'], $data['first_name'], $data['last_name'], $data['date_of_birth'], $data['gender'], $data['status'], $data['profile_image'], $data['privileges']);
         return $user;
     }
 
@@ -144,7 +151,7 @@
 
         $data = Database::getRow($sql, $params);
         if($data){
-          $user = new User($data['id'], $data['username'], $data['password_hash'], $data['email'], $data['first_name'], $data['last_name'], $data['date_of_birth'], $data['gender'], $data['status'], $data['profile_image']);
+          $user = new User($data['id'], $data['username'], $data['password_hash'], $data['email'], $data['first_name'], $data['last_name'], $data['date_of_birth'], $data['gender'], $data['status'], $data['profile_image'], $data['privileges']);
           $id = $user->getUserId();
           LogAction::insertLog($id, 3);
           return $user;
@@ -227,6 +234,7 @@
         Database::insert($sql, $params);
         return true;
     }
+
   }
 
 

@@ -1,8 +1,9 @@
 <?php	
   class Recipe{
-    private $recipeName, $directions, $ingredients;
+    private $recipeId, $recipeName, $directions, $ingredients;
 
-    public function __construct($recipeName, $directions, $ingredients){
+    public function __construct($recipeId, $recipeName, $directions, $ingredients){
+      $this->setRecipeId($recipeId);
       $this->setRecipeName($recipeName);
       $this->setDirections($directions);
       $this->setIngredients($ingredients);
@@ -26,13 +27,19 @@
     public function getIngredients(){
       return $this->ingredients;    
     }
+    public function setRecipeId($recipeId){
+      $this->recipeId = $recipeId;  
+    }
+    public function getRecipeId(){
+      return $this-> recipeId;  
+    }
 
     public static function loadRecipe($recipeId){
       $sql = "SELECT * FROM recipe WHERE id = :id";
       $params = array (':id' => $recipeId);
       $recipe_result = Database::getRow($sql, $params);
       $ingredients_result = Ingredient::loadRecipeIngredients($recipeId);
-      return new Recipe($recipe_result['name'], $recipe_result['directions'], $ingredients_result);
+      return new Recipe($recipe_result['id'], $recipe_result['name'], $recipe_result['directions'], $ingredients_result);
     }
 
     public static function loadRecipeByUser($userId){
@@ -42,11 +49,23 @@
       $recipes = array();
       foreach($results as $recipe){
         $ingredients = Ingredient::loadRecipeIngredients($recipe['id']);
-        $recipes[] = new Recipe($recipe['name'], $recipe['directions'], $ingredients);
+        $recipes[] = new Recipe($recipe['id'], $recipe['name'], $recipe['directions'], $ingredients);
       }
       return $recipes;
     }
 	
+    public static function recipeSearch($name){
+      $sql = "SELECT name, id, directions FROM recipe WHERE name = :name";
+      $params = array (':name' => $name);
+      $results = Database::getMultipleRows($sql, $params);
+      $recipes = array();
+      foreach($results as $recipe){
+        $ingredients = Ingredient::loadRecipeIngredients($recipe['id']);
+        $recipes[] = new Recipe($recipe['id'], $recipe['name'], $recipe['directions'], $ingredients);
+      }
+      return $recipes;
+    }
+
     public static function lazyLoadRecipes(){
       $sql = 'SELECT name, id, directions FROM recipe ORDER BY submission_date DESC';
       $recipes = Database::getMultipleRows($sql, array());
