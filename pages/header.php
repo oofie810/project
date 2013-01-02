@@ -27,7 +27,7 @@
 	      session_start();
 	      if(User::isLoggedIn()){
             echo '<ul id="menu">';
-              echo '<li><a href="http://192.168.1.103">HOME</a></li>';
+              echo '<li><a href="http://localhost">HOME</a></li>';
               echo '<li><a href="">Recipes</a>';
                 echo '<ul>';
                   echo '<li><a href="submit.php">Submit</a></li>';
@@ -43,7 +43,7 @@
               echo '<li><a href="logout.php">LogOut</a></li></span>';
             echo '</ul>';
         } else{
-          echo '<a class="abc" href="http://192.168.1.103">HOME</a>';
+          echo '<a class="abc" href="http://localhost">HOME</a>';
           echo '<a class="linkright" href="signup.php">Sign Up</a>';
           echo '<a class="linkright" href="login.php">Log In</a>';
         }

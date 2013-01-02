@@ -1,12 +1,14 @@
 <?php	
+	require_once('Ingredient.php');
   class Recipe{
-    private $recipeId, $recipeName, $directions, $ingredients;
+    private $recipeId, $recipeName, $directions, $ingredients, $category;
 
-    public function __construct($recipeId, $recipeName, $directions, $ingredients){
+    public function __construct($recipeId, $recipeName, $directions, $ingredients, $category){
       $this->setRecipeId($recipeId);
       $this->setRecipeName($recipeName);
       $this->setDirections($directions);
       $this->setIngredients($ingredients);
+			$this->setCategory($category);
     }
 
     public function setRecipeName($recipeName){
@@ -33,13 +35,29 @@
     public function getRecipeId(){
       return $this-> recipeId;  
     }
+		public function setCategory($category){
+			$this->category = $category;	
+		}
+		public function getCategory(){
+			return $this-> category;
+		}
 
     public static function loadRecipe($recipeId){
       $sql = "SELECT * FROM recipe WHERE id = :id";
       $params = array (':id' => $recipeId);
       $recipe_result = Database::getRow($sql, $params);
       $ingredients_result = Ingredient::loadRecipeIngredients($recipeId);
-      return new Recipe($recipe_result['id'], $recipe_result['name'], $recipe_result['directions'], $ingredients_result);
+      return new Recipe($recipe_result['id'], $recipe_result['name'], $recipe_result['directions'], $ingredients_result, $category);
+    }
+
+		//function returns a random object from array of objects. 
+    public static function loadRecipeUseCat($category){
+      $sql = "SELECT * FROM recipe WHERE category = :category";
+      $params = array (':category' => $category);
+      $recipe_result = Database::getMultipleRows($sql, $params);
+			$random = array_rand($recipe_result);
+      $ingredients_result = Ingredient::loadRecipeIngredients($recipe_result[$random]['id']);
+      return new Recipe($recipe_result[$random]['id'], $recipe_result[$random]['name'], $recipe_result[$random]['directions'], $ingredients_result, $recipe_result[$random]['category']);
     }
 
     public static function loadRecipeByUser($userId){
@@ -49,19 +67,19 @@
       $recipes = array();
       foreach($results as $recipe){
         $ingredients = Ingredient::loadRecipeIngredients($recipe['id']);
-        $recipes[] = new Recipe($recipe['id'], $recipe['name'], $recipe['directions'], $ingredients);
+        $recipes[] = new Recipe($recipe['id'], $recipe['name'], $recipe['directions'], $ingredients, $category);
       }
       return $recipes;
     }
 	
     public static function recipeSearch($name){
-      $sql = "SELECT name, id, directions FROM recipe WHERE name = :name";
-      $params = array (':name' => $name);
+      $sql = "SELECT name, id, directions FROM recipe WHERE name LIKE :name";
+      $params = array (':name' => '%' . $name . '%');
       $results = Database::getMultipleRows($sql, $params);
       $recipes = array();
       foreach($results as $recipe){
         $ingredients = Ingredient::loadRecipeIngredients($recipe['id']);
-        $recipes[] = new Recipe($recipe['id'], $recipe['name'], $recipe['directions'], $ingredients);
+        $recipes[] = new Recipe($recipe['id'], $recipe['name'], $recipe['directions'], $ingredients, $category);
       }
       return $recipes;
     }
@@ -72,7 +90,8 @@
       return $recipes;
     }
 
-    public static function submitRecipe($recipeName, $directions, $userId, $ingredient_names, $amounts, $units){
+		//set category to 1 for now. have to change this to accept POST from submit.php
+    public static function submitRecipe($recipeName, $directions, $userId, $ingredient_names, $amounts, $units, $category){
       $ingredient_names_found = Ingredient::loadMultipleIngredientNames($ingredient_names);
 
       // insert missing ingredients
@@ -81,13 +100,33 @@
         Ingredient::insertMultipleIngredients($missing_ingredient_names); 
       }
 
-      $sql ="INSERT INTO recipe (name, directions, submitted_by, submission_date) VALUES (:name, :directions, :user, NOW())";
-      $params = array(':name'	=> $recipeName, ':directions' => $directions, ':user'	=> $userId);
+      $sql ="INSERT INTO recipe (name, directions, submitted_by, submission_date, category) VALUES (:name, :directions, :user, NOW(), :category)";
+      $params = array(':name'	=> $recipeName, ':directions' => $directions, ':user'	=> $userId, ':category' => $category);
       $recipe_id = Database::insert($sql, $params);
 
       Ingredient::associateIngredientsToRecipe($recipe_id, $ingredient_names, $amounts, $units);
       LogAction::insertLog($userId, 7);
       return $recipe_id;
+    }
+
+		//not sure if this is better if I use recipe Id. This is basically how I did the viewrecipe.php page
+		//and I just moved it here
+		public static function displayRecipe($recipe){
+			echo '<div id = "recipe">';
+      echo '<h4>' . $recipe->getRecipeName() . '</h4>';
+      echo '<div id ="ing">';
+      echo '<p>Ingredients:</p>';
+        echo '<ul>';
+        foreach($recipe->getIngredients() as $ingr){
+	  			echo '<li>' . $ingr->getAmount() . ' ' . $ingr->getUnitName() . ' ' . $ingr->getName() . '</li>';
+				}		
+      	echo '</ul>';
+      echo '</div>';
+      echo '<div id="directions">';
+      echo '<p class="directions">Directions:</p><p> ' . $recipe->getDirections() . '</p>';
+      echo '</div>';
+			echo '</div>';
+			echo '<br />';
     }
   
 }

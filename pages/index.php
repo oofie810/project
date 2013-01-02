@@ -20,8 +20,16 @@
     </form>
   </div>
   
-  <div id="column1">Column1</div>
-
+  <div id="column1">Column1<br />
+		<form method="post" action="viewmeal.php">
+			<select id="planner" name="meal"/>
+				<option value ="1">1 course</option>
+				<option value ="2">2 courses</option>
+				<option value ="3">3 courses</option>
+				<option value ="4">4 courses</option>
+				<input type="submit" value="Submit" name="submitMeal" />
+		</form>
+  </div>
   <div id="column2">Column2</div>
 
 

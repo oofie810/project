@@ -141,6 +141,7 @@ ul#menu a:hover{color:#666666;}
   border-style: solid;
   border-color: #ff0000;
   text-align: center;
+	overflow:	hidden;
 }
 
 #column2, #directions{
@@ -153,6 +154,7 @@ ul#menu a:hover{color:#666666;}
   border-style: solid;
   border-color: #aa3200;
   text-align: center;
+	overflow: hidden;
 }
 
 #searchResults{
@@ -180,4 +182,9 @@ h3{
   margin-top: 50px;
 }
 
+#recipe{
+	position: relative;
+	padding: 20px;
+
+}
 

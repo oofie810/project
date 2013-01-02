@@ -15,6 +15,9 @@
 
   $user = User::loadUserFromUsername($_SESSION['username']);
   $id = $user->getUserId();
+
+	$rand = Recipe::loadRecipeUseCat(1);
+	Recipe::displayRecipe($rand);
 /*  
   $array = Image::loadImagesByUser($id);
   
@@ -29,10 +32,9 @@
     echo '<img src= "' . UP_PATH . $pic->getFilename() . '" />';
     echo $pic->getCaption();
   }
-*/
   $id = 1;
   $res = 1;
   $pic = Image::loadImageForSearchRecipe($id, $res);
   echo '<img src= "' . DISP . $pic->getFilename() . '"  />';
-
+*/
 ?>

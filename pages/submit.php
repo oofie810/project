@@ -14,11 +14,12 @@
       $directions  = $_POST['directions'];
       $units       = $_POST['unit'];
       $amounts	   = $_POST['amount'];
-      
+      $category 	 = $_POST['category'];
+
       if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
 	      $user = User::loadUserFromUsername($_SESSION['username']);
         $userId = $user->getUserId();
-	      Recipe::submitRecipe($recipe_name, $directions, $userId, $ingredients, $amounts, $units);
+	      Recipe::submitRecipe($recipe_name, $directions, $userId, $ingredients, $amounts, $units, $category);
 
 	      $url = '/';
         header('Location: ' . $url);
@@ -31,7 +32,17 @@
 
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <ul id="recipe_input">
-      <li>Recipe:</li>
+      <li>Category:
+			<select id="category" name="category" />
+			<?php
+				$query = "SELECT * FROM category";
+				$data = Database::getMultipleRows($query, array());
+				foreach($data as $category){
+					echo "<option value=\"".$category['id']."\">".$category['category']."</option>\n";
+				}
+				?>
+			</select></li>
+			<li>Recipe Name:</li>
       <li><input size="70" type ="text" id ="rec_name" name="rec_name"
         onblur="validateNonEmpty(this, document.getElementById('rec_help'))">
         <span id="rec_help" class="help"></span>	 
@@ -74,6 +85,7 @@
         <span id="dir_help" class="help"></span>
       </li>
     </ul>
+
     <input class="button" type="reset" name="Reset" />
     <input class="button" type="submit" value ="Submit" name="submit" />
   </form>
