@@ -25,25 +25,25 @@
           User::insertNewUser($username, $pass, $code, $email);
           $sent= SendEmail::send($email, $code);
           if($sent){
-            echo '<p>Please wait for email for confirmation.</p>';
+            echo '<div class="success">Please wait for email for confirmation.</div>';
             exit();
           }
         } else {
-            echo '<p class="error">The password must be at least 8 characters.</p>';
+            echo '<div class="error">The password must be at least 8 characters.</div>';
         }
       } else{
           //an account already exists for the username
-          echo '<p class="error">An account already exists for this username / email. Please use a different one.</p>';
+          echo '<div class="error">An account already exists for this username / email. Please use a different one.</div>';
           $user = "";
       }
     } else {
-        echo '<p class="error">You must enter all of the data needed.</p>';
+        echo '<div class="error">You must enter all of the data needed.</div>';
     }
   }
 ?>
 
-<p>Please enter your desired username and password.</p>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<p class="heading">Please enter your desired username and password.</p>
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="genericform" id="signupform">
   <fieldset>
     <legend>Registration Info</legend>
     <label for="email">Email:</label>
@@ -54,8 +54,8 @@
     <input type="password" id="password" name="password"/><br />
     <label for="password2">Password (retype):</label>
     <input type="password" id="password2" name="password2"/><br />
+    <input type="submit" value="Sign Up" name="submit" />
   </fieldset>
- <input type="submit" value="Sign Up" name="submit" />
 </form>
 </html>
 

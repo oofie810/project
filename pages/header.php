@@ -8,44 +8,47 @@
       require_once('../lib/User.php');
 	    if (!empty($css_files)){
 	      foreach($css_files as $css_file){
-	      echo '<link rel="stylesheet" type="text/css" href="css/'.$css_file.'" />';
+	      echo '<link rel="stylesheet" type="text/css" href="/css/'.$css_file.'" />';
 	      }
 	    }
 	    if(!empty($js_files)){
 	      foreach($js_files as $js_file){
-	        echo '<script language="javascript" src="scripts/'.$js_file.'"></script>';
+	        echo '<script language="javascript" src="/scripts/'.$js_file.'"></script>';
 	      }       
 	    }
     ?>
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"/></script>
       <script src="scripts/galleria-1.2.8.min.js"></script>
   </head>
-  <body>
+  <body id="body_<?=basename($_SERVER['PHP_SELF'], ".php")?>">
     <div id="header">
     <?php
       if(session_id() == ''){
 	      session_start();
 	      if(User::isLoggedIn()){
             echo '<ul id="menu">';
-              echo '<li><a href="http://localhost">HOME</a></li>';
-              echo '<li><a href="">Recipes</a>';
-                echo '<ul>';
-                  echo '<li><a href="submit.php">Submit</a></li>';
-                echo '</ul>';
-                echo '</li>';
+              echo '<li><a href="/logout.php">LogOut</a></li></span>';
+              echo '<span class="right"><li><a href="/viewprofile.php">'.$_SESSION['username'].'</a></li>';
               echo '<li><a href="">User CP</ a>';
                 echo '<ul>';
-                  echo '<li><a href="editprofile.php">Edit Profile</a></li>';
-                  echo '<li><a href="usersettings.php">Edit Settings</a></li>';
+                  echo '<li><a href="/editprofile.php">Edit Profile</a></li>';
+                  echo '<li><a href="/usersettings.php">Edit Settings</a></li>';
                 echo '</ul>';
               echo '</li>';
-              echo '<span class="right"><li><a href="viewprofile.php">'.$_SESSION['username'].'</a></li>';
-              echo '<li><a href="logout.php">LogOut</a></li></span>';
+              
+              echo '<li><a href="">Recipes</a>';
+                echo '<ul>';
+                  echo '<li><a href="/submit.php">Submit</a></li>';
+                echo '</ul>';
+                echo '</li>';
+                           echo '<li><a href="/">HOME</a></li>';
             echo '</ul>';
         } else{
-          echo '<a class="abc" href="http://localhost">HOME</a>';
-          echo '<a class="linkright" href="signup.php">Sign Up</a>';
-          echo '<a class="linkright" href="login.php">Log In</a>';
+          echo '<ul id="menu">';
+            echo '<li><a href="/login.php" class="right">Log In</a></li>';
+            echo '<li><a href="/signup.php" class="right">Sign Up</a></li>';
+            echo '<li><a href="/" class="right">HOME</a><li>';
+          echo '</ul>';
         }
       }
     ?>

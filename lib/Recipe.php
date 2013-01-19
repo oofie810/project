@@ -90,7 +90,6 @@
       return $recipes;
     }
 
-		//set category to 1 for now. have to change this to accept POST from submit.php
     public static function submitRecipe($recipeName, $directions, $userId, $ingredient_names, $amounts, $units, $category){
       $ingredient_names_found = Ingredient::loadMultipleIngredientNames($ingredient_names);
 

@@ -1,8 +1,14 @@
 #header{
-    background-color:	#17cc4f;;
+    background-color:	#f1900d;
     height:		35px;
     margin:		0px;
  }
+
+p.heading {
+  text-align: center;
+  color: #998;
+  font-weight: normal;
+}
 
 table{
     border:		solid black;
@@ -23,8 +29,7 @@ table{
     }
 
 #footer{
-    background-color:	#675c47;
-    color:		#efe5d0;
+    color:		grey;
     position:         	relative;
     text-align:       	center;
     padding:          	15px;
@@ -34,10 +39,14 @@ table{
     }
 
 body{
-    font-family:      	Georgia, "Times New Roman", Times, serif;
+    font-family:        tahoma, verdana, arial, sans-serif;
     font-size:        	15px;
     margin:	        0px;
     }
+
+#body_index {
+  margin-top: 65px;
+}
 
 .button{
     width:		100px;
@@ -68,23 +77,20 @@ ul#menu{
   text-align: center;
   }
   ul#menu li{
-    float: left;
+    float: right;
     margin: 0;
     padding: 0;
     position: relative;
     list-style: none;
-    background: #c93;
     }
     ul#menu li a{
       width: 100px;
       display: block;
-      border: 1px solid #fff;
       text-align: center;
       text-decoration: none;
       color: #fff;
-      text-shadow: 0.1em 0.1em 0.3em #000;
       }
-      ul#menu li:hover{background: #cc3;}
+      ul#menu li:hover{background: #998;}
         ul#menu ul{
           position: absolute;
           margin: 0;
@@ -93,8 +99,8 @@ ul#menu{
           top: 27px;
           visibility: hidden;
           }
-          ul#menu li:hover ul{visibility: visible;}
-ul#menu a:hover{color:#666666;}
+          ul#menu li:hover ul{visibility: visible;background: #998;}
+ul#menu a:hover{color:#fff; background: #998;}
 
 .right{
    float: right; 
@@ -117,18 +123,39 @@ ul#menu a:hover{color:#666666;}
 }
 
 #search{
-  background-image: url("/user_generated_images/original/adccf1a7aee8727954b3a62a4589098c.jpg");
+  background-image: url("/user_generated_images/original/main_bg.jpg");
   background-size:  cover;
   height: 400px;
   margin-top: -15px;
   background-position: center;
 }
 
+#searchform input[type=submit] {
+  height: 36px;
+  width: 79px;
+  background: url("/user_generated_images/original/button.png") no-repeat center;
+  border: none; 
+  color: transparent;
+  font-size: 0;
+  cursor: pointer;
+}
+
+#searchform input[type=text] {
+  width: 500px;
+  height: 40px;
+  border-color: #f1900d;
+  border: 1px;
+  font-size: 15px;
+  color: grey;
+  font-weight: bold;
+}
 
 #search ul{
+  margin-top:10px;
   padding-top: 160px;  
   list-style-type:  none;
   text-align: center;  
+  vertical-align: center;
 }
 
 #column1, #ing{
@@ -142,6 +169,7 @@ ul#menu a:hover{color:#666666;}
   border-color: #ff0000;
   text-align: center;
 	overflow:	hidden;
+  display:none;
 }
 
 #column2, #directions{
@@ -155,6 +183,7 @@ ul#menu a:hover{color:#666666;}
   border-color: #aa3200;
   text-align: center;
 	overflow: hidden;
+  display:none;
 }
 
 #searchResults{
@@ -187,4 +216,120 @@ h3{
 	padding: 20px;
 
 }
+
+.lineseparator{
+  height:1px;
+  background:#999999;
+  border-bottom:1px solid #999999;
+  margin: 0px 0px 15px 0px;
+}
+
+.genericform {
+  padding-bottom: 50px;
+  margin: 10px auto;
+  width: 600px;
+}
+
+.genericform label {
+  float: left;
+  width: 250px;
+  padding-right: 6px;
+  padding-bottom: 1px;
+  text-align:right;
+  color: #999999;
+}
+
+.genericform input {
+  width:350px;
+  border: 1px solid #f1900d;
+}
+
+.genericform input[type=file] {
+  border: none;
+}
+
+.genericform select {
+  width: 350px;
+  border: 1px solid #f1900d;
+}
+
+.genericform fieldset {
+  border: 1px solid #f1900d;
+  width: 700px;
+}
+
+.genericform legend {
+  color: #000;
+  border: 1px solid #f1900d;
+  padding: 2px 10px;
+}
+
+.genericform input[type=submit] {
+  border: none; 
+  color: transparent;
+  font-size: 0;
+  cursor: pointer;
+  float: right;
+}
+
+#loginform input[type=submit] {
+  height: 37px;
+  width: 61px;
+  background: url("/user_generated_images/original/login.png") no-repeat center;
+}
+
+#signupform input[type=submit] {
+  height: 37px;
+  width: 79px;
+  background: url("/user_generated_images/original/signup.png") no-repeat center;
+}
+
+#editprofileform input[type=submit] {
+  height: 37px;
+  width: 79px;
+  background: url("/user_generated_images/original/save.png") no-repeat center;
+}
+
+#usersettingsform input[type=submit] {
+  height: 37px;
+  width: 79px;
+  background: url("/user_generated_images/original/submit.png") no-repeat center;
+}
+
+.clearboth {
+  clear: both;
+}
+
+.error {
+  background: url("/user_generated_images/original/error_32.png") no-repeat;
+  border: 1px solid red;
+  width: 500px;
+  margin: 20px auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left:35px;
+  font-size:12px;
+  background-color: #C14;
+  color: #fff;
+  height: 25px;
+}
+
+.success {
+  background: url("/user_generated_images/original/tick_32.png") no-repeat;
+  border: 1px solid green;
+  width: 500px;
+  margin: 20px auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left:35px;
+  font-size:12px;
+  background-color: #0A7;
+  color: #fff;
+  height: 25px;
+}
+
+.success a {
+  color: #fff;
+}
+
 

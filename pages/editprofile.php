@@ -1,5 +1,5 @@
 <?php
-  $css_files=array('index.css','editprof.css');
+  $css_files=array('index.css');
   require_once('header.php');
   require_once('../lib/appvars.php');
   require_once('../lib/Database.php');
@@ -24,15 +24,14 @@
             move_uploaded_file($_FILES['picture']['tmp_name'], $target);
             $update =User::updateProfile($first_name, $last_name, $email, $user_pic, $birthdate, $gender, $username);
           }
-          if($update){
-            echo '<p>Your profile has been updated. Click <a href="viewprofile.php">here</a> to view your profile</p>';  
-            exit();
+          if(1 || $update){
+            echo '<div class="success">Your profile has been updated. Click <a href="viewprofile.php">here</a> to view your profile</div>';  
             }
         }else{
-            echo '<p class="error">Please provide a valid email address.</p>';
+            echo '<div class="error">Please provide a valid email address.</div>';
         }
       } else {
-          echo '<p class="error">Please provide the necessary information.</p>';
+          echo '<div class="error">Please provide the necessary information.</div>';
       }	
     } else{
         $user = User::loadUserFromUsername($username);
@@ -44,46 +43,30 @@
     }
 ?>
 
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
-  <table>
-      <caption>Personal Information</caption>
-      <tr>
-        <th>First Name:</th>
-        <td><input type="text" id="firstname" name="firstname" value="<?php if(isset($first_name)) echo $first_name; ?>" /></td>
-      </tr>
-      <tr>
-        <th><label for="lastname">Last Name:</label></th>
-        <td><input type="text" id="lastname" name="lastname" value="<?php if(!empty($last_name)) print $last_name; ?>" /></td>
-      </tr>
-      <tr>
-        <th>Email:</th>
-        <td><input size="35" type="text" id="email" name="email" value="<?php if(!empty($email)) echo $email; ?>" /></td>
-      </tr>
-      <tr>
-        <th><label for="birthdate">Birthdate (YYYY/MM/DD):</label></th>
-        <td><input type="text" id="birthdate" name="birthdate" value="<?php if(!empty($birthdate)) echo $birthdate; ?>" /></td>
-      </tr>
-      <tr>
-        <th><label for="gender">Gender:</label></th>
-        <td><select if="gender" name="gender">
+
+
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data" class="genericform" id="editprofileform">
+  <fieldset>
+        <legend>Edit Profile</legend>
+        <label for="firstname">First Name:</label>
+        <input type="text" id="firstname" name="firstname" value="<?php if(isset($first_name)) echo $first_name; ?>" />
+        <label for="lastname">Last Name:</label>
+        <input type="text" id="lastname" name="lastname" value="<?php if(!empty($last_name)) print $last_name; ?>" />
+        <label for="email">Email:</label>
+        <input size="35" type="text" id="email" name="email" value="<?php if(!empty($email)) echo $email; ?>" />
+        <label for="birthdate">Birthdate (YYYY/MM/DD):</label>
+        <input type="text" id="birthdate" name="birthdate" value="<?php if(!empty($birthdate)) echo $birthdate; ?>" /><br />
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
         <option value="M" <?php if(!empty($gender) && $gender == 'M') echo 'selected = "selected"';?>>Male</option>
         <option value="F" <?php if(!empty($gender) && $gender == 'F') echo 'selected = "selected"';?>>Female</option>
-        </select></td>
-      </tr>
-      <tr>
-        <th><label for="picture">Picture:</label></th>
-        <td><input type="file" id="picture" name="picture" /></td>
-      </tr>
-      <tr>
-      <th></th>
-      <td>
-      <input id="button" type ="submit" value="Save" name="submit" />
-      </td>
-      </tr>
-  </table>
+        </select>
+        <label for="picture">Picture:</label>
+        <input type="file" id="picture" name="picture" />
+        <div class="clearboth"></div>
+        <input id="button" type ="submit" value="Save" name="submit" />
+  </fieldset>
 </form>
-</body>
-</html>
 <?php
   } else{
       echo '<p>You need to be logged in to access this page. You can login<a href='.

@@ -6,13 +6,11 @@
 
   if(User::isLoggedIn()){
   }
- 
-  
  ?>
 
-
+  
   <div id="search">
-    <form method="get" action="search.php">
+    <form method="get" action="search.php" id="searchform">
       <ul>
       <li><input size="50" type="text" id="search_box" name="search_box" />
       <input type="submit" value="Search" name="search" /></li>

@@ -14,17 +14,17 @@
       if (!empty($pass1) && !empty($pass2) && !empty($oldpass) && ($pass1 == $pass2)){
         $update = User::updatePass($pass1, $oldpass, $user);
         if ($update){
-          echo '<p>Your password has been changed.</p>';	
+          echo '<div class="success">Your password has been changed.</div>';	
         } else{
-            echo 'Please make sure you entered the right password';
+            echo '<div class="error">Please make sure you entered the right password</div>';
         } 
       } else{
-          echo '<p class="error">You must provide the old password and the new password or double check that the new passwords are the same.</p>';
+          echo '<div class="error">You must provide the old password and the new password or double check that the new passwords are the same.</div>';
       }   
     }
 ?>
 
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="genericform" id="usersettingsform">
   <fieldset>
     <legend>User Settings</legend>
     <label for="oldpass">Old Password:</label>
@@ -33,13 +33,13 @@
     <input type="password" id="password1" name="password1"><br />
     <label for="password2">New Password (retype):</label>
     <input type="password" id="password2" name="password2"><br />
+    <input type="submit" value"Submit" name="submit" />
   </fieldset>
- <input type="submit" value"Submit" name="submit" />
 </form>
 
 <?php
   } else{
-      echo '<p class="error">You must be logged in. Log in <a href="login.php">here</a></p>';
+      echo '<div class="error">You must be logged in. Log in <a href="login.php">here</a></div>';
   }
 
   require_once('footer.php');

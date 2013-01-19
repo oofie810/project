@@ -1,5 +1,6 @@
     <div id="footer">
-    Thank you for visiting...
+      <div class="lineseparator"></div>
+      About | Contact Us | Privacy
     </div>
 </body>
 <html>

@@ -4,6 +4,7 @@
   require_once('header.php');
   require_once('../lib/Recipe.php');
   require_once('../lib/Ingredient.php');
+  require_once('../lib/Image.php');
 
   if(User::isLoggedIn($_SESSION['username'])){
 
@@ -15,12 +16,16 @@
       $units       = $_POST['unit'];
       $amounts	   = $_POST['amount'];
       $category 	 = $_POST['category'];
+      $pic         = $_FILES['picture']['name'];
+      $caption     = $_POST['caption'];
 
       if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
 	      $user = User::loadUserFromUsername($_SESSION['username']);
         $userId = $user->getUserId();
 	      Recipe::submitRecipe($recipe_name, $directions, $userId, $ingredients, $amounts, $units, $category);
-
+        if (!empty($pic)){
+          Image::saveImageWithCaption($pic, $id, $caption, 1);  
+        }
 	      $url = '/';
         header('Location: ' . $url);
       } else {
@@ -85,7 +90,15 @@
         <span id="dir_help" class="help"></span>
       </li>
     </ul>
-
+    <ul id="picture_input">
+      <li><label for="picture">Picture:</label>
+      <input type="file" id="picture" name="picture[]" />
+      <label for="caption">Caption:</label>
+      <input type="text" id="caption" name="caption[]" /></li>
+     </ul>
+     <ul>
+     <li><button type="button" name="button" onClick="newRowForImages('picture_input');">+++</li>
+     </ul>
     <input class="button" type="reset" name="Reset" />
     <input class="button" type="submit" value ="Submit" name="submit" />
   </form>
