@@ -2,7 +2,6 @@
   $css_files =array('index.css');
   require_once('header.php');
   require_once('../lib/Database.php');
-
   if(User::isLoggedIn($_SESSION['username'])){
     $user = $_SESSION['username'];
 

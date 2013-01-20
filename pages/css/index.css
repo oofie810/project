@@ -1,13 +1,21 @@
 #header{
     background-color:	#f1900d;
-    height:		35px;
+    height:		45px;
     margin:		0px;
- }
+    vertical-align: center;
+}
+
+#header img {
+  width: 250px;
+  float: left;
+}
 
 p.heading {
   text-align: center;
-  color: #998;
+  color: #2FAACE;
   font-weight: normal;
+  margin: 0 auto;
+  padding: 15px 0;
 }
 
 table{
@@ -36,16 +44,26 @@ table{
     margin:           	0px;
     font-size:        	60%;
     clear: 		right;
-    }
+    background-color: #FFF;
+    top: -10px;  
+  }
 
 body{
     font-family:        tahoma, verdana, arial, sans-serif;
     font-size:        	15px;
     margin:	        0px;
-    }
+    width: 1000px;
+    margin: 0 auto;
+    background: url("/user_generated_images/original/bodybg.png") repeat-x;
+    background-color: #FFF;
+}
 
 #body_index {
   margin-top: 65px;
+}
+
+#main {
+  background-color: #FFF;
 }
 
 .button{
@@ -71,36 +89,51 @@ caption{
     }
 
 ul#menu{
-  margin-top: 0;
+  eargin-top: 0;
   padding: 3px;
   line-height: 25px;
   text-align: center;
-  }
-  ul#menu li{
+}
+  
+ul#menu li{
     float: right;
     margin: 0;
     padding: 0;
     position: relative;
     list-style: none;
-    }
-    ul#menu li a{
+}
+
+ul#menu li a{
       width: 100px;
       display: block;
       text-align: center;
       text-decoration: none;
       color: #fff;
-      }
-      ul#menu li:hover{background: #998;}
-        ul#menu ul{
-          position: absolute;
-          margin: 0;
-          padding: 0;
-          left: 0;
-          top: 27px;
-          visibility: hidden;
-          }
-          ul#menu li:hover ul{visibility: visible;background: #998;}
-ul#menu a:hover{color:#fff; background: #998;}
+}
+  
+ul#menu li:hover{
+  background: #2FAACE;
+}
+        
+ul#menu ul{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    left: 0;
+    top: 25px;
+    visibility: hidden;
+}
+  
+ul#menu li:hover ul{
+    visibility: visible;
+    background: #2FAACE;
+}
+  
+ul#menu a:hover{
+    color:#2FAACE; 
+    background: #FFF;
+    border: 1px solid #2FAACE;
+}
 
 .right{
    float: right; 
@@ -226,8 +259,9 @@ h3{
 
 .genericform {
   padding-bottom: 50px;
-  margin: 10px auto;
+  margin: 0 auto;
   width: 600px;
+  padding-top:10px;
 }
 
 .genericform label {
@@ -241,7 +275,7 @@ h3{
 
 .genericform input {
   width:350px;
-  border: 1px solid #f1900d;
+  border: 1px solid #2FAACE;
 }
 
 .genericform input[type=file] {
@@ -250,18 +284,19 @@ h3{
 
 .genericform select {
   width: 350px;
-  border: 1px solid #f1900d;
+  border: 1px solid #2FAACE;
 }
 
 .genericform fieldset {
-  border: 1px solid #f1900d;
+  border: 1px solid #2FAACE;
   width: 700px;
 }
 
 .genericform legend {
-  color: #000;
-  border: 1px solid #f1900d;
+  color: #2FAACE;
+  border: 1px solid #2FAACE;
   padding: 2px 10px;
+  font-weight: 600;
 }
 
 .genericform input[type=submit] {
@@ -330,6 +365,40 @@ h3{
 
 .success a {
   color: #fff;
+}
+
+
+#recipe_input {
+  margin: 0;
+}
+
+#viewprofile table {
+  border: 0px;
+}
+
+#viewprofile td, th {
+  border: 0px;
+}
+
+#viewprofile .label {
+  float: left;
+  width: 250px;
+  padding-right: 6px;
+  padding-bottom: 1px;
+  text-align:right;
+  color: #999999;
+}
+
+#viewprofile legend {
+  color: #2FAACE;
+  border: 1px solid #2FAACE;
+  padding: 2px 10px;
+  font-weight: 600;
+}
+
+#viewprofile {
+  border: 1px solid #2FAACE;
+  width: 700px;
 }
 
 

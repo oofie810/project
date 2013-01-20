@@ -1,5 +1,5 @@
 <?php
-  require_once('Config.php');
+  require_once('../config/Config.php');
   class Image{
     private $id, $filename, $submitted_by, $submission_date, $caption, $homepage;
 

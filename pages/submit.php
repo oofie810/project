@@ -34,7 +34,6 @@
     }
       
 ?>
-
   <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
     <ul id="recipe_input">
       <li>Category:
@@ -108,7 +107,6 @@
           echo '<p>You need to be logged in to submit recipes. You can login<a href="login.php"> here '.
                '</a> or sign up<a href="signup.php"> here</a>';
       }
-
     require_once('footer.php');
   ?>
 

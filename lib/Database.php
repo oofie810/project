@@ -1,5 +1,5 @@
 <?php
-  require_once('Config.php');
+  require_once('../config/Config.php');
   
   class Database{
     private $dbh;
@@ -12,8 +12,7 @@
     }
  
     private function connect(){
-      $config = Config::getInstance();
-      $this->dbh = new PDO("mysql:host=$config->dbHost; dbname=$config->dbName", $config->dbUser, $config->dbPass);
+      $this->dbh = new PDO("mysql:host=" . Config::getDbMasterHost() . "; dbname=" . Config::getDbMasterName() . "", Config::getDbMasterUser(), Config::getDbMasterPass());
       $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
   

@@ -69,8 +69,8 @@
 </form>
 <?php
   } else{
-      echo '<p>You need to be logged in to access this page. You can login<a href='.
-           '"login.php"> here</a> or sign up <a href="signup.php">here.</a></p>'; 
+      echo '<div class="error">You need to be logged in to access this page. You can login<a href='.
+           '"login.php"> here</a> or sign up <a href="signup.php">here.</a></div>'; 
   }
 
 function check_email ($email){

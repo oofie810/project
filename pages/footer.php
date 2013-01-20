@@ -1,3 +1,4 @@
+    </div> <!-- END MAIN -->
     <div id="footer">
       <div class="lineseparator"></div>
       About | Contact Us | Privacy

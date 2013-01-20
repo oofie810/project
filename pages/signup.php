@@ -3,7 +3,6 @@
   require_once('../lib/SendEmail.php');
   require_once('header.php');
   require_once('../lib/Database.php');
-
   if (isset($_POST['submit'])){
     $username = $_POST['username'];
     $pass = $_POST['password'];
@@ -42,22 +41,19 @@
   }
 ?>
 
-<p class="heading">Please enter your desired username and password.</p>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="genericform" id="signupform">
-  <fieldset>
-    <legend>Registration Info</legend>
-    <label for="email">Email:</label>
-    <input type="text" id="email" name="email"/><br />
-    <label for="username">Username:</label>
-    <input type ="text" id ="username" name="username"/><br />
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password"/><br />
-    <label for="password2">Password (retype):</label>
-    <input type="password" id="password2" name="password2"/><br />
-    <input type="submit" value="Sign Up" name="submit" />
-  </fieldset>
-</form>
-</html>
-
-
+  <p class="heading">Please enter your desired username and password.</p>
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="genericform" id="signupform">
+    <fieldset>
+      <legend>Registration Info</legend>
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email"/><br />
+      <label for="username">Username:</label>
+      <input type ="text" id ="username" name="username"/><br />
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password"/><br />
+      <label for="password2">Password (retype):</label>
+      <input type="password" id="password2" name="password2"/><br />
+      <input type="submit" value="Sign Up" name="submit" />
+      </fieldset>
+    </form>
 <?php require_once('footer.php'); ?>

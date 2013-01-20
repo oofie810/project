@@ -22,6 +22,7 @@
   </head>
   <body id="body_<?=basename($_SERVER['PHP_SELF'], ".php")?>">
     <div id="header">
+    <img src="/user_generated_images/original/logo.png"/>
     <?php
       if(session_id() == ''){
 	      session_start();
@@ -53,3 +54,4 @@
       }
     ?>
     </div>
+    <div id="main">

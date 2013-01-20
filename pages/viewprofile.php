@@ -5,11 +5,12 @@
   require_once('../lib/Database.php');
   require_once('../lib/Recipe.php');
   require_once('../lib/Ingredient.php');
-
   if(User::isLoggedIn()){ 
     $username = $_SESSION['username'];
     $user = User::loadUserFromUsername($username);
     $user_id = $user->getUserId();
+    echo '<fieldset id="viewprofile">';
+    echo '<legend>User Info</legend>';
     echo '<table>';
     echo '<tr><td class="label">Username:</td><td>' .$user->getUsername(). '</td></tr>';
     echo '<tr><td class="label">First Name:</td><td>' .$user->getFirstName(). '</td></tr>';
@@ -19,6 +20,7 @@
     echo '<tr><td class="label">Birthdate:</td><td>' .$user->getBirthDate().'</td></tr>';
     echo '<tr><td class="label">Image:</td><td><img src= "'. UP_PATH . $user->getImage() .'" alt="Profile Picture" /></td></tr>';
     echo '</table><br />';
+    echo '</fieldset>';
     echo '<table>';
       
     $recipes_submitted = Recipe::loadRecipeByUser($user_id);
