@@ -15,7 +15,7 @@
     $recipe = Recipe::loadRecipe($recipeId);
 			echo '<div id = "recipe">';
       echo '<h4>' . $recipe->getRecipeName() . '</h4>';
-      echo '<div id ="ing">';
+      //echo '<div id ="ing">';
       echo '<p>Ingredients:</p>';
         echo '<ul>';
         foreach($recipe->getIngredients() as $ingr){
@@ -23,7 +23,7 @@
 				}		
       	echo '</ul>';
       echo '</div>';
-      echo '<div id="directions">';
+      //echo '<div id="directions">';
       echo '<p class="directions">Directions:</p><p> ' . $recipe->getDirections() . '</p>';
       echo '</div>';
 			echo '</div>';

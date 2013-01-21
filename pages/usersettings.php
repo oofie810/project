@@ -2,6 +2,11 @@
   $css_files =array('index.css');
   require_once('header.php');
   require_once('../lib/Database.php');
+  include_once('sidebar.php');
+
+?>
+  <div id="main">
+<?
   if(User::isLoggedIn($_SESSION['username'])){
     $user = $_SESSION['username'];
 
@@ -40,7 +45,9 @@
   } else{
       echo '<div class="error">You must be logged in. Log in <a href="login.php">here</a></div>';
   }
-
+?>
+  </div> <!-- END MAIN -->
+<?
   require_once('footer.php');
 
 ?>

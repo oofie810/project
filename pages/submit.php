@@ -5,7 +5,11 @@
   require_once('../lib/Recipe.php');
   require_once('../lib/Ingredient.php');
   require_once('../lib/Image.php');
-
+  
+  include_once('sidebar.php');
+?>
+  <div id="main">
+<?
   if(User::isLoggedIn($_SESSION['username'])){
 
     if (!empty($_POST['submit'])){
@@ -34,7 +38,7 @@
     }
       
 ?>
-  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
     <ul id="recipe_input">
       <li>Category:
 			<select id="category" name="category" />
@@ -101,7 +105,7 @@
     <input class="button" type="reset" name="Reset" />
     <input class="button" type="submit" value ="Submit" name="submit" />
   </form>
-
+  </div> <!-- END MAIN -->
   <?php
       } else {
           echo '<p>You need to be logged in to submit recipes. You can login<a href="login.php"> here '.

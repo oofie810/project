@@ -154,9 +154,9 @@
           $user = new User($data['id'], $data['username'], $data['password_hash'], $data['email'], $data['first_name'], $data['last_name'], $data['date_of_birth'], $data['gender'], $data['status'], $data['profile_image'], $data['privileges']);
           $id = $user->getUserId();
           LogAction::insertLog($id, 3);
-          return $user;
+          return true;
         } else{
-            echo 'You have entered an invalid username of password. Please try again';	
+          return false;
         }
     }
 

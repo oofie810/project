@@ -48,14 +48,14 @@
 
     
     public static function saveImageWithCaption($image, $submitted_by, $caption, $recipeId){
-      $config = Config::getInstance();
       $i = 0;
       foreach($_FILES['picture']['name'] as $n => $name){
+        error_log('inside saveImage');
         if(!empty($name)){
           $date = new DateTime();
           $extension = substr($name, -4);
           $filename = md5($date->format('U') . $submitted_by . $caption[$i] . $name) . $extension;
-          $target = $config->path . $filename;
+          $target = Config::getImageFolder() . 'original/' . $filename;
           if(move_uploaded_file($_FILES['picture']['tmp_name'][$n], $target)){
             $sql = "INSERT INTO 
                       image 
@@ -77,6 +77,16 @@
         }
         $i++;
       }
+    }
+
+    public static function saveUserImage($image, $submitted_by){
+          $target = Config::getImageFolder() . 'user_images/' . $image;
+          move_uploaded_file($_FILES['picture']['tmp_name'], $target);
+            $newImage = Config::getImageFolder() . 'user_images/resized/' . $image;
+            copy(Config::getImageFolder() . 'user_images/' . $image, $newImage);
+            $imagick = new Imagick($newImage);
+            $imagick->thumbnailImage(300, 200);
+            $imagick->writeImage();
     }
 
     public static function saveToImageToRecipeTable($imageId, $recipeId){
@@ -160,9 +170,8 @@
     }
 
     public static function resizeImage($filename, $extension, $id, $height, $width, $resolution){
-        $config = Config::getInstance();
-        $newImage = $config->imageFolder . $height . 'x' . $width . '/' . $filename;
-        copy($config->path . $filename, $newImage);
+        $newImage = Config::getImageFolder() . $height . 'x' . $width . '/' . $filename;
+        copy(Config::getImageFolder() . 'original/' .  $filename, $newImage);
         $imagick = new Imagick($newImage);
         $imagick->thumbnailImage($height, $width);
         $imagick->writeImage();

@@ -3,6 +3,10 @@
   require_once('header.php');
   require_once('../lib/Database.php');
 
+  include_once('sidebar.php');
+?>
+  <div id="main">
+<?
   $error_msg = "";
   
   if(isset($_POST['submit'])){
@@ -17,10 +21,14 @@
       if ($status == '0'){
         echo '<div class="error">Please confirm your account first.</div>';
       } else{
-          $user = User::login($user_un, $user_pw);
-          $username = $user->getUsername();
-          $_SESSION['username'] = $username;
-          setcookie('username', $username, time() + (60* 60 * 24 * 30));
+          $login = User::login($user_un, $user_pw);
+          if(!empty($login)){
+            $username = $user->getUsername();
+            $_SESSION['username'] = $username;
+            setcookie('username', $username, time() + (60* 60 * 24 * 30));
+          } else{
+            echo 'You have entered an invalid username or password. Please try again.';  
+          }
       }
     }else{
       $error_msg = 'Sorry, you must enter your username and password to login.';
@@ -45,12 +53,11 @@
   </fieldset>
 </form>
 
+</div> <!-- END MAIN -->
 <?php
    } else{
        Header("Location: /");
        exit();
-       echo('<p class="login">You are logged in as '.$_SESSION['username']. '.</p>');
-       echo '<a href="index.php">Index</a>';
    }
 
   require_once('footer.php');

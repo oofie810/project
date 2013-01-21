@@ -50,7 +50,7 @@ table{
 
 body{
     font-family:        tahoma, verdana, arial, sans-serif;
-    font-size:        	15px;
+    font-size:        	12px;
     margin:	        0px;
     width: 1000px;
     margin: 0 auto;
@@ -62,8 +62,23 @@ body{
   margin-top: 65px;
 }
 
-#main {
+#content {
   background-color: #FFF;
+  width: 1000px;
+  width: 100%;
+  overflow: auto; 
+}
+
+#main {
+  width: 800px;
+  float: left; 
+  padding-top: 15px;
+}
+
+#sidebar {
+  width: 200px;
+  float: left;
+  padding-top: 15px;
 }
 
 .button{
@@ -266,7 +281,7 @@ h3{
 
 .genericform label {
   float: left;
-  width: 250px;
+  width: 200px;
   padding-right: 6px;
   padding-bottom: 1px;
   text-align:right;
@@ -289,7 +304,7 @@ h3{
 
 .genericform fieldset {
   border: 1px solid #2FAACE;
-  width: 700px;
+  width: 600px;
 }
 
 .genericform legend {
@@ -382,7 +397,7 @@ h3{
 
 #viewprofile .label {
   float: left;
-  width: 250px;
+  width: 200px;
   padding-right: 6px;
   padding-bottom: 1px;
   text-align:right;
@@ -398,7 +413,30 @@ h3{
 
 #viewprofile {
   border: 1px solid #2FAACE;
-  width: 700px;
+  width: 600px;
 }
 
+#sidebar a {
+  color: #2FAACE;
+}
 
+#sidebar ul {
+  list-style-type:none;
+}
+
+#sidebar ul li {
+  /*border: 1px solid #F1900D;*/
+  font-weight:bold;
+  padding: 5px 10px;
+}
+
+#sidebar>ul>li>a {
+  background-color:#F1900D;
+  color: #FFF;
+  width: 150px;
+}
+
+#sidebar ul li ul li{
+  font-weight:normal;
+  border: none;
+}

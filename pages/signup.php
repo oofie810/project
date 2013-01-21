@@ -3,6 +3,10 @@
   require_once('../lib/SendEmail.php');
   require_once('header.php');
   require_once('../lib/Database.php');
+  include_once('sidebar.php');
+?>
+  <div id="main">
+<?
   if (isset($_POST['submit'])){
     $username = $_POST['username'];
     $pass = $_POST['password'];
@@ -56,4 +60,5 @@
       <input type="submit" value="Sign Up" name="submit" />
       </fieldset>
     </form>
+  </div> <!-- END MAIN -->
 <?php require_once('footer.php'); ?>

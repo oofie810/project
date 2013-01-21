@@ -3,7 +3,13 @@
   require_once('header.php');
   require_once('../lib/appvars.php');
   require_once('../lib/Database.php');
+  require_once('../config/Config.php');
+  require_once('../lib/Image.php');
 
+  include_once('sidebar.php');
+?>
+  <div id="main">
+<?
   if(User::isLoggedIn()){ 
     $username = $_SESSION['username'];
 
@@ -20,11 +26,12 @@
         if (check_email($email)){   
           //TODO figure out how to upload user pic. Dont know if class or PDO problem
           if (!empty($user_pic)){
-            $target = UP_PATH . $user_pic;
-            move_uploaded_file($_FILES['picture']['tmp_name'], $target);
+            Image::saveUserImage($user_pic, $username);
+            //$target = Config::getImageFolder() . 'user_images/' . $user_pic;
+            //move_uploaded_file($_FILES['picture']['tmp_name'], $target);
             $update =User::updateProfile($first_name, $last_name, $email, $user_pic, $birthdate, $gender, $username);
           }
-          if(1 || $update){
+          if($update){
             echo '<div class="success">Your profile has been updated. Click <a href="viewprofile.php">here</a> to view your profile</div>';  
             }
         }else{
@@ -72,6 +79,10 @@
       echo '<div class="error">You need to be logged in to access this page. You can login<a href='.
            '"login.php"> here</a> or sign up <a href="signup.php">here.</a></div>'; 
   }
+
+?>
+  </div> <!--END MAIN -->
+<?
 
 function check_email ($email){
 
