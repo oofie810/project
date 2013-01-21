@@ -27,10 +27,8 @@
           //TODO figure out how to upload user pic. Dont know if class or PDO problem
           if (!empty($user_pic)){
             Image::saveUserImage($user_pic, $username);
-            //$target = Config::getImageFolder() . 'user_images/' . $user_pic;
-            //move_uploaded_file($_FILES['picture']['tmp_name'], $target);
-            $update =User::updateProfile($first_name, $last_name, $email, $user_pic, $birthdate, $gender, $username);
           }
+          $update =User::updateProfile($first_name, $last_name, $email, $user_pic, $birthdate, $gender, $username);
           if($update){
             echo '<div class="success">Your profile has been updated. Click <a href="viewprofile.php">here</a> to view your profile</div>';  
             }
