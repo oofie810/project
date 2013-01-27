@@ -67,7 +67,7 @@
       $recipes = array();
       foreach($results as $recipe){
         $ingredients = Ingredient::loadRecipeIngredients($recipe['id']);
-        $recipes[] = new Recipe($recipe['id'], $recipe['name'], $recipe['directions'], $ingredients, $category);
+        $recipes[] = new Recipe($recipe['id'], $recipe['name'], $recipe['directions'], $ingredients, $recipe['category']);
       }
       return $recipes;
     }
