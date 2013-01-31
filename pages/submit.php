@@ -38,26 +38,30 @@
     }
       
 ?>
-  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
-    <ul id="recipe_input">
-      <li>Category:
-			<select id="category" name="category" />
-			<?php
-				$query = "SELECT * FROM category";
-				$data = Database::getMultipleRows($query, array());
-				foreach($data as $category){
-					echo "<option value=\"".$category['id']."\">".$category['category']."</option>\n";
-				}
-				?>
-			</select></li>
-			<li>Recipe Name:</li>
-      <li><input size="70" type ="text" id ="rec_name" name="rec_name"
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data" class="genericform">
+    <fieldset>
+      <legend>Submit a Recipe</legend>
+      <ul id="recipe_input">
+        <li><label for="category">Category:</label>
+			    <select id="category" name="category" />
+			    <?php
+				    $query = "SELECT * FROM category";
+				    $data = Database::getMultipleRows($query, array());
+				    foreach($data as $category){
+					    echo "<option value=\"".$category['id']."\">".$category['category']."</option>\n";
+				    }
+				    ?>
+			    </select>
+        </li>
+			  <li>
+          <label for="rec_name"> Recipe Name:</label>
+          <input size="70" type ="text" id ="rec_name" name="rec_name"
         onblur="validateNonEmpty(this, document.getElementById('rec_help'))">
         <span id="rec_help" class="help"></span>	 
       </li>
     </ul>
     <ul id="ingredient_input">
-      <li>Ingredients:</li>
+      <li><span class="label">Ingredients:</span></li>
       <li><input type="text" size="5" onkeypress="validate(event)" id="amount" name="amount[]">
         <select id="unit" name="unit[]" />
        
@@ -88,8 +92,8 @@
       <li><button type="button" name="button" onClick="newRow('ingredient_input', javascript_array, javascript_array2);">+</li>
     </ul>
     <ul id="directions_input">
-      <li>Directions:</li>
-      <li><textarea name="directions" rows = 20 cols = 50 onblur="validateNonEmpty(this, document.getElementById('dir_help'))"></textarea>
+      <li><label for="directions">Directions:</span></li>
+      <li class="label"><textarea name="directions" rows = 20 cols = 50 onblur="validateNonEmpty(this, document.getElementById('dir_help'))"></textarea>
         <span id="dir_help" class="help"></span>
       </li>
     </ul>
@@ -104,6 +108,7 @@
      </ul>
     <input class="button" type="reset" name="Reset" />
     <input class="button" type="submit" value ="Submit" name="submit" />
+    </form>
   </form>
   </div> <!-- END MAIN -->
   <?php

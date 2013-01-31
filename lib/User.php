@@ -86,12 +86,14 @@
       return $this->privileges;  
     }
 
+  //TODO use memcached for everything that loads from database. try to incorporate loading from user and email to loading from
+  //id so memcached only stores id as key instead of email, username and id
     public static function loadUserFromUsername($username){
         $sql = 'SELECT * FROM user WHERE username = :username';
 
         $params = array (':username' => $username);
 
-        $data = Database::getRow($sql, $params);
+        $data = Database::getRow($sql, $params, 'user:' . $username);
         $user = new User($data['id'], $data['username'], $data['password_hash'], $data['email'], $data['first_name'], $data['last_name'], $data['date_of_birth'], $data['gender'], $data['status'], $data['profile_image'], $data['privileges']);
         return $user;
     }
@@ -101,7 +103,7 @@
 
         $params = array (':email' 	=> $email);
 
-        $data = Database::getRow($sql, $params);
+        $data = Database::getRow($sql, $params, 'user:' . $email);
         $user = new User($data['id'], $data['username'], $data['password_hash'], $data['email'], $data['first_name'], $data['last_name'], $data['date_of_birth'], $data['gender'], $data['status'], $data['profile_image'], $data['privileges']);
         return $user;
     }

@@ -1,6 +1,7 @@
 <?php
   require_once('../config/Config.php');
-  
+  require_once('Cache.php');
+
   class Database{
     private $dbh;
     private $stmt;
@@ -56,18 +57,44 @@
     } catch (PDOException $exception_object){
               error_log(var_export($exception_object, true));	
     }
+
+  
   }
 
-    public static function getRow($sql, $params){
+    public static function getRow($sql, $params, $key=""){
+      $mc = Cache::getInstance();
+      if (!empty($key)){
+        $result = $mc->get($key);  
+        if($result != null){
+          return $result;
+        } 
+      }
       $db = Database::getInstance();
       $db-> query($sql, $params);
-      return $db->stmt->fetch(PDO::FETCH_ASSOC);    
+      
+      $result = $db->stmt->fetch(PDO::FETCH_ASSOC);
+      if (!empty($key)){
+        $mc->set($key, $result);  
+      }
+      return $result;    
     }
 
-    public static function getMultipleRows($sql, $params){
+    public static function getMultipleRows($sql, $params, $key=""){
+      $mc = Cache::getInstance();
+      if(!empty($key)){
+        $result = $mc->get($key);
+        if($result != null){
+          return $result;  
+        }
+      }
       $db = Database::getInstance();
       $db-> query ($sql, $params);
-      return $db->stmt->fetchAll(PDO::FETCH_ASSOC);    
+      
+      $result = $db->stmt->fetchAll(PDO::FETCH_ASSOC);    
+      if (!empty($key)){
+        $mc->set($key, $result);
+      }
+      return $result;
     }
 
     public static function update($sql, $params){

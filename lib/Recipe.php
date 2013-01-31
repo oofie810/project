@@ -45,25 +45,25 @@
     public static function loadRecipe($recipeId){
       $sql = "SELECT * FROM recipe WHERE id = :id";
       $params = array (':id' => $recipeId);
-      $recipe_result = Database::getRow($sql, $params);
+      $recipe_result = Database::getRow($sql, $params, 'recipe:' . $recipeId);
       $ingredients_result = Ingredient::loadRecipeIngredients($recipeId);
-      return new Recipe($recipe_result['id'], $recipe_result['name'], $recipe_result['directions'], $ingredients_result, $category);
+      return new Recipe($recipe_result['id'], $recipe_result['name'], $recipe_result['directions'], $ingredients_result, $recipe_result['category']);
     }
 
 		//function returns a random object from array of objects. 
     public static function loadRecipeUseCat($category){
       $sql = "SELECT * FROM recipe WHERE category = :category";
       $params = array (':category' => $category);
-      $recipe_result = Database::getMultipleRows($sql, $params);
+      $recipe_result = Database::getMultipleRows($sql, $params, 'recipe:'. $category);
 			$random = array_rand($recipe_result);
       $ingredients_result = Ingredient::loadRecipeIngredients($recipe_result[$random]['id']);
       return new Recipe($recipe_result[$random]['id'], $recipe_result[$random]['name'], $recipe_result[$random]['directions'], $ingredients_result, $recipe_result[$random]['category']);
     }
 
     public static function loadRecipeByUser($userId){
-      $sql = "SELECT name, id, directions FROM recipe WHERE submitted_by = :userId";
+      $sql = "SELECT name, id, directions, category FROM recipe WHERE submitted_by = :userId";
       $params = array (':userId' => $userId);
-      $results = Database::getMultipleRows($sql, $params);
+      $results = Database::getMultipleRows($sql, $params, 'recipe:'. $userId);
       $recipes = array();
       foreach($results as $recipe){
         $ingredients = Ingredient::loadRecipeIngredients($recipe['id']);
@@ -73,20 +73,20 @@
     }
 	
     public static function recipeSearch($name){
-      $sql = "SELECT name, id, directions FROM recipe WHERE name LIKE :name";
+      $sql = "SELECT name, id, directions, category FROM recipe WHERE name LIKE :name";
       $params = array (':name' => '%' . $name . '%');
-      $results = Database::getMultipleRows($sql, $params);
+      $results = Database::getMultipleRows($sql, $params, 'recipe:' . $name);
       $recipes = array();
       foreach($results as $recipe){
         $ingredients = Ingredient::loadRecipeIngredients($recipe['id']);
-        $recipes[] = new Recipe($recipe['id'], $recipe['name'], $recipe['directions'], $ingredients, $category);
+        $recipes[] = new Recipe($recipe['id'], $recipe['name'], $recipe['directions'], $ingredients, $recipe['category']);
       }
       return $recipes;
     }
 
     public static function lazyLoadRecipes(){
       $sql = 'SELECT name, id, directions FROM recipe ORDER BY submission_date DESC';
-      $recipes = Database::getMultipleRows($sql, array());
+      $recipes = Database::getMultipleRows($sql, array(), 'allrecipes');
       return $recipes;
     }
 
@@ -108,26 +108,6 @@
       return $recipe_id;
     }
 
-		//not sure if this is better if I use recipe Id. This is basically how I did the viewrecipe.php page
-		//and I just moved it here
-		public static function displayRecipe($recipe){
-			echo '<div id = "recipe">';
-      echo '<h4>' . $recipe->getRecipeName() . '</h4>';
-      echo '<div id ="ing">';
-      echo '<p>Ingredients:</p>';
-        echo '<ul>';
-        foreach($recipe->getIngredients() as $ingr){
-	  			echo '<li>' . $ingr->getAmount() . ' ' . $ingr->getUnitName() . ' ' . $ingr->getName() . '</li>';
-				}		
-      	echo '</ul>';
-      echo '</div>';
-      echo '<div id="directions">';
-      echo '<p class="directions">Directions:</p><p> ' . $recipe->getDirections() . '</p>';
-      echo '</div>';
-			echo '</div>';
-			echo '<br />';
-    }
-  
 }
 
 ?>

@@ -279,7 +279,7 @@ h3{
   padding-top:10px;
 }
 
-.genericform label {
+.genericform label, .label {
   float: left;
   width: 200px;
   padding-right: 6px;
@@ -293,11 +293,16 @@ h3{
   border: 1px solid #2FAACE;
 }
 
+.genericform ul {
+  list-style-type:none;
+}
+
+
 .genericform input[type=file] {
   border: none;
 }
 
-.genericform select {
+.genericform select, textarea {
   width: 350px;
   border: 1px solid #2FAACE;
 }

@@ -28,5 +28,23 @@
 				Recipe::displayRecipe($main);
 		}
 	}
+  
 
+		public static function displayRecipe($recipe){
+			echo '<div id = "recipe">';
+      echo '<h4>' . $recipe->getRecipeName() . '</h4>';
+      echo '<div id ="ing">';
+      echo '<p>Ingredients:</p>';
+        echo '<ul>';
+        foreach($recipe->getIngredients() as $ingr){
+	  			echo '<li>' . $ingr->getAmount() . ' ' . $ingr->getUnitName() . ' ' . $ingr->getName() . '</li>';
+				}		
+      	echo '</ul>';
+      echo '</div>';
+      echo '<div id="directions">';
+      echo '<p class="directions">Directions:</p><p> ' . $recipe->getDirections() . '</p>';
+      echo '</div>';
+			echo '</div>';
+			echo '<br />';
+    }
 ?>
