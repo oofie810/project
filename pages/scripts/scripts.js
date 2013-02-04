@@ -51,6 +51,7 @@
 	    nliChild3.type = 'text';
 	    nliChild3.size = '44';
 	    nliChild3.name = 'ingredients[]';
+      nliChild3.className = 'ing';
 
 	    nli.appendChild(nliChild);
 	    nli.appendChild(nliChild2);

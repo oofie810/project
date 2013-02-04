@@ -291,6 +291,7 @@ h3{
 .genericform input {
   width:350px;
   border: 1px solid #2FAACE;
+  margin: 2px 0px;
 }
 
 .genericform ul {
@@ -333,6 +334,20 @@ h3{
   background: url("/user_generated_images/original/login.png") no-repeat center;
 }
 
+#recipeform input[type=submit] {
+  height: 38px;
+  width: 76px;
+  background: url("/user_generated_images/original/submit.png") no-repeat center;
+}
+
+#recipeform input[type=reset] {
+  border: 1px solid grey;
+  width: 50px;
+  height: 37px;
+  margin-left: 30px;
+  cursor: pointer;
+}
+
 #signupform input[type=submit] {
   height: 37px;
   width: 79px;
@@ -353,6 +368,8 @@ h3{
 
 .clearboth {
   clear: both;
+  display: block;
+  width: 100%;
 }
 
 .error {
@@ -421,7 +438,7 @@ h3{
   width: 600px;
 }
 
-#sidebar a {
+#sidebar a  {
   color: #2FAACE;
 }
 
@@ -445,3 +462,41 @@ h3{
   font-weight:normal;
   border: none;
 }
+
+.ingredient_input input[type=text] {
+  width: 50px;
+  float: left;
+  margin: 0px 2px;
+}
+
+.ingredient_input input.ing {
+  width: 150px;
+}
+
+.ingredient_input select {
+  width: 50px;
+  float: left;
+  margin: 0px 2px;
+}
+
+.ingredient_input ul {
+  display: block;
+  width: 300px;
+  clear: both;
+}
+
+.ingredient_input li {
+  clear: both;
+  margin: 2px 2px;
+  height: 20px;
+  padding-left: 200px;
+}
+
+.addmore li {
+  clear: both;
+  margin: 2px 2px;
+  height: 20px;
+  padding-left: 200px;
+}
+
+

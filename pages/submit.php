@@ -38,7 +38,7 @@
     }
       
 ?>
-  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data" class="genericform">
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data" class="genericform" id="recipeform">
     <fieldset>
       <legend>Submit a Recipe</legend>
       <ul id="recipe_input">
@@ -60,9 +60,13 @@
         <span id="rec_help" class="help"></span>	 
       </li>
     </ul>
-    <ul id="ingredient_input">
-      <li><span class="label">Ingredients:</span></li>
-      <li><input type="text" size="5" onkeypress="validate(event)" id="amount" name="amount[]">
+    <div class="clearboth"></div>
+    <ul>
+      <li><span class="label">Ingredients:</span>Amount/Measurement/Ingredient</li>
+    </ul>
+    <ul id="ingredient_input" class="ingredient_input">
+      <li>
+        <input type="text" size="5" onkeypress="validate(event)" id="amount" name="amount[]">
         <select id="unit" name="unit[]" />
        
       <?php
@@ -85,11 +89,11 @@
       <?php
         }	
       ?>
-
-      <input size="44" type="text" id="ingredients" name="ingredients[]"/></li>
+      </select>
+      <input size="44" type="text" id="ingredients" name="ingredients[]"/ class="ing"></li>
     </ul>
-    <ul>
-      <li><button type="button" name="button" onClick="newRow('ingredient_input', javascript_array, javascript_array2);">+</li>
+    <ul class="addmore">
+      <li><button type="button" name="button" onClick="newRow('ingredient_input', javascript_array, javascript_array2);" class="newing">+ Add Ingredient</li>
     </ul>
     <ul id="directions_input">
       <li><label for="directions">Directions:</span></li>
@@ -103,11 +107,11 @@
       <label for="caption">Caption:</label>
       <input type="text" id="caption" name="caption[]" /></li>
      </ul>
-     <ul>
-     <li><button type="button" name="button" onClick="newRowForImages('picture_input');">+++</li>
+     <ul class="addmore">
+     <li><button type="button" name="button" onClick="newRowForImages('picture_input');">+ Add Photo</li>
      </ul>
     <input class="button" type="reset" name="Reset" />
-    <input class="button" type="submit" value ="Submit" name="submit" />
+    <input type="submit" value ="Submit" name="submit" />
     </form>
   </form>
   </div> <!-- END MAIN -->

@@ -63,11 +63,11 @@
 
     public static function getRow($sql, $params, $key=""){
       $mc = Cache::getInstance();
-      if (!empty($key)){
+      if (!empty($key) && $_COOKIE['cache'] != "set"){
         $result = $mc->get($key);  
         if($result != null){
           return $result;
-        } 
+        }
       }
       $db = Database::getInstance();
       $db-> query($sql, $params);
@@ -81,7 +81,7 @@
 
     public static function getMultipleRows($sql, $params, $key=""){
       $mc = Cache::getInstance();
-      if(!empty($key)){
+      if(!empty($key) && $_COOKIE['cache'] != "set"){
         $result = $mc->get($key);
         if($result != null){
           return $result;  
