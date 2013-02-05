@@ -24,7 +24,8 @@
 
       if(!empty($first_name) && !empty($last_name) && !empty($email)) {
         if (check_email($email)){   
-          //TODO figure out how to upload user pic. Dont know if class or PDO problem
+					//TODO figure out a way to update profile without new pic. right now,
+					//it deletes image if nothing is uploaded.
           if (!empty($user_pic)){
             Image::saveUserImage($user_pic, $username);
           }
@@ -80,7 +81,7 @@
 
 ?>
   </div> <!--END MAIN -->
-<?
+<?php
 
 function check_email ($email){
 
