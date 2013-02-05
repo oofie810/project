@@ -6,7 +6,7 @@
   include_once('sidebar.php');
 ?>
   <div id="main">
-<?
+<?php
   $error_msg = "";
   
   if(isset($_POST['submit'])){

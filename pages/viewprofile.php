@@ -9,7 +9,7 @@
   include_once('sidebar.php');
 ?>
   <div id="main">
-<?
+<?php
   if(User::isLoggedIn()){ 
     $username = $_SESSION['username'];
     $user = User::loadUserFromUsername($username);
@@ -46,6 +46,6 @@
   
 ?>
   </div> <!-- END MAIN -->
-<?
+<?php
   require_once('footer.php');
 ?>

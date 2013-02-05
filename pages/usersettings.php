@@ -6,7 +6,7 @@
 
 ?>
   <div id="main">
-<?
+<?php
   if(User::isLoggedIn($_SESSION['username'])){
     $user = $_SESSION['username'];
 

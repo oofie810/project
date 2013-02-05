@@ -6,7 +6,7 @@
   include_once('sidebar.php');
 ?>
   <div id="main">
-<?
+<?php
   if (isset($_POST['submit'])){
     $username = $_POST['username'];
     $pass = $_POST['password'];

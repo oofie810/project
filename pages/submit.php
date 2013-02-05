@@ -9,7 +9,7 @@
   include_once('sidebar.php');
 ?>
   <div id="main">
-<?
+<?php
   if(User::isLoggedIn($_SESSION['username'])){
 
     if (!empty($_POST['submit'])){
