@@ -26,7 +26,7 @@
         if (check_email($email)){   
           //TODO figure out how to upload user pic. Dont know if class or PDO problem
           if (!empty($user_pic)){
-            Image::saveUserImage($user_pic, $username);
+            Image::saveUserImageS3($user_pic, $username);
           }
           $update =User::updateProfile($first_name, $last_name, $email, $user_pic, $birthdate, $gender, $username);
           if($update){

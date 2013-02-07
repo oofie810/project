@@ -1,2 +1,8 @@
 #ignoring Config
 config/**
+
+pages/tmpFolder/**
+
+
+pages/tester/**
+

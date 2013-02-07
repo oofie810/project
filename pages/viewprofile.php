@@ -23,7 +23,7 @@
     echo '<tr><td class="label">Email:</td><td>' .$user->getEmail(). '</td></tr>';
     echo '<tr><td class="label">Gender:</td><td>' .$user->getGender() .'</td></tr>';
     echo '<tr><td class="label">Birthdate:</td><td>' .$user->getBirthDate().'</td></tr>';
-    echo '<tr><td class="label">Image:</td><td><img src= "'. Config::getImageFolder() . 'user_images/resized/' . $user->getImage() .'" alt="Profile Picture" /></td></tr>';
+    echo '<tr><td class="label">Image:</td><td><img src= "'. Config::getAwsFolder() . 'thumb_' . $user->getImage() .'" alt="Profile Picture" /></td></tr>';
     echo '</table><br />';
     echo '</fieldset>';
     echo '<table>';

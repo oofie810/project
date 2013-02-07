@@ -1,5 +1,7 @@
 <?php
   require_once('../config/Config.php');
+  require_once('../../../AWSSDKforPHP/sdk.class.php');
+
   class Image{
     private $id, $filename, $submitted_by, $submission_date, $caption, $homepage;
 
@@ -77,6 +79,38 @@
         }
         $i++;
       }
+    }
+    
+    //editing to use with aws s3
+    public static function saveUserImageS3($image, $submitted_by){
+          $target = Config::getTmpFolder() . $image;
+          move_uploaded_file($_FILES['picture']['tmp_name'], $target);
+          $newImg = Config::getTmpFolder() . 'thumb_' . $image;
+          copy(Config::getTmpFolder() . $image, $newImg);
+          $imagick = new Imagick($newImg);
+          $imagick-> thumbnailImage(300, 200);
+          $imagick->writeImage();
+          
+          $filename = $_FILES['picture']['name'];
+          $tempname = $_FILES['picture']['tmp_name'];
+          error_log($tempname);
+          error_log($filename);
+          
+          list($folder, $newFile) = explode('/', $newImg);
+          
+          $s3 = new AmazonS3();
+          $s3->create_object(Config::getBucket(), $newFile, array(
+                'fileUpload' => $newImg,
+                'acl'        => AmazonS3::ACL_PUBLIC,
+                'contentType'=> $_FILES['picture']['type']
+               ));
+          $s3->create_object(Config::getBucket(), $filename, array(
+                'fileUpload' => $target,
+                'acl'        => AmazonS3::ACL_PUBLIC,
+                'contentType'=> $_FILES['picture']['type']
+               ));
+          unlink($newImg);
+          unlink($target);
     }
 
     public static function saveUserImage($image, $submitted_by){
