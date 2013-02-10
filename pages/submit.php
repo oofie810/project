@@ -26,7 +26,7 @@
       if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
 	      $user = User::loadUserFromUsername($_SESSION['username']);
         $userId = $user->getUserId();
-	      Recipe::submitRecipe($recipe_name, $directions, $userId, $ingredients, $amounts, $units, $category);
+	      //Recipe::submitRecipe($recipe_name, $directions, $userId, $ingredients, $amounts, $units, $category);
         if (!empty($pic)){
           Image::saveImageWithCaption($pic, $id, $caption, 1);  
         }

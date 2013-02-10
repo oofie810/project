@@ -52,13 +52,13 @@
     public static function saveImageWithCaption($image, $submitted_by, $caption, $recipeId){
       $i = 0;
       foreach($_FILES['picture']['name'] as $n => $name){
-        error_log('inside saveImage');
         if(!empty($name)){
           $date = new DateTime();
           $extension = substr($name, -4);
           $filename = md5($date->format('U') . $submitted_by . $caption[$i] . $name) . $extension;
-          $target = Config::getImageFolder() . 'original/' . $filename;
+          $target = Config::getTmpFolder() . $filename;
           if(move_uploaded_file($_FILES['picture']['tmp_name'][$n], $target)){
+            /*
             $sql = "INSERT INTO 
                       image 
                       (filename, submitted_by, submission_date, caption) 
@@ -69,18 +69,35 @@
                             ':caption'      => $caption[$i]);
 
             $id = Database::insert($sql, $params);
-            
+            */
             //have to put it here because displayable_image table needs original image id
             //resizeImage needs (filename, ext, id, H, W, resolution)
-            self::resizeImage($filename, $extension, $id, 150, 100, 1);
-            self::resizeImage($filename, $extension, $id, 800, 600, 2);
-            self::saveToImageToRecipeTable($id, $recipeId);
+            $img = self::resizeImage($filename, $extension, 1, 150, 100, 1);
+            $img2 =self::resizeImage($filename, $extension, 1, 800, 600, 2);
+            $files = array($img, $img2, $filename);
+            self::bulkUploadS3($files);
+            //self::saveToImageToRecipeTable($id, $recipeId);
+            //TODO unlink images that were uploaded
           }
         }
         $i++;
       }
     }
+   
+    private static function bulkUploadS3($images){
+      $s3 = new AmazonS3();
+      foreach($images as $file){
+        $s3->batch()->create_object(Config::getBucket(), $file, array(
+            'fileUpload'  => Config::getTmpFolder() . $file,
+            'acl'         => AmazonS3::ACL_PUBLIC
+            //TODO have to add filetype here
+            ));
+      }
+      $s3->batch()->send();
     
+    }
+    //TODO fix image submission for recipe to use aws s3. use the one in 
+    //the sample where it queues the upload. 
     //editing to use with aws s3
     public static function saveUserImageS3($image, $submitted_by){
           $target = Config::getTmpFolder() . $image;
@@ -204,13 +221,15 @@
     }
 
     public static function resizeImage($filename, $extension, $id, $height, $width, $resolution){
-        $newImage = Config::getImageFolder() . $height . 'x' . $width . '/' . $filename;
-        copy(Config::getImageFolder() . 'original/' .  $filename, $newImage);
+        error_log("inside resize");
+        $newFilename = $height . 'x' . $width . '_' . $filename;
+        $newImage = Config::getTmpFolder() . $newFilename;
+        copy(Config::getTmpFolder() .  $filename, $newImage);
         $imagick = new Imagick($newImage);
         $imagick->thumbnailImage($height, $width);
         $imagick->writeImage();
         
-        $sql = "INSERT INTO 
+        /*$sql = "INSERT INTO 
                   displayable_images 
                   (image_id, filename, resolution, type)
                 VALUES
@@ -221,7 +240,8 @@
                         ':resolution' => $resolution,
                         ':type' => $extension);
         Database::insert($sql, $params);
-        
+       */
+        return $newFilename; 
     }
   }
 
