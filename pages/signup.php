@@ -53,9 +53,9 @@
       <input type="text" id="email" name="email"/><br />
       <label for="username">Username:</label>
       <input type ="text" id ="username" name="username"/><br />
-      <label for="password">Password:</label>
+      <label for="password">Password (must be at least 8 characters):</label><br />
       <input type="password" id="password" name="password"/><br />
-      <label for="password2">Password (retype):</label>
+      <label for="password2">Retype Password:</label>
       <input type="password" id="password2" name="password2"/><br />
       <input type="submit" value="Sign Up" name="submit" />
       </fieldset>

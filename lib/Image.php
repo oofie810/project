@@ -58,7 +58,7 @@
           $filename = md5($date->format('U') . $submitted_by . $caption[$i] . $name) . $extension;
           $target = Config::getTmpFolder() . $filename;
           if(move_uploaded_file($_FILES['picture']['tmp_name'][$n], $target)){
-            /*
+            
             $sql = "INSERT INTO 
                       image 
                       (filename, submitted_by, submission_date, caption) 
@@ -69,15 +69,17 @@
                             ':caption'      => $caption[$i]);
 
             $id = Database::insert($sql, $params);
-            */
+            
             //have to put it here because displayable_image table needs original image id
             //resizeImage needs (filename, ext, id, H, W, resolution)
             $img = self::resizeImage($filename, $extension, 1, 150, 100, 1);
             $img2 =self::resizeImage($filename, $extension, 1, 800, 600, 2);
             $files = array($img, $img2, $filename);
             self::bulkUploadS3($files);
-            //self::saveToImageToRecipeTable($id, $recipeId);
-            //TODO unlink images that were uploaded
+            self::saveToImageToRecipeTable($id, $recipeId);
+            unlink($img);
+            unlink($img2);
+            unlink($target);
           }
         }
         $i++;
@@ -96,8 +98,6 @@
       $s3->batch()->send();
     
     }
-    //TODO fix image submission for recipe to use aws s3. use the one in 
-    //the sample where it queues the upload. 
     //editing to use with aws s3
     public static function saveUserImageS3($image, $submitted_by){
           $target = Config::getTmpFolder() . $image;

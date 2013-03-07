@@ -90,11 +90,14 @@
       return $recipes;
     }
 
-    public static function submitRecipe($recipeName, $directions, $userId, $ingredient_names, $amounts, $units, $category){
-      $ingredient_names_found = Ingredient::loadMultipleIngredientNames($ingredient_names);
-
+    public static function submitRecipe($recipeName, $directions, $userId, $ingredient_names, $ingObj, $category){
+      $ingredient_in_database = Ingredient::loadMultipleIngredientNames($ingredient_names);
       // insert missing ingredients
-      $missing_ingredient_names = array_diff($ingredient_names, $ingredient_names_found);
+      $ing = array();
+      foreach($ingredient_in_database as $k => $v){
+        $ing[$k] = $v['name'];
+      }
+      $missing_ingredient_names = array_diff($ingredient_names, $ing);
       if(!empty($missing_ingredient_names)){
         Ingredient::insertMultipleIngredients($missing_ingredient_names); 
       }
@@ -103,9 +106,35 @@
       $params = array(':name'	=> $recipeName, ':directions' => $directions, ':user'	=> $userId, ':category' => $category);
       $recipe_id = Database::insert($sql, $params);
 
-      Ingredient::associateIngredientsToRecipe($recipe_id, $ingredient_names, $amounts, $units);
+      Ingredient::associateIngredientsToRecipe($recipe_id, $ingredient_names, $ingObj);
       LogAction::insertLog($userId, 7);
       return $recipe_id;
+    
+    }
+
+    public static function editRecipe($recipeId, $recipeName, $directions, $userId, $ingredient_names, $amounts, $units, $category){
+      $ingredient_in_database = Ingredient::loadMultipleIngredientNames($ingredient_names);
+      // insert missing ingredients
+      $ing = array();
+      foreach($ingredient_in_database as $k => $v){
+        $ing[$k] = $v['name'];
+      }
+      $missing_ingredient_names = array_diff($ingredient_names, $ing);
+      error_log("missing ingredients");
+      error_log(print_r($missing_ingredient_names, true)); 
+      if(!empty($missing_ingredient_names)){
+        Ingredient::insertMultipleIngredients($missing_ingredient_names); 
+      }
+
+      $sql ="UPDATE recipe SET name = :name, directions = :directions, submission_date = NOW(), category = :category WHERE id = :id";
+      $params = array(':name'	=> $recipeName, ':directions' => $directions, ':id' => $recipeId, ':category' => $category);
+      Database::update($sql, $params);
+
+      Ingredient::associateIngredientsToRecipe($recipeId, $ingredient_names, $amounts, $units);
+      //TODO add additional log action - edit recipe
+      LogAction::insertLog($userId, 7);
+      return $recipeId;
+    
     }
 
 }

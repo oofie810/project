@@ -26,9 +26,14 @@
       if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
 	      $user = User::loadUserFromUsername($_SESSION['username']);
         $userId = $user->getUserId();
-	      //Recipe::submitRecipe($recipe_name, $directions, $userId, $ingredients, $amounts, $units, $category);
+        $ingObj = array();
+        for($i=0; $i<count($ingredients); $i++){
+          $ingObj[] = Ingredient::createIng($ingredients[$i], $amounts[$i], $units[$i]);
+        }
+        error_log(print_r($ingObj, true));
+	      $recipeId = Recipe::submitRecipe($recipe_name, $directions, $userId, $ingredients, $ingObj, $category);
         if (!empty($pic)){
-          Image::saveImageWithCaption($pic, $id, $caption, 1);  
+          Image::saveImageWithCaption($pic, $userId, $caption, $recipeId);  
         }
 	      $url = '/';
         header('Location: ' . $url);
@@ -67,7 +72,7 @@
     <ul id="ingredient_input" class="ingredient_input">
       <li>
         <input type="text" size="5" onkeypress="validate(event)" id="amount" name="amount[]">
-        <select id="unit" name="unit[]" />
+        <select id="unit" name="unit" />
        
       <?php
         $query = "SELECT * FROM unit";
@@ -94,6 +99,7 @@
     </ul>
     <ul class="addmore">
       <li><button type="button" name="button" onClick="newRow('ingredient_input', javascript_array, javascript_array2);" class="newing">+ Add Ingredient</li>
+      <li><button type="button" name="alert" onclick="alertcustom(unit.id)">+++</li>
     </ul>
     <ul id="directions_input">
       <li><label for="directions">Directions:</span></li>

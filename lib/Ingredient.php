@@ -27,7 +27,11 @@
 	  public function getUnitName(){
 	    return $this->unit_name;
 	  }
-	
+  
+    public static function createIng($name, $amount, $unit){
+      $ing = new Ingredient(null, $name, $amount, $unit);
+      return $ing;
+    }
 	  public static function loadRecipeIngredients($recipeId){
 	    $sql = "
 		        SELECT
@@ -67,28 +71,42 @@
 	  }
 
 	  public static function insertMultipleIngredients($ingredient_names){
+      $count = count($ingredient_names);
+      error_log("COUNT:");
+      error_log($count);
 	    $questionMarkArray = implode(',', array_fill(0, count($ingredient_names), '(?)'));
+      error_log($questionMarkArray);
 	    $sql = 'INSERT INTO ingredient (name) VALUES ' . $questionMarkArray; 
 	    
-	    Database::bulkInsert($sql, $ingredient_names);
+	    Database::bulkInsert($sql, array_values($ingredient_names));
 	  } 
 
-    public static function associateIngredientsToRecipe($recipeId, $ingredient_names, $ingredient_amounts, $ingredient_units){
+    public static function associateIngredientsToRecipe($recipeId, $ingredient_names, $ingObj){
       $questionMarkArray = implode(',', array_fill(0, count($ingredient_names), '?'));
 	    
 	    $sql = 'SELECT * FROM ingredient WHERE name IN (' . $questionMarkArray . ')';
-	    $ingredients = Database::getMultipleRows($sql, $ingredient_names);
+	    $names = Database::getMultipleRows($sql, $ingredient_names);
+
+      //insert ingredient id taken from db for each object from submit. 
+      foreach ($names as $name){
+        foreach ($ingObj as $obj){
+          if ($obj->name == $name['name']){
+              $obj->id  = $name['id'];  
+          }  
+        }  
+      }
+
       $questionMarkStr = "";
       $params = array();
-      for ($x = 0; $x < count($ingredient_names); $x++){
+      foreach ($ingObj as $ing => $obj){
         $params[] = $recipeId;
-        $params[] = $ingredients[$x]['id'];
-        $params[] = $ingredient_amounts[$x];
-        $params[] = $ingredient_units[$x];
+        $params[] = $obj->id;
+        $params[] = $obj->amount;
+        $params[] = $obj->unit_name;
         $questionMarkStr .= '(?, ?, ?, ?),';
       }
       $questionMarkStr = trim($questionMarkStr, ',');
-     
+
       $sql = "INSERT INTO recipe_to_ingredient (recipe_id, ingredient_id, amount, unit_id) VALUES " . $questionMarkStr;
       Database::bulkInsert($sql, $params); 
     }

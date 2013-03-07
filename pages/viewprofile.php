@@ -27,16 +27,13 @@
     echo '</table><br />';
     echo '</fieldset>';
     echo '<table>';
-      
+     
+    echo '<a href="editrecipe.php?user_id=' .$user->getUserId() . '">Edit Your Recipes</a>';
     $recipes_submitted = Recipe::loadRecipeByUser($user_id);
     foreach($recipes_submitted as $recipe){
       echo '<ul>';
-      echo '<li>Name: ' .$recipe->getRecipeName() . ' </li>';
-      echo '<li>Ingredients: </li>';
-      foreach($recipe->getIngredients() as $ingr){
-        echo $ingr->getAmount() . ' ' .$ingr->getUnitName() . ' ' . $ingr->getName() . '<br />';  
-      }
-      echo '<li>Directions:  ' . $recipe->getDirections() . ' </li>';
+      echo '<li><a href="viewrecipe.php?recipe_id=' . $recipe->getRecipeId() . '">' .$recipe->getRecipeName() . ' </a></li>';
+      echo '<li>' . substr($recipe->getDirections(), 0, 100) . '... </li>';
       echo '</ul>';
     }
   } else{

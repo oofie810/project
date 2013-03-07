@@ -6,7 +6,7 @@
   
 	    $subject = "Registration";
 	    $message = "Your confirmation link. Click please \n\r ";
-	    $message .= "http://54.245.125.72/confirmation.php?passkey=$code";
+	    $message .= "http://bestfoodhub.com/confirmation.php?passkey=$code";
 
 	    mail($to,$subject,$message);
        

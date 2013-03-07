@@ -24,17 +24,18 @@
       	echo '</ul>';
       echo '</div>';
       //echo '<div id="directions">';
-      echo '<p class="directions">Directions:</p><p> ' . $recipe->getDirections() . '</p>';
+      echo '<p class="directions">Directions:</p><p> ' . nl2br($recipe->getDirections()) . '</p>';
       echo '</div>';
 			echo '</div>';
 			echo '<br />';
     }
-/*    $picArray = Image::loadImagesByRecipeId($recipeId);
-    foreach($picArray as $pic){
-    ?>
+    $picArray = Image::loadImagesByRecipeId($recipeId);
+    if(!empty($picArray)){
+   ?>
       <div id="galleria">
-    <?php
-      echo '<img src="' . UP_PATH . $pic->getFilename() . '" />';
+   <?php
+      foreach($picArray as $pic){
+        echo '<img src="' . Config::getAwsFolder() . $pic->getFilename() . '" />';
       }
     ?> 
       </div>
@@ -42,8 +43,9 @@
     Galleria.loadTheme('scripts/galleria/themes/classic/galleria.classic.min.js');
     Galleria.run('#galleria');
   </script>
-*/
-//<?php
+
+<?php
+    }
   require_once('footer.php');
 ?>
 

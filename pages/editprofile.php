@@ -22,13 +22,18 @@
       $birthdate  =$_POST['birthdate'];
       $gender     =$_POST['gender']; 
 
-      if(!empty($first_name) && !empty($last_name) && !empty($email)) {
+      //TODO figure out a way to update profile without new pic. right now,
+      //it deletes image if nothing is uploaded.
+      if (!empty($user_pic)){
+        if ($_FILES['picture']['size'] < 1024000){
+        Image::saveUserImageS3($user_pic, $username);
+        } else{
+          echo '<div class="error">User image must be less than 1000kb.</div>';  
+        }
+      }
+
+      if(!empty($first_name) || !empty($last_name) || !empty($email)) {
         if (check_email($email)){   
-					//TODO figure out a way to update profile without new pic. right now,
-					//it deletes image if nothing is uploaded.
-          if (!empty($user_pic)){
-            Image::saveUserImageS3($user_pic, $username);
-          }
           $update =User::updateProfile($first_name, $last_name, $email, $user_pic, $birthdate, $gender, $username);
           if($update){
             echo '<div class="success">Your profile has been updated. Click <a href="viewprofile.php">here</a> to view your profile</div>';  
@@ -67,7 +72,7 @@
         <option value="M" <?php if(!empty($gender) && $gender == 'M') echo 'selected = "selected"';?>>Male</option>
         <option value="F" <?php if(!empty($gender) && $gender == 'F') echo 'selected = "selected"';?>>Female</option>
         </select>
-        <label for="picture">Picture:</label>
+        <label for="picture">Picture: (file size must be less than 1000kb)</label>
         <input type="file" id="picture" name="picture" />
         <div class="clearboth"></div>
         <input id="button" type ="submit" value="Save" name="submit" />

@@ -1,2 +1,5 @@
+#run crontab -e to execute crontab and add lines after to have del_pass run
+
+
 #run del_pass every 12 pm to delete passkeys that are older than 24 hours
-00 12 * * * /usr/bin/php /home/ec2-user/publicsite/project/crons/del_pass.php
+00 12 * * * /usr/bin/php /home/ronald/publicsite/project/crons/del_pass.php

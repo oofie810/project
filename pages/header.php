@@ -17,8 +17,8 @@
 	      }       
 	    }
     ?>
-      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"/></script>
-      <script src="scripts/galleria-1.2.8.min.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js" type="text/javascript"/></script>
+      <script src="scripts/galleria-1.2.9.min.js"></script>
   </head>
   <body id="body_<?=basename($_SERVER['PHP_SELF'], ".php")?>">
     <div id="header">
