@@ -21,7 +21,7 @@
       <div id="galleria">
       <?php
       foreach($picArray as $pic){
-        echo '<img src="' . Config::getAwsFolder() . $pic->getFilename() . '" />';
+        echo '<img src="' . Config::getAwsFolder() . '800x600_' . $pic->getFilename() . '" />';
       }
       ?> 
       </div><!--end div galleria!-->
