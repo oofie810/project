@@ -16,11 +16,11 @@
         $res = 1;
         $image = Image::loadImageForSearchRecipe($recipe->getRecipeId(), $res);
         echo '<ul id="searchResults">';
-        echo '<li><a href="viewrecipe.php?recipe_id='. $recipe->getRecipeId() . '">'.$recipe->getRecipeName().'</a></li>';
-        echo '</li>' .substr($recipe->getDirections(), 0, 230) . '...</li>';
         if($image != null){
-          echo '</li><img src ="' . DISP . $image->getFilename() . '" /></li><br />';
+          echo '<img src ="' . Config::getAwsFolder() . '150x100_' . $image->getFilename() . '" />';
         }
+        echo '<li><h4><a href="viewrecipe.php?recipe_id='. $recipe->getRecipeId() . '">'.$recipe->getRecipeName().'</a></h4>';
+        echo substr($recipe->getDirections(), 0, 150) . '...';
         echo '</ul>';
 
       }

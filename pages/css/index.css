@@ -229,16 +229,22 @@ ul#menu a:hover{
 }
 
 #searchResults{
-  padding-left: 20%;
+  padding-left: 10%;
 }
 
+
 #searchResults li{
-  padding-top:  5%;
+  padding-top:  12px;
+  padding-right:  10%;
+  font-size:  14px;
 }
 
 #searchResults img{
-  float:  right;
-  padding-right:  30%;
+  float:  left;
+  padding-right:  5%;
+  padding-bottom:  20px;
+  padding-top:  15px;
+  margin-bottom:  20px;
 }
 
 h3{

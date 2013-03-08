@@ -61,12 +61,11 @@
             
             $sql = "INSERT INTO 
                       image 
-                      (filename, submitted_by, submission_date, caption) 
+                      (filename, submitted_by, submission_date) 
                     VALUES 
-                      (:image, :submitted_by, NOW(), :caption)"; 
+                      (:image, :submitted_by, NOW())"; 
             $params = array(':image'        => $filename,
-                            ':submitted_by' => $submitted_by,
-                            ':caption'      => $caption[$i]);
+                            ':submitted_by' => $submitted_by);
 
             $id = Database::insert($sql, $params);
             
@@ -162,9 +161,11 @@
     }
 
     public static function loadImageForSearchRecipe($recipeId, $resolution){
-      $sql = "SELECT * FROM displayable_images di JOIN image_to_recipe itr ON itr.image_id = di.id WHERE itr.recipe_id = :recipeId AND di.resolution = :res";
-      $params = array (':recipeId'  => $recipeId,
-                       ':res'  => $resolution);
+      //$sql = "SELECT * FROM displayable_images di JOIN image_to_recipe itr ON itr.image_id = di.id WHERE itr.recipe_id = :recipeId AND di.resolution = :res";
+      $sql = "SELECT * FROM image i JOIN image_to_recipe itr ON itr.image_id = i.id WHERE itr.recipe_id = :recipeId";
+      //$params = array (':recipeId'  => $recipeId,
+      //               ':res'  => $resolution);
+      $params = array (':recipeId' => $recipeId);
       $data = Database::getMultipleRows($sql, $params);
       $images_array = array();
       foreach ($data as $image){
