@@ -234,7 +234,8 @@ ul#menu a:hover{
 
 
 #searchResults li{
-  padding-top:  12px;
+  margin-top: 40px;
+  padding-top:  22px;
   padding-right:  10%;
   font-size:  14px;
 }
@@ -242,7 +243,7 @@ ul#menu a:hover{
 #searchResults img{
   float:  left;
   padding-right:  5%;
-  padding-bottom:  0px;
+  padding-bottom: 20px;
   padding-top:  0px;
   margin-bottom:  0px;
 }
