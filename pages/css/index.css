@@ -79,6 +79,7 @@ body{
   width: 200px;
   float: left;
   padding-top: 15px;
+  visibility:  hidden;
 }
 
 .button{

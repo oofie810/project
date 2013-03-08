@@ -18,8 +18,12 @@
     $editrec_directions = $editrec->getDirections();
     $editrec_ingr = $editrec->getIngredients();
     $editrec_category = $editrec->getCategory();
-    error_log("INGREDIENTS=================");
-    error_log(print_r($editrec_ingr, true));
+
+    $oldIngObj = array();
+    foreach($editrec_ingr as $ing){
+      //create ingredient with id etc...   
+    }
+
   if(User::isLoggedIn($_SESSION['username'])){
     
     if (!empty($_POST['submit'])){
@@ -33,14 +37,6 @@
       $category 	 = $_POST['category'];
       $pic         = $_FILES['picture']['name'];
       $caption     = $_POST['caption'];
-    error_log("!!!!!!!!!!!ID");
-    error_log($recipe_id);
-    error_log($recipe_name);
-    error_log(print_r($ingredients, true));
-    error_log($directions);
-    error_log(print_r($units, true));
-    error_log(print_r($amounts, true));
-    error_log($category);
       
       if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
 	      $user = User::loadUserFromUsername($_SESSION['username']);

@@ -28,7 +28,6 @@
 				<input type="submit" value="Submit" name="submitMeal" />
 		</form>
   </div>
-  <div id="column2">Column2</div>
 
 
 <?php
