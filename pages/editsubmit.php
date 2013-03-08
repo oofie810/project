@@ -20,9 +20,11 @@
     $editrec_category = $editrec->getCategory();
 
     $oldIngObj = array();
-    foreach($editrec_ingr as $ing){
+    //TODO create objects for existing ingredients
+    //from there, merge/compare with new ingredient objects
+    //foreach($editrec_ingr as $ing){
       //create ingredient with id etc...   
-    }
+    //}
 
   if(User::isLoggedIn($_SESSION['username'])){
     
