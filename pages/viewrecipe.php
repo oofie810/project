@@ -11,41 +11,37 @@
   if(isset($_GET['recipe_id'])){
 
     $recipeId = $_GET['recipe_id'];
-
     $recipe = Recipe::loadRecipe($recipeId);
-			echo '<div id = "recipe">';
-      echo '<h4>' . $recipe->getRecipeName() . '</h4>';
-      //echo '<div id ="ing">';
-      echo '<p>Ingredients:</p>';
+    echo '<div id = "recipe">';
+    echo '<h1>' . $recipe->getRecipeName() . '</h1>';
+    
+    $picArray = Image::loadImagesByRecipeId($recipeId);
+    if(!empty($picArray)){
+?>
+      <div id="galleria">
+      <?php
+      foreach($picArray as $pic){
+        echo '<img src="' . Config::getAwsFolder() . $pic->getFilename() . '" />';
+      }
+      ?> 
+      </div><!--end div galleria!-->
+      <script>
+        Galleria.loadTheme('scripts/galleria/themes/classic/galleria.classic.min.js');
+        Galleria.run('#galleria');
+      </script>
+
+<?php
+    }
+      echo '<h3>Ingredients:</h3>';
         echo '<ul>';
         foreach($recipe->getIngredients() as $ingr){
 	  			echo '<li>' . $ingr->getAmount() . ' ' . $ingr->getUnitName() . ' ' . $ingr->getName() . '</li>';
 				}		
       	echo '</ul>';
-      echo '</div>';
-      //echo '<div id="directions">';
-      echo '<p class="directions">Directions:</p><p> ' . nl2br($recipe->getDirections()) . '</p>';
-      echo '</div>';
-			echo '</div>';
-			echo '<br />';
-    }
-    $picArray = Image::loadImagesByRecipeId($recipeId);
-    if(!empty($picArray)){
-   ?>
-      <div id="galleria">
-   <?php
-      foreach($picArray as $pic){
-        echo '<img src="' . Config::getAwsFolder() . $pic->getFilename() . '" />';
-      }
-    ?> 
-      </div>
-  <script>
-    Galleria.loadTheme('scripts/galleria/themes/classic/galleria.classic.min.js');
-    Galleria.run('#galleria');
-  </script>
-
-<?php
-    }
+      echo '<h3>Directions:</h3>';
+      echo '<p id="directions">' . nl2br($recipe->getDirections()) . '</p>';
+			echo '</div>'; //end div recipe
+  }
   require_once('footer.php');
 ?>
 

@@ -221,17 +221,10 @@ ul#menu a:hover{
 }
 
 #column2, #directions{
-  height: 100px;
-  width:  300px;
-  float:  right;
   margin-right: 10%;
-  margin-top: 40px;
   margin-bottom:  40px;
-  border-style: solid;
-  border-color: #aa3200;
-  text-align: center;
-	overflow: hidden;
-  display:none;
+	margin-left: 25px;
+  overflow: hidden;
 }
 
 #searchResults{
@@ -252,11 +245,11 @@ h3{
   }
 
 #galleria{
-  width: 700px;
-  height: 600px;
+  width: 500px;
+  height: 400px;
   background: white;
-  margin-left:  25%;
-  margin-top: 50px;
+  margin-left:  20%;
+  margin-top: 10px;
 }
 
 #recipe{

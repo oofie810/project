@@ -147,10 +147,8 @@
         </li>
       </ul>
       <ul id="picture_input" class="ingredient_input">
-        <li><label for="picture">Picture:</label>
+        <label for="picture">Picture:</label>
         <input type="file" id="picture" name="picture[]" />
-        <label for="caption">Caption:</label>
-        <input type="text" id="caption" name="caption[]" class="ing"/></li>
        </ul>
        <ul class="addmore">
        <li><button type="button" name="button" onClick="newRowForImages('picture_input');">+ Add Photo</li>

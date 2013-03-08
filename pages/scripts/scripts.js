@@ -22,7 +22,7 @@
     nliChild2.name = 'caption[]';
 
     nli.appendChild(nliChild);
-    nli.appendChild(nliChild2);
+    //nli.appendChild(nliChild2);
 
     document.getElementById(list).appendChild(nli);
   }
