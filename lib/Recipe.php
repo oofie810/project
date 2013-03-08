@@ -112,7 +112,7 @@
     
     }
 
-    public static function editRecipe($recipeId, $recipeName, $directions, $userId, $ingredient_names, $amounts, $units, $category){
+    public static function editRecipe($recipeId, $recipeName, $directions, $userId, $ingredient_names, $ingObj, $category){
       $ingredient_in_database = Ingredient::loadMultipleIngredientNames($ingredient_names);
       // insert missing ingredients
       $ing = array();
@@ -130,7 +130,8 @@
       $params = array(':name'	=> $recipeName, ':directions' => $directions, ':id' => $recipeId, ':category' => $category);
       Database::update($sql, $params);
 
-      Ingredient::associateIngredientsToRecipe($recipeId, $ingredient_names, $amounts, $units);
+      //TODO figure out how to associate ingredients. foreign key constraint as i_to_r already exists
+      //Ingredient::associateIngredientsToRecipe($recipeId, $ingredient_names, $ingObj);
       //TODO add additional log action - edit recipe
       LogAction::insertLog($userId, 7);
       return $recipeId;

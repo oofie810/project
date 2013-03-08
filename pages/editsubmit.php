@@ -45,9 +45,13 @@
       if (!empty($recipe_name) && !empty($ingredients) && !empty($directions)){
 	      $user = User::loadUserFromUsername($_SESSION['username']);
         $userId = $user->getUserId();
-        Recipe::editRecipe($recipe_id, $recipe_name, $directions, $userId, $ingredients, $amounts, $units, $category);
+        $ingObj = array();
+        for($i=0; $i<count($ingredients); $i++){
+          $ingObj[] = Ingredient::createIng($ingredients[$i], $amounts[$i], $units[$i]);  
+        }
+        Recipe::editRecipe($recipe_id, $recipe_name, $directions, $userId, $ingredients, $ingObj, $category);
         if (!empty($pic)){
-          Image::saveImageWithCaption($pic, $id, $caption, 1);  
+          Image::saveImageWithCaption($pic, $userId, $caption, $recipe_id);  
         }
 	      $url = '/';
         header('Location: ' . $url);
