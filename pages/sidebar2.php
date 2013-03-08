@@ -15,7 +15,8 @@
       <li><a href="#_" onclick="alert('Coming soon!'); return false;">Fish</a></li>
     </ul>
   </li>
-  <li><span><a href="viewset.php?category=3">Salads</a></span></li>
   <li><span><a href="viewset.php?category=1;">Appetizers</a></span></li>
+  <li><span><a href="viewset.php?category=3">Salads</a></span></li>
+  <li><span><a href="viewset.php?category=6">Pasta</a></span></li>
   <li><span><a href="viewset.php?category=2;">Desserts</a></span></li>
 </div>

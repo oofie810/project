@@ -6,7 +6,7 @@
   require_once('../lib/Ingredient.php');
   require_once('../lib/Image.php');
   
-  include_once('sidebar.php');
+  include_once('sidebar2.php');
 ?>
   <div id="main">
 <?php
