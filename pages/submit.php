@@ -72,7 +72,7 @@
     <ul id="ingredient_input" class="ingredient_input">
       <li>
         <input type="text" size="5" onkeypress="validate(event)" id="amount" name="amount[]">
-        <select id="unit" name="unit" />
+        <select id="unit" name="unit[]" />
        
       <?php
         $query = "SELECT * FROM unit";

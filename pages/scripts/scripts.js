@@ -34,7 +34,6 @@
 	function newRow(list, js_array, idArray){
       var number = document.getElementById('unit');
       var number_id = number.value+1;
-      alert(number_id);
 
 	    var nli = document.createElement('li');
 	    var nliChild  = document.createElement('input');
@@ -46,7 +45,7 @@
 	    
 	    var nliChild2  = document.createElement('select');
 	    nliChild2.name = 'unit[]';
-	    nliChild2.id   = number_id+'1';
+	    nliChild2.id   = 'unit';
 
 	    for (var i=0; i < js_array.length; i++){
         var options_i = document.createElement('option');
