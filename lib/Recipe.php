@@ -60,6 +60,19 @@
       return new Recipe($recipe_result[$random]['id'], $recipe_result[$random]['name'], $recipe_result[$random]['directions'], $ingredients_result, $recipe_result[$random]['category']);
     }
 
+		//function returns a random object from array of objects. 
+    public static function loadAllRecipeInCat($category){
+      $sql = "SELECT * FROM recipe WHERE category = :category";
+      $params = array (':category' => $category);
+      $results = Database::getMultipleRows($sql, $params, 'recipe:'. $category);
+      $recipes = array();
+      foreach($results as $recipe){
+        $ingredients = Ingredient::loadRecipeIngredients($recipe['id']);
+        $recipes[] = new Recipe($recipe['id'], $recipe['name'], $recipe['directions'], $ingredients, $recipe['category']);
+      }
+      return $recipes;
+    }
+    
     public static function loadRecipeByUser($userId){
       $sql = "SELECT name, id, directions, category FROM recipe WHERE submitted_by = :userId";
       $params = array (':userId' => $userId);

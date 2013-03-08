@@ -2,8 +2,7 @@
   $css_files = array('index.css');
   require_once('header.php');
   require_once('../lib/Database.php');
-
-  include_once('sidebar.php');
+  include_once('sidebar2.php');
 ?>
   <div id="main">
 <?php

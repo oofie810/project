@@ -79,7 +79,7 @@ body{
   width: 200px;
   float: left;
   padding-top: 15px;
-  visibility:  hidden;
+  
 }
 
 .button{
@@ -105,7 +105,7 @@ caption{
     }
 
 ul#menu{
-  eargin-top: 0;
+  margin-top: 0;
   padding: 3px;
   line-height: 25px;
   text-align: center;
@@ -492,4 +492,8 @@ h3{
   padding-left: 200px;
 }
 
-
+h2#categoryHead{
+  font-size: 40px;
+  padding-left: 15%;
+  color: #2FAACE;
+}

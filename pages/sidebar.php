@@ -1,12 +1,5 @@
 <div id="sidebar">
 <ul class="menu">
-  <li><span><a href="#_" onclick="alert('Coming soon!'); return false;">Calorie Counter</a></spam></li>
-  <li><span><a href="#_" onclick="alert('Coming soon!'); return false;">Meal Planner</a></span>
-    <ul>
-      <li><a href="#_" onclick="alert('Coming soon!'); return false;">What's in my kitchen</a></li>
-      <li><a href="#_" onclick="alert('Coming soon!'); return false;">Plan for the week</a></li>
-    </ul>
-  </li>
   <li><span><a href="#_" onclick="alert('Coming soon!'); return false;">Featured Recipes</a></span>
     <ul>
       <li><a href="#_" onclick="alert('Coming soon!'); return false;">Chicken Teriyaki</a></li>
