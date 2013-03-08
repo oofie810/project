@@ -71,7 +71,7 @@
   function validateNonEmpty(inputField, helpText){
     if (inputField.value.length == 0){
       if (helpText != null)
-        helpText.innerHTML = "Can not be blank.";
+        helpText.innerHTML = "Cannot be blank.";
       return false;
     } else{
       if (helpText != null)
