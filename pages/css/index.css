@@ -242,9 +242,9 @@ ul#menu a:hover{
 #searchResults img{
   float:  left;
   padding-right:  5%;
-  padding-bottom:  20px;
-  padding-top:  15px;
-  margin-bottom:  20px;
+  padding-bottom:  0px;
+  padding-top:  0px;
+  margin-bottom:  0px;
 }
 
 h3{

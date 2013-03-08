@@ -17,7 +17,7 @@
         $image = Image::loadImageForSearchRecipe($recipe->getRecipeId(), $res);
         echo '<ul id="searchResults">';
         if($image != null){
-          echo '<img src ="' . Config::getAwsFolder() . '150x100_' . $image->getFilename() . '" />';
+          echo '<a href="viewrecipe.php?recipe_id=' . $recipe->getRecipeId() . '"><img src ="' . Config::getAwsFolder() . '150x100_' . $image->getFilename() . '" /></a>';
         }
         echo '<li><h4><a href="viewrecipe.php?recipe_id='. $recipe->getRecipeId() . '">'.$recipe->getRecipeName().'</a></h4>';
         echo substr($recipe->getDirections(), 0, 150) . '...';
