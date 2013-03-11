@@ -144,7 +144,7 @@
       Database::update($sql, $params);
 
       //TODO figure out how to associate ingredients. foreign key constraint as i_to_r already exists
-      //Ingredient::associateIngredientsToRecipe($recipeId, $ingredient_names, $ingObj);
+      Ingredient::associateIngredientsToRecipe($recipeId, $ingredient_names, $ingObj);
       //TODO add additional log action - edit recipe
       LogAction::insertLog($userId, 7);
       return $recipeId;

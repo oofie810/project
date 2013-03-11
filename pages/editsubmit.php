@@ -98,14 +98,11 @@
               $query = "SELECT * FROM unit";
               $data = Database::getMultipleRows($query, array());
                 
+              $select = ($row['name']==$ingr->getUnitName()) ? " selected='selected' " : "";
               foreach($data as $row){
-                $select = ($row['name']==$ingr->getUnitName()) ? " selected='selected' " : "";
                 echo "<option $select value=\"".$row['id']."\">".$row['name']."</option>\n";
                 $units_array[] = $row['name'];
                 $id_array[]    = $row['id'];
-            //<optionvalue="<?php echo $ingr->getUnitName();
-            /*?>"><?php echo $ingr->getUnitName();?></option>
-              */
               } ?>
             </select>
             <input size="44" type="text" id="ingredients" name="ingredients[]"/ class="ing" value="<?php echo $ingr->getName();?>"></li>

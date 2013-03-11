@@ -12,6 +12,5 @@
   <li><span><a href="viewset.php?category=3">Salads</a></span></li>
   <li><span><a href="viewset.php?category=6">Pasta</a></span></li>
   <li><span><a href="viewset.php?category=2;">Desserts</a></span></li>
-  <li><span><a href="viewset.php?category=7;">Pastas</a></span></li>
-  <li><span><a href="viewset.php?category=8;">Breakfast</a></span></li>
+  <li><span><a href="viewset.php?category=7;">Breakfast</a></span></li>
 </div>
